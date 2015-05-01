@@ -19,6 +19,8 @@ latestData = nil
   
   The program will auto-update.
   
+  (i am not responsible for what this program is used for)
+  
 --]]
 curProg = shell.getRunningProgram()
 f = fs.open(curProg,"r")
