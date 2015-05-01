@@ -34,9 +34,10 @@ if curProgData ~= latestData then
   f = fs.open(curProg,"w")
   f.writeLine(latestData)
   f.close()
+  term.setBackgroundColor(colors.red)
   term.clear()
   term.setCursorPos(2,2)
-  print("Rednet Sniff Was updated. Restarting it.")
+  print("Rednet Sniff Was updated!")
   sleep(3)
   shell.run(curProg)
 end
