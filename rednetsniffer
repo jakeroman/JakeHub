@@ -1,0 +1,244 @@
+--[[
+
+  Sniffing Program
+
+ Not to be used for malicious
+ causes.
+ 
+ Not to be re-distributed
+ without proper credit or
+ permission given.
+ 
+ This program was made by
+ jakejakey1208 (AKA, JakeOS)
+ 
+  Enjoy, and please don't
+  abuse.
+  
+--]]
+m = peripheral.find("modem")
+if not m then
+  term.setBackgroundColor(colors.red)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.white)
+  write("No Modem Found")
+  os.pullEvent("key")
+  term.setBackgroundColor(colros.black)
+  term.clear()
+  term.setCursorPos(1,1)
+  return
+end
+if m.isWireless == false then
+  if peripheral.wrap("left").isWireless() then
+    m = peripheral.wrap("left")
+  else
+    term.setBackgroundColor(colors.red)
+    term.clear()
+    term.setCursorPos(2,2)
+    term.setTextColor(colors.white)
+    write("Modem Side: ")
+    modem = read()
+    if not peripheral.wrap(modem) then
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      term.setTextColor(colors.red)
+      print("Modem not found.")
+      return
+    end
+    if peripheral.wrap(modem).isWireless == true then
+      m = peripheral.wrap(modem)
+    else
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      print("Modem not wireless")
+      return
+    end
+  end
+end
+if fs.exists(".oldstart") then
+  autorun = true
+else
+  autorun = false
+end
+term.setBackgroundColor(colors.blue)
+term.clear()
+scrlvl = 1
+m.open(65533)
+log = false
+monitor = false
+ver = "v2.1"
+scr = {"Sniffer Online"}
+while true do
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(1,9)
+  term.setBackgroundColor(colors.white)
+  x, y = term.getSize()
+  for i=1,x do
+    write(" ")
+  end
+  term.setCursorPos(2,9)
+  term.setTextColor(colors.lightBlue)
+  write("RednetSniff ")
+  term.setTextColor(colors.red)
+  write(ver)
+  term.setBackgroundColor(colors.white)
+  term.setCursorPos(2,11)
+  term.setTextColor(colors.orange)
+  write("Exit")
+  term.setCursorPos(2,12)
+  if log == true then
+    term.setTextColor(colors.lime)
+  else
+    term.setTextColor(colors.red)
+  end
+  write("Log")
+  term.setCursorPos(2,13)
+  if monitor == true then
+    term.setTextColor(colors.lime)
+  else
+    term.setTextColor(colors.red)
+  end
+  if not peripheral.find("monitor") then
+    term.setTextColor(colors.lightGray)
+  end
+  write("Monitor")
+  term.setCursorPos(2,14)
+  if autorun == true then
+    term.setTextColor(colors.lime)
+  else
+    term.setTextColor(colors.red)
+  end
+  write("Startup")
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.lime)
+  write("/\\")
+  term.setCursorPos(2,3)
+  term.setTextColor(colors.green)
+  write("\\/")
+  term.setCursorPos(2,5)
+  term.setTextColor(colors.blue)
+  write(scr[scrlvl])
+  term.setCursorPos(2,7)
+  term.setTextColor(colors.red)
+  write(scrlvl)
+  term.setTextColor(colors.lightBlue)
+  write(" / ")
+  term.setTextColor(colors.red)
+  write(#scr)
+  evt, p1, p2, p3, p4 = os.pullEvent()
+  get = true
+  if evt == "modem_message" and p4 ~= nil and get == true then
+    if scr[#scr] ~= (tonumber(p3).." > "..tonumber(p4.nRecipient).." "..tostring(p4.message)) then
+      scrlvl = #scr + 1
+      scr[#scr + 1] = (tonumber(p3).." > "..tonumber(p4.nRecipient).." "..tostring(p4.message))
+      if log == true then
+        f = fs.open("logs","a")
+        f.writeLine(scr[scrlvl])
+        f.close()
+      end
+      if monitor == true then
+        pos = pos + 1
+        mon.setCursorPos(1,pos)
+        mon.setTextColor(colors.blue)
+        mon.write(scr[#scr])
+      end
+    end
+  end
+  if evt == "mouse_click" then
+    if p2 > 1 and p2 < 4 then
+      if p3 == 2 then
+        if scrlvl == 1 then
+        else
+          scrlvl = scrlvl - 1
+        end
+      end
+      if p3 == 3 then
+        if scrlvl == #scr then
+        else
+          scrlvl = scrlvl + 1
+        end
+      end
+    end
+    if p2 > 1 and p2 < 6 and p3 == 11 then
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      return
+    end
+    if p2 > 1 and p2 < 5 and p3 == 12 then
+      if log == true then
+        log = false
+      else
+        log = true
+      end
+    end
+    if p2 > 1 and p2 < 9 and p3 == 13 then
+      if monitor == true then
+        monitor = false
+        mon = peripheral.find("monitor")
+        if mon then
+          mon.setBackgroundColor(colors.black)
+          mon.clear()
+        end
+      else
+        monitor = true
+        mon = peripheral.find("monitor")
+        if not mon then
+          monitor = false
+        else
+          mon.setBackgroundColor(colors.white)
+          mon.clear()
+          mon.setCursorPos(1,1)
+          mon.setTextColor(colors.black)
+          mon.write("Sniffer")
+          pos = 1
+        end
+      end
+    end
+    if p2 > 1 and p2 < 9 and p3 == 14 then
+      if autorun == true then
+        fs.delete("startup")
+        fs.move(".oldstart","/startup")
+        autorun = false
+      else
+        if fs.exists("startup") then
+          fs.move("startup",".oldstart")
+        else
+          f = fs.open("startup","w")
+          f.close()
+        end
+        fs.copy(shell.getRunningProgram(),"startup")
+        autorun = true
+      end
+    end
+  end
+  if evt == "mouse_scroll" then
+    if p1 == -1 then
+      -- Down one (-1) = Mouse went UP
+      if scrlvl ~= 1 then
+        scrlvl = scrlvl - 1
+      end
+    elseif p1 == 1 then
+      -- Up one (+1) = Mouse went DOWN
+      if scrlvl ~= #scr then
+        scrlvl = scrlvl + 1
+      end
+    end
+  end
+  if evt == "key" then
+    if p1 == 208 then
+      if scrlvl ~= #scr then
+        scrlvl = scrlvl + 1
+      end
+    end
+    if p1 == 200 then
+      if scrlvl ~= 1 then
+        scrlvl = scrlvl - 1
+      end
+    end
+  end
+end
