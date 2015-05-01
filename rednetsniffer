@@ -1,3 +1,5 @@
+curProgData = nil
+latestData = nil
 --[[
 
   Sniffing Program
