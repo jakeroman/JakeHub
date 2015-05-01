@@ -91,7 +91,7 @@ scrlvl = 1
 m.open(65533)
 log = false
 monitor = false
-ver = "v2.1"
+ver = "v2.5"
 scr = {"Sniffer Online"}
 while true do
   term.setBackgroundColor(colors.white)
