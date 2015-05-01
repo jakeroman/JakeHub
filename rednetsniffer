@@ -16,6 +16,24 @@
   abuse.
   
 --]]
+curProg = shell.getRunningProgram()
+f = fs.open(curProg,"r")
+curProgData = f.readAll()
+f.close()
+stream = http.get("https://raw.githubusercontent.com/jakemroman/JakeHub/master/rednetsniffer")
+latestData = stream.readAll()
+stream.close()
+if curProgData ~= latestData then
+  fs.delete(curProg)
+  f = fs.open(curProg,"w")
+  f.writeLine(latestData)
+  f.close()
+  term.clear()
+  term.setCursorPos(2,2)
+  print("Rednet Sniff Was updated. Restarting it.")
+  sleep(3)
+  shell.run(curProg)
+end
 m = peripheral.find("modem")
 if not m then
   term.setBackgroundColor(colors.red)
