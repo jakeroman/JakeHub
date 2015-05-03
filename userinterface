@@ -20,7 +20,7 @@ if stream == nil then
   term.setTextColor(colors.lightGray)
   write("Warn: ")
   term.setTextColor(colors.orange)
-  write("Could not determine latest version of UI!")
+  print("Could not determine latest version of UI!")
 else  
   latestData = stream.readAll()
   f = fs.open(curFile,"r")
