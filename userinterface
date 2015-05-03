@@ -12,7 +12,17 @@ curData = nil
  
 --]]
 
-curFile = shell.getRunningProgram()
+if not fs.exists("ui") then
+  term.setTextColor(colors.red)
+  write("! ")
+  term.setTextColor(colors.gray)
+  write("Error: ")
+  term.setTextColor(colors.orange)
+  print("Warning! Please name the api: ui")
+  return
+end
+
+curFile = "ui"
 stream = http.get("https://raw.github.com/jakemroman/JakeHub/master/userinterface")
 if stream == nil then
   term.setTextColor(colors.red)
