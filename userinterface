@@ -1,4 +1,6 @@
 objects = {}
+latestData = nil
+curData = nil
 --[[
 
  UI API [User Interface]
@@ -9,6 +11,26 @@ objects = {}
  Please Enjoy it.
  
 --]]
+
+curFile = shell.getRunningProgram()
+stream = http.get("https://github.com/jakemroman/JakeHub/master/userinterface")
+latestData = stream.readAll()
+f = fs.open(curFile,"r")
+curData = f.readAll()
+f.close()
+stream.close()
+if curData ~= latestData then
+ fs.delete(curFile)
+ f = fs.open(curFile,"w")
+ f.writeLine(latestData)
+ f.close()
+ term.setTextColor(colors.red)
+ write("! ")
+ term.setTextColor(colors.lime)
+ write("Note: ")
+ term.setTextColor(colors.orange)
+ print(curFile.." Was updated to a later version. reload it to get new features.")
+end
 
 function pos(x,y)
   term.setCursorPos(x,y)
