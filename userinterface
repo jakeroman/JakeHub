@@ -1,0 +1,191 @@
+objects = {}
+--[[
+
+ UI API [User Interface]
+ 
+ By jakejakey1208 or
+ JakeOS
+ 
+ Please Enjoy it.
+ 
+--]]
+
+function pos(x,y)
+  term.setCursorPos(x,y)
+end
+
+function center(str)
+  x, y = term.getCursorPos()
+  maxX, maxY = term.getSize()
+  term.setCursorPos(maxX / 2 - ( #str / 2 ),y)
+  print(str)
+end
+
+function yesNo(str)
+  maxX, maxY = term.getSize()
+  x, y = term.getCursorPos()
+  term.setCursorPos(maxX / 2 - ( #str / 2 ), y - 2)
+  print(str)
+  paintutils.drawFilledBox(2,y,maxX / 2 - 2, y, colors.lightGray)
+  paintutils.drawFilledBox(maxX / 2 + 1, y, maxX - 1, y, colors.gray)
+  term.setCursorPos(3,y)
+  term.setTextColor(colors.white)
+  term.setBackgroundColor(colors.lightGray)
+  write("Yes")
+  term.setCursorPos(maxX - string.len("No") - 2, y)
+  term.setBackgroundColor(colors.gray)
+  write("No")
+  repMenu = true
+  repeat
+    evt, c, xPos, yPos = os.pullEvent("mouse_click")
+    if xPos > 1 and xPos < maxX / 2 - 1 and yPos == y then
+      return true
+    end
+    if xPos > maxX / 2 and xPos < maxX and yPos == y then
+      return false
+    end
+  until repMenu == false
+end
+
+function msgBox(msg,color)
+  x, y = term.getSize()
+  paintutils.drawFilledBox(2,2,x - 1, y / 2, colors[color])
+  term.setCursorPos(x - 1, 2)
+  write("x")
+  term.setCursorPos(2,5)
+  xSens = x - 1
+  if msg == nil then
+    center(":( No Message")
+  else
+    center(msg)
+  end
+  repeat
+    e,c,xPos,yPos = os.pullEvent("mouse_click")
+  until xPos == xSens and yPos == 2
+  paintutils.drawFilledBox(2,2,x - 1, y / 2, colors.black)
+  return true
+end
+
+function scrList(...)
+  list = {...}
+  x, y = term.getCursorPos()
+  minsel = y
+  sel2 = 1
+  sel = y
+  maxsel = #list + y - 1
+  while true do
+    for i=minsel,maxsel do
+      term.setBackgroundColor(colors.black)
+      term.setCursorPos(2,i)
+      term.clearLine()
+      term.clear()
+    end
+    tempsel = 0
+    term.setCursorPos(2,sel)
+    for i=minsel,maxsel do
+      tempsel = tempsel + 1
+      term.setCursorPos(2,i)
+      if i == sel then
+        term.setTextColor(colors.black)
+        term.setBackgroundColor(colors.white)
+      else
+        term.setTextColor(colors.white)
+        term.setBackgroundColor(colors.black)
+      end
+      term.clearLine()
+      term.setCursorPos(2,i)
+      center(list[tempsel])
+    end
+    e, k = os.pullEvent("key")
+    if k == 28 then
+      return sel2
+    end
+    if k == 200 then
+      if sel ~= minsel then
+        sel = sel - 1
+        sel2 = sel2 - 1
+      end
+    end
+    if k == 208 then
+      if sel ~= maxsel then
+        sel = sel + 1
+        sel2 = sel2 + 1
+      end
+    end
+  end
+end
+
+function clear()
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.white)
+end
+
+function drawJPG(jpg)
+  curJpg = {}
+  f = fs.open(jpg,"r")
+  while true do
+    curLine = f.readLine()
+    if curLine == nil then
+      break
+    else
+      curJpg[#curJpg + 1] = curLine
+    end
+  end
+  curX,curY = term.getCursorPos()
+  for i=1,#curJpg do
+    col = false
+    bgcol = false
+    for j=1,#curJpg[i] do
+      --col = false
+      --bgcol = false
+      if col == true then
+        --error("Converting Txt")
+        col = false
+        convTxCol(string.sub(curJpg[i],j,j))
+      elseif bgcol == true then
+        --error("Convertering Bgc")
+        bgcol = false
+        convBgCol(string.sub(curJpg[i],j,j))
+      elseif string.sub(curJpg[i],j,j) == "&" then
+        col = true
+      elseif string.sub(curJpg[i],j,j) == "^" then
+        bgcol = true
+      else
+        write(string.sub(curJpg[i],j,j))
+        --error("Written!")
+      end
+    end
+    term.setBackgroundColor(colors.black)
+    term.setTextColor(colors.white)
+    print("")
+  end
+end
+
+colorCodes = {
+  c1 = colors.blue,
+  c2 = colors.green,
+  c3 = colors.cyan,
+  c4 = colors.red,
+  c5 = colors.purple,
+  c6 = colors.orange,
+  c7 = colors.lightGray,
+  c8 = colors.gray,
+  c9 = colors.cyan,
+  c0 = colors.black,
+  ca = colors.lime,
+  cb = colors.lightBlue,
+  cc = colors.red,
+  cd = colors.pink,
+  ce = colors.yellow,
+  cf = colors.white,
+}
+
+function convBgCol(col)
+  term.setBackgroundColor(colorCodes["c"..col])
+end
+
+function convTxCol(col)
+  term.setTextColor(colorCodes["c"..col])
+end
