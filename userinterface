@@ -13,12 +13,12 @@ curData = nil
 --]]
 
 curFile = shell.getRunningProgram()
-stream = http.get("https://github.com/jakemroman/JakeHub/master/userinterface")
+stream = http.get("https://raw.github.com/jakemroman/JakeHub/master/userinterface")
 if stream == nil then
   term.setTextColor(colors.red)
   write("! ")
   term.setTextColor(colors.lightGray)
-  write("Warn: )
+  write("Warn: ")
   term.setTextColor(colors.orange)
   write("Could not determine latest version of UI!")
 else  
