@@ -14,22 +14,31 @@ curData = nil
 
 curFile = shell.getRunningProgram()
 stream = http.get("https://github.com/jakemroman/JakeHub/master/userinterface")
-latestData = stream.readAll()
-f = fs.open(curFile,"r")
-curData = f.readAll()
-f.close()
-stream.close()
-if curData ~= latestData then
- fs.delete(curFile)
- f = fs.open(curFile,"w")
- f.writeLine(latestData)
- f.close()
- term.setTextColor(colors.red)
- write("! ")
- term.setTextColor(colors.lime)
- write("Note: ")
- term.setTextColor(colors.orange)
- print(curFile.." Was updated to a later version. reload it to get new features.")
+if stream == nil then
+  term.setTextColor(colors.red)
+  write("! ")
+  term.setTextColor(colors.lightGray)
+  write("Warn: )
+  term.setTextColor(colors.orange)
+  write("Could not determine latest version of UI!")
+else  
+  latestData = stream.readAll()
+  f = fs.open(curFile,"r")
+  curData = f.readAll()
+  f.close()
+  stream.close()
+  if curData ~= latestData then
+    fs.delete(curFile)
+    f = fs.open(curFile,"w")
+    f.writeLine(latestData)
+    f.close()
+    term.setTextColor(colors.red)
+    write("! ")
+    term.setTextColor(colors.lime)
+    write("Note: ")
+    term.setTextColor(colors.orange)
+    print(curFile.." Was updated to a later version. reload it to get new features.")
+  end
 end
 
 function pos(x,y)
