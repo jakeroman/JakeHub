@@ -22,7 +22,7 @@ applist = {
     code = "https://raw.github.com/jakemroman/JakeHub/master/transmit",
   },
   {
-    name = "GUI API by ViperLordX",
+    name = "GUI API",
     file = "/gui",
     code = "http://pastebin.com/raw.php?i=MU1HDnxF",
   },
