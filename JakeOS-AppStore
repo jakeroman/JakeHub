@@ -64,7 +64,7 @@ while true do
           f.close()
           h.close()
         end
-        break
+        shell.run(shell.getRunningProgram())
       end
     end
   end
