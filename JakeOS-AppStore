@@ -1,0 +1,51 @@
+applist = {
+  {
+    name = "RedBin",
+    file = "redbin",
+  },
+}
+term.setBackgroundColor(colors.white)
+term.clear()
+term.setCursorPos(2,2)
+term.setTextColor(colors.lightBlue)
+print("JakeOS App Store")
+write(" ")
+for i=1,#applist do
+  term.setTextColor(colors.gray)
+  if fs.exists(applist[i]["file"]) then
+    term.setBackgroundColor(colors.lightBlue)
+    write("Open")
+  else
+    term.setBackgroundColor(colors.lime)
+    write("Get ")
+  end
+  term.setBackgroundColor(colors.white)
+  write(" ")
+  term.setTextColor(colors.blue)
+  print(applist[i]["name"])
+  x,y = term.getCursorPos()
+  term.setCursorPos(2,y)
+end
+while true do
+  e,c,x,y = os.pullEvent("mouse_click")
+  y = y - 2
+  if x > 1 and x < 6 then
+    if applist[y] ~= nil then
+      if fs.exists(applist[y]["file"]) then
+        shell.run(applist[y]["file"])
+        break
+      else
+        h = http.get(applist[y]["code"])
+        if h == nil then
+          break
+        else
+          f = fs.open(applist[y]["file"],"w")
+          f.writeLine(h.readAll())
+          f.close()
+          h.close()
+        end
+        break
+      end
+    end
+  end
+end
