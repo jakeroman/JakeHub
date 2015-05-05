@@ -22,10 +22,10 @@ applist = {
     code = "https://raw.github.com/jakemroman/JakeHub/master/transmit",
   },
   {
-    name = "GUI API by ViperLordX"m
+    name = "GUI API by ViperLordX",
     file = "/gui",
     code = "http://pastebin.com/raw.php?i=MU1HDnxF",
-  }
+  },
 }
 term.setBackgroundColor(colors.white)
 term.clear()
