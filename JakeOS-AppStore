@@ -17,9 +17,9 @@ if h ~= nil then
 end
 applist = {
   {
-    name = "Worm",
-    file = "/rom/programs/fun/worm",
-    code = "http://google.com/",
+    name = "File Transfer",
+    file = "/filetransfer",
+    code = "https://raw.github.com/jakemroman/JakeHub/master/transmit",
   },
 }
 term.setBackgroundColor(colors.white)
