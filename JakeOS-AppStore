@@ -1,7 +1,23 @@
+h = http.get("https://raw.github.com/jakemroman/JakeHub/master/JakeOS-AppStore")
+curProgData = nil
+curProg = shell.getRunningProgram()
+if h ~= nil then
+  f = fs.open(shell.getRunningProgram(),"r")
+  curProgData = f.readAll()
+  f.close()
+  if h.readAll() ~= curProgData then
+    fs.delete(shell.getRunningProgram())
+    f = fs.open(curProg,"w")
+    f.writeLine(h.readAll())
+    f.close()
+  end
+  h.close()
+end
 applist = {
   {
-    name = "RedBin",
-    file = "redbin",
+    name = "Worm",
+    file = "rom/programs/fun/worm",
+    code = "http://google.com/",
   },
 }
 term.setBackgroundColor(colors.white)
