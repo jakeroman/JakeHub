@@ -48,6 +48,8 @@ while true do
   if x > 1 and x < 6 then
     if applist[y] ~= nil then
       if fs.exists(applist[y]["file"]) then
+        term.setBackgroundColor(colors.black)
+        term.clear()
         shell.run(applist[y]["file"])
         break
       else
