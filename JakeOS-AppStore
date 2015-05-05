@@ -1,14 +1,16 @@
 h = http.get("https://raw.github.com/jakemroman/JakeHub/master/JakeOS-AppStore")
+latestData = nil
 curProgData = nil
 curProg = shell.getRunningProgram()
 if h ~= nil then
+  latestData = h.readAll()
   f = fs.open(shell.getRunningProgram(),"r")
   curProgData = f.readAll()
   f.close()
-  if h.readAll() ~= curProgData then
+  if latestData ~= curProgData then
     fs.delete(shell.getRunningProgram())
     f = fs.open(curProg,"w")
-    f.writeLine(h.readAll())
+    f.writeLine(latestData)
     f.close()
   end
   h.close()
