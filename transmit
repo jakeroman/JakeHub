@@ -1,0 +1,106 @@
+rdntSides = {
+  "top",
+  "bottom",
+  "left",
+  "right",
+  "back",
+  "front",
+}
+for i=1,#rdntSides do
+  if peripheral.isPresent(rdntSides[i]) then
+    if peripheral.getType(rdntSides[i]) == "modem" then
+      rednet.open(rdntSides[i])
+    end
+  end
+end
+open = false
+for i=1,#rdntSides do
+  if rednet.isOpen(rdntSides[i]) then
+    open = true
+  end
+end
+if open == false then
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.red)
+  print("No Modem Detected.")
+  sleep(5)
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  term.setCursorPos(1,1)
+  return
+end
+term.setBackgroundColor(colors.white)
+term.clear()
+term.setCursorPos(2,2)
+term.setTextColor(colors.blue)
+print("JakeOS File Transfer")
+term.setCursorPos(2,4)
+term.setTextColor(colors.lightGray)
+term.setBackgroundColor(colors.lime)
+print("Send")
+term.setCursorPos(2,6)
+term.setBackgroundColor(colors.blue)
+print("Get ")
+term.setCursorPos(2,8)
+term.setBackgroundColor(colors.red)
+print("Exit")
+while true do
+  e,c,x,y = os.pullEvent("mouse_click")
+  if x > 1 and x < 6 then
+    if y == 8 then
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      return
+    end
+    if y == 4 then
+      repeat
+        term.setBackgroundColor(colors.white)
+        term.clear()
+        term.setCursorPos(2,2)
+        term.setTextColor(colors.lime)
+        print("File to send:")
+        term.setCursorPos(2,3)
+        file = read()
+      until fs.exists(file)
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      term.setCursorPos(2,2)
+      term.setTextColor(colors.green)
+      print("Your File has been sent.")
+      f = fs.open(file,"r")
+      local file = f.readAll()
+      f.close()
+      rednet.broadcast(file)
+      sleep(3)
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      break
+    end
+    if y == 6 then
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      term.setCursorPos(2,2)
+      term.setTextColor(colors.blue)
+      print("Waiting For File...")
+      id, file = rednet.receive()
+      term.clear()
+      term.setCursorPos(2,2)
+      print("Got File from "..id)
+      term.setCursorPos(2,4)
+      print("Save as:")
+      term.setCursorPos(2,5)
+      saveAs = read()
+      f = fs.open(saveAs,"w")
+      f.writeLine(file)
+      f.close()
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      return
+    end
+  end
+end
