@@ -58,11 +58,11 @@ while true do
         term.setBackgroundColor(colors.black)
         term.clear()
         shell.run(applist[y]["file"])
-        break
+        return
       else
         h = http.get(applist[y]["code"])
         if h == nil then
-          break
+          return
         else
           f = fs.open(applist[y]["file"],"w")
           f.writeLine(h.readAll())
