@@ -12,6 +12,14 @@ curData = nil
  
 --]]
 
+term.setTextColor(colors.red)
+write("! ")
+term.setTextColor(colors.gray)
+write("Error: ")
+term.setTextColor(colors.orange)
+prit("This API is no longer supported due to it's large ammount of bugs.")
+return
+
 if not fs.exists("ui") then
   term.setTextColor(colors.red)
   write("! ")
