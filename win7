@@ -236,8 +236,67 @@ while true do
     term.setCursorPos(2,16)
     write("Settings")
     term.setCursorPos(2,15)
+    write("Update")
     e,c,x,y = os.pullEvent("mouse_click")
     if x >= 1 and x <= 10 then
+      if y == 15 then
+        term.setBackgroundColor(colors.white)
+        term.clear()
+        paintutils.drawLine(1,1,51,1,colors.lightGray)
+        term.setCursorPos(2,1)
+        term.setTextColor(colors.wahite)
+        write("Update")
+        term.setCursorPos(2,3)
+        term.setTextColor(colors.black)
+        h = http.get("https://raw.github.com/jakemroman/JakeHub/master/win7")
+        if h == nil then
+          term.setTextColor(colors.red)
+          write("Failed :/")
+        else
+          data = h.readAll()
+          h.close()
+          curProgram = shell.getRunningProgram
+          f = fs.open(curProgram,"r")
+          curData = f.readAll()
+          f.close()
+          if curData ~= data then
+            print("Update is avalible download it?")
+            term.setCursorPos(2,5)
+            term.setTextColor(colors.gray)
+            term.setBackgroundColor(colors.lightGray)
+            write("Yes")
+            term.setCursorPos(2,6)
+            term.setBackgroundCOlor(colors.red)
+            write("No ")
+            while true do
+              e,c,x,y = os.pullEvent("mouse_click")
+              if x >= 2 and x <= 5 then
+                if y == 5 then
+                  fs.delete(curProgram)
+                  sleep(0)
+                  f = fs.open(curProgram,"w")
+                  f.writeLine(data)
+                  f.close()
+                  term.setCursorPos(2,8)
+                  term.setBackgroundColor(colors.white)
+                  term.setTextColor(colors.lime)
+                  write("Success!")
+                  break
+                end
+                if y == 6 then
+                  term.setCursorPos(2,8)
+                  term.setBackgroundColor(colors.white)
+                  term.setTextColor(colors.gray)
+                  write("Not Downloading.")
+                end
+              end
+            end
+          else
+            term.setTextColor(colors.lime)
+            write("Up to date")
+          end
+        end
+      end
       if y == 16 then
         while true do
           term.setBackgroundColor(colors.white)
