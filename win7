@@ -219,6 +219,10 @@ while true do
       end
       for i=1,#list do
         if x > 1 and x <= #list[i] and y == i + 1 then
+          term.setBackgroundColor(colors.black)
+          term.clear()
+          term.setCursorPos(1,1)
+          term.setTextColor(colors.white)
           shell.run("/Windows/programs/"..list[i])
         end
       end
