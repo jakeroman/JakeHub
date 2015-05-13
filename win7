@@ -73,7 +73,7 @@ if not fs.isDir("Windows") then
   write("This does not in any way")
   term.setCursorPos(3,10)
   write("Have anything to do with")
-  term.setCursorPos(2,11)
+  term.setCursorPos(3,11)
   write("Microsoft.")
   term.setCursorPos(3,9)
   x,y = term.getSize()
