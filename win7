@@ -297,6 +297,16 @@ while true do
             write("Up to date")
           end
         end
+        term.setCursorPos(1,51)
+        term.setBackgroundColor(colors.red)
+        term.setTextColro(colors.white)
+        write("X")
+        while true do
+          e,c,x,y = os.pullEvent("mouse_click")
+          if x == 51 and y == 1 then
+            break
+          end
+        end
       end
       if y == 16 then
         while true do
