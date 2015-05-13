@@ -244,7 +244,7 @@ while true do
         term.clear()
         paintutils.drawLine(1,1,51,1,colors.lightGray)
         term.setCursorPos(2,1)
-        term.setTextColor(colors.wahite)
+        term.setTextColor(colors.white)
         write("Update")
         term.setCursorPos(2,3)
         term.setTextColor(colors.black)
@@ -255,10 +255,11 @@ while true do
         else
           data = h.readAll()
           h.close()
-          curProgram = shell.getRunningProgram
+          curProgram = shell.getRunningProgram()
           f = fs.open(curProgram,"r")
           curData = f.readAll()
           f.close()
+          term.setBackgroundColor(colors.white)
           if curData ~= data then
             print("Update is avalible download it?")
             term.setCursorPos(2,5)
@@ -266,7 +267,7 @@ while true do
             term.setBackgroundColor(colors.lightGray)
             write("Yes")
             term.setCursorPos(2,6)
-            term.setBackgroundCOlor(colors.red)
+            term.setBackgroundColor(colors.red)
             write("No ")
             while true do
               e,c,x,y = os.pullEvent("mouse_click")
