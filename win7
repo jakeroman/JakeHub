@@ -101,6 +101,36 @@ if not fs.isDir("Windows") then
   paintutils.drawFilledBox(2,2,x - 1,y - 1,colors.white)
   term.setCursorPos(3,3)
   term.setTextColor(colors.gray)
+  write("Download strafe game?")
+  term.setCursorPos(3,4)
+  write("Credit to CrazedProgrammer for making strafe")
+  term.setCursorPos(3,y - 2)
+  term.setTextColor(colors.gray)
+  term.setBackgroundColor(colors.lime)
+  write("Yes")
+  term.setCursorPos(3,y - 3)
+  term.setBackgroundColor(colors.red)
+  write("No ")
+  while true do
+    e,c,x,y = os.pullEvent("mouse_click")
+    if x >= 3 and x <= 6 then
+      if y == 17 then
+        break
+      end
+      if y == 16 then
+        h = http.get("http://pastebin.com/raw.php?i=bj3qj1Pj")
+        if h then
+          f = fs.open("Strafe","w")
+          f.writeLine(h.readAll())
+          f.close()
+        end
+      end
+    end
+  end
+  x,y = term.getSize()
+  paintutils.drawFilledBox(2,2,x - 1,y - 1,colors.white)
+  term.setCursorPos(3,3)
+  term.setTextColor(colors.gray)
   write("Installation Done!")
   fs.makeDir("Windows")
   fs.makeDir("Windows/programs")
