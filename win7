@@ -114,16 +114,17 @@ if not fs.isDir("Windows") then
   while true do
     e,c,x,y = os.pullEvent("mouse_click")
     if x >= 3 and x <= 6 then
-      if y == 17 then
+      if y == 16 then
         break
       end
-      if y == 16 then
+      if y == 17 then
         h = http.get("http://pastebin.com/raw.php?i=bj3qj1Pj")
         if h then
           f = fs.open("Strafe","w")
           f.writeLine(h.readAll())
           f.close()
         end
+        break
       end
     end
   end
