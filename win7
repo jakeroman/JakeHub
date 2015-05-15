@@ -340,6 +340,7 @@ while true do
                   term.setBackgroundColor(colors.white)
                   term.setTextColor(colors.gray)
                   write("Not Downloading.")
+                  break
                 end
               end
             end
