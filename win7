@@ -46,7 +46,7 @@ if not fs.isDir("Windows") then
   term.setCursorPos(3,3)
   term.setBackgroundColor(colors.white)
   term.setTextColor(colors.gray)
-  print("Welcome to Windows 7!")
+  print("Welcome to Windows 7! / JakeOS 2")
   term.setCursorPos(3,4)
   print("Press Next.")
   term.setCursorPos(3,y - 2)
