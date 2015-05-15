@@ -392,9 +392,26 @@ while true do
           term.setTextColor(colors.gray)
           term.setCursorPos(2,8)
           write("Modify")
+          term.setCursorPos(2,10)
+          term.setBackgroundColor(colors.white)
+          term.setTextColor(colors.black)
+          write("Label:")
+          term.setCursorPos(2,11)
+          term.setTextColor(colors.gray)
+          term.setBackgroundColor(colors.lightGray)
+          write("Set")
           term.setTextColor(colors.black)
           term.setBackgroundColor(colors.white)
           e,c,x,y = os.pullEvent("mouse_click")
+          if x >= 2 and x <= 5 and y == 11 then
+            term.setBackgroundColor(colors.white)
+            term.clear()
+            term.setCursorPos(2,2)
+            term.setTextColor(colors.gray)
+            write("Set Label to: ")
+            input = read()
+            os.setComputerLabel(input)
+          end
           if x >= 2 and x < 8 and y == 8 then
             while true do
               term.setBackgroundColor(colors.white)
