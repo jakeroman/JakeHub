@@ -415,6 +415,7 @@ while true do
         h = http.get("https://raw.github.com/jakemroman/JakeHub/master/win7")
         if h == nil then
           term.setTextColor(colors.red)
+          term.setBackgroundColor(colors.white)
           write("Failed :/")
         else
           data = h.readAll()
