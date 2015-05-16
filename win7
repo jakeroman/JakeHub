@@ -253,7 +253,16 @@ while true do
   term.setCursorPos(2,16)
   write("|")
   term.current().setVisible(true)
-  e,c,x,y = os.pullEvent("mouse_click")
+  contLoop = true
+  repeat
+    timer = os.startTimer(0.9)
+    term.setCursorPos(47,19)
+    term.setTextColor(colors.white)
+    term.setBackgroundColor(colors.lightGray)
+    write(textutils.formatTime(os.time(),true))
+    e,c,x,y = os.pullEvent()
+  until e ~= "timer"
+  os.cancelTimer(timer)
   if x >= 2 and x <= 4 and y >= 14 and y <= 16 then
     while true do
       local curDir = shell.dir()
