@@ -248,6 +248,8 @@ while true do
   term.current().setVisible(true)
   contLoop = true
   repeat
+    term.setCursorPos(46,19)
+    write("  ")
     timer = os.startTimer(0.9)
     term.setCursorPos(46,19)
     term.setTextColor(colors.white)
@@ -259,8 +261,6 @@ while true do
       write(textutils.formatTime(os.time(),true).." ")
     end
     e,c,x,y = os.pullEvent()
-    term.setCursorPos(46,19)
-    write("  ")
   until e == "mouse_click"
   os.cancelTimer(timer)
   if x >= 2 and x <= 4 and y >= 14 and y <= 16 then
