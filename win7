@@ -9,7 +9,7 @@ This Copyright is to protect the following things:
   
 --]]
 
-
+term.setVisible(true)
 
 if pocket then
   term.setBackgroundColor(colors.lightBlue)
