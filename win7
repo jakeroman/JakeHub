@@ -140,6 +140,33 @@ if not fs.isDir("Windows") then
   paintutils.drawFilledBox(2,2,x - 1,y - 1,colors.white)
   term.setCursorPos(3,3)
   term.setTextColor(colors.gray)
+  write("Choose A Background:")
+  term.setCursorPos(3,5)
+  term.setBackgroundColor(colors.lightGray)
+  write("No Theme.   ")
+  term.setCursorPos(3,6)
+  write("JakeOS 2    ")
+  while true do
+    e,c,x,y = os.pullEvent("mouse_click")
+    if x >= 2 and x <= 14 then
+      if y == 5 then
+        break
+      end
+      if y == 6 then
+        f = fs.open("/Windows/background","w")
+        h = http.get("https://raw.github.com/jakemroman/JakeHub/master/win7-background-jakeos")
+        if h then
+          f.writeLine(h.readAll())
+        end
+        f.close()
+        break
+      end
+    end
+  end
+  x,y = term.getSize()
+  paintutils.drawFilledBox(2,2,x - 1,y - 1,colors.white)
+  term.setCursorPos(3,3)
+  term.setTextColor(colors.gray)
   write("Installation Done!")
   fs.makeDir("Windows")
   fs.makeDir("Windows/programs")
