@@ -254,7 +254,7 @@ while true do
     term.setBackgroundColor(colors.lightGray)
     write(textutils.formatTime(os.time(),true))
     e,c,x,y = os.pullEvent()
-  until e ~= "timer"
+  until e == "mouse_click"
   os.cancelTimer(timer)
   if x >= 2 and x <= 4 and y >= 14 and y <= 16 then
     while true do
