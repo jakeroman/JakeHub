@@ -212,6 +212,7 @@ term.clear()
 x,y = term.getSize()
 y = y - 2
 while true do
+  term.current().setVisible(false)
   term.setBackgroundColor(colors.white)
   term.clear()
   if fs.exists("/Windows/background") then
@@ -251,6 +252,7 @@ while true do
   write("|")
   term.setCursorPos(2,16)
   write("|")
+  term.current().setVisible(true)
   e,c,x,y = os.pullEvent("mouse_click")
   if x >= 2 and x <= 4 and y >= 14 and y <= 16 then
     while true do
