@@ -252,7 +252,7 @@ while true do
     term.setCursorPos(46,19)
     term.setTextColor(colors.white)
     term.setBackgroundColor(colors.lightGray)
-    write(textutils.formatTime(os.time(),true))
+    write(textutils.formatTime(os.time(),true).." ")
     e,c,x,y = os.pullEvent()
   until e == "mouse_click"
   os.cancelTimer(timer)
