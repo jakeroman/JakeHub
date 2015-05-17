@@ -252,7 +252,7 @@ while true do
     term.setTextColor(colors.white)
     term.setBackgroundColor(colors.lightGray)
     write("  ")
-    timer = os.startTimer(0.9)
+    timer = os.startTimer(0.5)
     term.setCursorPos(46,19)
     term.setTextColor(colors.white)
     term.setBackgroundColor(colors.lightGray)
