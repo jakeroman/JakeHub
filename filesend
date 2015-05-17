@@ -1,0 +1,186 @@
+sides = {"right","left","top","bottom","back","front"}
+for i=1,#sides do
+  if peripheral.isPresent(sides[i]) then
+    if peripheral.getType(sides[i]) == "modem" then
+      rednet.open(sides[i])
+    end
+  end
+end
+open = false
+for i=1,#sides do
+  if rednet.isOpen(sides[i]) then
+    open = true
+  end
+end
+if not open then
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  write("No modem detected!")
+  term.setCursorPos(2,4)
+  term.setBackgroundColor(colors.lightGray)
+  write("Ok")
+  while true do
+    e,c,x,y = os.pullEvent('mouse_click')
+    if x >= 2 and x <= 4 then
+      term.setCursorPos(2,4)
+      term.setTextColor(colors.gray)
+      term.setBackgroundColor(colors.blue)
+      write("Ok")
+      sleep(0.2)
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      return
+    end
+  end
+end
+while true do
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  write("Rednet Transfer:")
+  term.setCursorPos(2,4)
+  term.setBackgroundColor(colors.lightGray)
+  term.setTextColor(colors.gray)
+  write(" Send ")
+  term.setCursorPos(2,6)
+  write(" Get  ")
+  term.setCursorPos(2,8)
+  write(" Exit ")
+  e,c,x,y = os.pullEvent("mouse_click")
+  if x >= 2 and x <= 8 then
+    if y == 8 then
+      term.setCursorPos(2,8)
+      term.setBackgroundColor(colors.red)
+      write(" Exit ")
+      sleep(0.2)
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      break
+    end
+    if y == 4 then
+      term.setCursorPos(2,4)
+      term.setTextColor(colors.gray)
+      term.setBackgroundColor(colors.blue)
+      write(" Send ")
+      sleep(0.2)
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      term.setCursorPos(2,2)
+      term.setTextColor(colors.gray)
+      write("Please Choose a file.")
+      term.setCursorPos(2,4)
+      paintutils.drawLine(2,4,50,4,colors.lightGray)
+      term.setCursorPos(2,4)
+      term.setTextColor(colors.black)
+      input = read()
+      paintutils.drawLine(2,4,50,4,colors.blue)
+      term.setCursorPos(2,4)
+      write(input)
+      sleep(0.2)
+      if fs.exists(input) and not fs.isDir(input) then
+        f = fs.open(input,"r")
+        filedata = f.readAll()
+        f.close()
+        rednet.broadcast(filedata)
+        sleep(0.2)
+        paintutils.drawLine(2,4,50,4,colors.lime)
+        term.setCursorPos(2,4)
+        term.setTextColor(colors.black)
+        write(input)
+        sleep(0.2)
+      else
+        term.setBackgroundColor(colors.white)
+        term.clear()
+        term.setCursorPos(2,2)
+        term.setTextColor(colors.gray)
+        if fs.isDir(input) then
+          write("Cannot send folders.")
+        else
+          write("No such file.")
+        end
+        sleep(0.5)
+      end
+    end
+    if y == 6 then
+      term.setCursorPos(2,6)
+      term.setTextColor(colors.gray)
+      term.setBackgroundColor(colors.blue)
+      write(" Get  ")
+      sleep(0.2)
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      term.setCursorPos(2,2)
+      term.setTextColor(colors.gray)
+      write("Waiting for file.")
+      id, filedata = rednet.receive()
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      term.setCursorPos(2,2)
+      term.setTextColor(colors.gray)
+      write("File from: "..id)
+      term.setCursorPos(2,4)
+      term.setBackgroundColor(colors.lightGray)
+      write("Accept")
+      term.setCursorPos(2,6)
+      write(" Deny ")
+      while true do
+        e,c,x,y = os.pullEvent("mouse_click")
+        if x >= 2 and x <= 8 then
+          if y == 6 then
+            term.setCursorPos(2,6)
+            term.setBackgroundColor(colors.red)
+            write(" Deny ")
+            sleep(0.2)
+            break
+          end
+          if y == 4 then
+            term.setCursorPos(2,4)
+            term.setBackgroundColor(colors.blue)
+            term.setTextColor(colors.gray)
+            write("Accept")
+            sleep(0.2)
+            term.setBackgroundColor(colors.white)
+            term.clear()
+            term.setCursorPos(2,2)
+            term.setTextColor(colors.gray)
+            write("Save file to:")
+            paintutils.drawLine(2,4,50,4,colors.lightGray)
+            term.setCursorPos(2,4)
+            term.setTextColor(colors.black)
+            input = read()
+            paintutils.drawLine(2,4,50,4,colors.blue)
+            term.setCursorPos(2,4)
+            write(input)
+            sleep(0.2)
+            if fs.exists(input) then
+              paintutils.drawLine(2,4,50,4,colors.red)
+              term.setCursorPos(2,4)
+              write(input)
+              term.setCursorPos(2,6)
+              term.setTextColor(colors.gray)
+              term.setBackgroundColor(colors.white)
+              write("File exists.")
+              sleep(0.2)
+              break
+            else
+              paintutils.drawLine(2,4,50,4,colors.lime)
+              term.setCursorPos(2,4)
+              term.setTextColor(colors.black)
+              write(input)
+              f = fs.open(input,"w")
+              f.writeLine(filedata)
+              f.close()
+              sleep(0.2)
+              break
+            end
+          end
+        end
+      end
+    end
+  end
+end
