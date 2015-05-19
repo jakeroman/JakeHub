@@ -471,7 +471,7 @@ while true do
             website = string.sub(website,1,#website - 1)
           end
           term.setCursorPos(2,2)
-          paintutils.drawLine(2,2,50,2,colors.gray)
+          paintutils.drawLine(2,2,48,2,colors.gray)
           term.setCursorPos(2,2)
           term.setTextColor(colors.white)
           write(website)
