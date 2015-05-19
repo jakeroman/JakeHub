@@ -470,6 +470,14 @@ while true do
           if string.sub(website,#website,#website) == "/" then
             website = string.sub(website,1,#website - 1)
           end
+          term.setCursorPos(2,2)
+          paintutils.drawLine(2,2,50,2,colors.gray)
+          term.setCursorPos(2,2)
+          term.setTextColor(colors.white)
+          write(website)
+          term.setCursorPos(1,4)
+          term.setTextColor(colors.black)
+          term.setBackgroundColor(colors.white)
           if website == "https://start.com" then
             print("")
             term.setTextColor(colors.blue)
