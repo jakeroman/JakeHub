@@ -464,6 +464,9 @@ while true do
           term.setTextColor(colors.black)
           term.setBackgroundColor(colors.white)
           term.current().setVisible(true)
+          if string.sub(website,1,4) ~= "http" then
+            website = "https://"..website
+          end
           if string.sub(website,#website,#website) == "/" then
             website = string.sub(website,1,#website - 1)
           end
