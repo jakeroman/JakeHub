@@ -7,6 +7,7 @@ This Copyright is to protect the following things:
   
 --]]
 
+website = "https://start.com"
 if pocket then
   term.setBackgroundColor(colors.lightBlue)
   term.clear()
@@ -439,8 +440,105 @@ while true do
     write("Settings")
     term.setCursorPos(2,15)
     write("Update")
+    term.setCursorPos(2,14)
+    write("Browser")
     e,c,x,y = os.pullEvent("mouse_click")
     if x >= 1 and x <= 10 then
+      if y == 14 then
+        while true do
+          term.current().setVisible(false)
+          term.setBackgroundColor(colors.white)
+          term.clear()
+          x,y = term.getSize()
+          paintutils.drawFilledBox(1,1,51,3,colors.lightGray)
+          paintutils.drawLine(2,2,50,2,colors.gray)
+          paintutils.drawPixel(49,2,colors.lightGray)
+          term.setCursorPos(50,2)
+          term.setBackgroundColor(colors.gray)
+          write(" ")
+          term.setCursorPos(2,2)
+          term.setBackgroundColor(colors.gray)
+          term.setTextColor(colors.white)
+          write(website)
+          term.setCursorPos(1,4)
+          term.setTextColor(colors.black)
+          term.setBackgroundColor(colors.white)
+          term.current().setVisible(true)
+          if string.sub(website,#website,#website) == "/" then
+            website = string.sub(website,1,#website - 1)
+          end
+          if website == "https://start.com" then
+            print("")
+            term.setTextColor(colors.blue)
+            center("Start")
+            center("")
+            term.setTextColor(colors.gray)
+            center("Websites:")
+            term.setTextColor(colors.black)
+            center("https://start.com")
+            center("https://download.com")
+          elseif website == "https://download.com" then
+            center("")
+            center("This website is WIP.")
+          else  
+            term.setTextColor(colors.black)
+            center("")
+            center("404: Not Found")
+            center("")
+            term.setTextColor(colors.red)
+            center("No DNS Record Found.")
+          end
+          term.setCursorPos(2,2)
+          paintutils.drawLine(2,2,48,2,colors.white)
+          term.setCursorPos(2,2)
+          term.setTextColor(colors.gray)
+          write(website)
+          term.setCursorPos(50,2)
+          term.setTextColor(colors.white)
+          term.setBackgroundColor(colors.red)
+          write("X")
+          while true do
+            e,c,x,y = os.pullEvent("mouse_click")
+            if x >= 2 and x <= 48 and y == 2 then
+              term.setCursorPos(50,2)
+              term.setBackgroundColor(colors.gray)
+              write(" ")
+              term.setCursorPos(2,2)
+              term.setBackgroundColor(colors.white)
+              term.setTextColor(colors.black)
+              paintutils.drawLine(2,2,48,2,colors.white)
+              term.setCursorPos(2,2)
+              website = read()
+              term.setCursorPos(50,2)
+              term.setTextColor(colors.white)
+              term.setBackgroundColor(colors.blue)
+              sleep(0.1)
+              write("|")
+              term.setCursorPos(50,2)
+              sleep(0.1)
+              write("/")
+              paintutils.drawFilledBox(1,4,51,19,colors.white)
+              term.setBackgroundColor(colors.blue)
+              term.setCursorPos(50,2)
+              sleep(0.1)
+              write("-")
+              term.setCursorPos(50,2)
+              sleep(0.1)
+              write("\\")
+              term.setCursorPos(50,2)
+              sleep(0.1)
+              write("-")
+              break
+            end
+            if x == 50 and y == 2 then
+              break
+            end
+          end
+          if y == 2 and x == 50 then
+            break
+          end
+        end
+      end
       if y == 15 then
         term.setBackgroundColor(colors.white)
         term.clear()
