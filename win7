@@ -482,7 +482,44 @@ while true do
             center("https://download.com")
           elseif website == "https://download.com" then
             center("")
-            center("This website is WIP.")
+            term.setCursorPos(2,5)
+            term.setBackgroundColor(colors.lightGray)
+            term.setTextColor(colors.gray)
+            write("Download")
+            term.setCursorPos(11,5)
+            term.setTextColor(colors.black)
+            term.setBackgroundColor(colors.white)
+            write("JNET API")
+            term.setTextColor(colors.gray)
+            while true do
+              e,c,x,y = os.pullEvent("mouse_click")
+              if x >= 2 and x <= 48 and y == 2 then
+                break
+              end
+              if x >= 2 and x <= 10 then
+                if y == 5 then
+                  if not fs.exists("jnet") then
+                    term.setCursorPos(2,5)
+                    h = http.get("https://raw.github.com/jakemroman/JakeHub/master/jnet-api")
+                    if not h then
+                      term.setBackgroundColor(colors.orange)
+                    else
+                      f = fs.open("jnet","w")
+                      f.writeLine(h.readAll())
+                      f.close()
+                      term.setBackgroundColor(colors.blue)
+                    end
+                    write("Download")
+                  else
+                    term.setCursorPos(2,5)
+                    term.setBackgroundColor(colors.red)
+                    write("Download")
+                    sleep(0.2)
+                    break
+                  end
+                end
+              end
+            end
           else  
             term.setTextColor(colors.black)
             center("")
