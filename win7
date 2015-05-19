@@ -510,6 +510,8 @@ while true do
                       term.setBackgroundColor(colors.blue)
                     end
                     write("Download")
+                    sleep(0.2)
+                    break
                   else
                     term.setCursorPos(2,5)
                     term.setBackgroundColor(colors.red)
