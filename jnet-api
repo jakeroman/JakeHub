@@ -1,0 +1,43 @@
+--JNet API
+if not peripheral.find("modem") then
+  error("No modem attached!")
+end
+FREQ = 1231
+function close()
+  peripheral.find("modem").closeAll()
+end
+function open()
+  peripheral.find("modem").open(FREQ)
+end
+function send(nTo,nMsg)
+  --Create message
+  local nMessage = {
+    ["to"] = nTo,
+    ["from"] = os.getComputerID(),
+    ["msg"] = nMsg,
+  }
+  --Send Message
+  if peripheral.find("modem").isOpen(FREQ) then
+    peripheral.find("modem").transmit(FREQ,os.getComputerID(),nMessage)
+  end
+end
+function receive(nTimeout)
+  --Create Timer
+  if nTimeout then
+    local nTimer = os.startTimer(nTimeout)
+  end
+  while true do
+    nEvt,nSide,nChannel,nFrom,nMessage = os.pullEvent()
+    if nEvt == "timer" then
+      return nil
+    end
+    if nEvt == "modem_message" then
+      if nMessage["to"] then
+        if nMessage["to"] == os.getComputerID() then
+          os.cancelTimer(nTimer)
+          return nMessage["from"],nMessage["msg"]
+        end
+      end
+    end
+  end
+end
