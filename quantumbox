@@ -231,6 +231,11 @@ while true do
               end
             end
           end
+          else
+            term.setCursorPos(1,9)
+            term.setTextColor(colors.lime)
+            center("Up to date")
+            sleep(1)
           end
         end
       end
