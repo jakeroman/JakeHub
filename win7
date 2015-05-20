@@ -488,6 +488,7 @@ while true do
             term.setTextColor(colors.black)
             center("https://start.com")
             center("https://download.com")
+            center("https://github.com")
           elseif website == "https://download.com" then
             center("")
             term.setCursorPos(2,5)
@@ -530,7 +531,59 @@ while true do
                 end
               end
             end
-          else  
+          elseif string.sub(website,1,23) == "https://raw.github.com/" then
+            h = http.get(website)
+            if h then
+              center("GitHub File")
+              center("")
+              term.setCursorPos(2,7)
+              term.setTextColor(colors.gray) 
+              term.setBackgroundColor(colors.lightGray)
+              write("Download")
+              while true do
+                e,c,x,y = os.pullEvent("mouse_click")
+                if x >= 2 and x <= 10 and y == 7 then
+                  term.setCursorPos(2,7)
+                  write("Save File to: ")
+                  term.setTextColor(colors.black)
+                  file = read()
+                  f = fs.open(file,"w")
+                  f.writeLine(h.readAll())
+                  f.close()
+                  break
+                end
+                if x >= 2 and x <= 48 and y == 2 then
+                  break
+                end
+              end
+            else
+              center("")
+              term.setTextColor(colors.red)
+              center("File not found!")
+            end
+          elseif website == "https://raw.github.com" then
+            center("")
+            term.setTextColor(colors.lightBlue)
+            center("GitHub Raw Download:")
+            center("")
+            term.setTextColor(colors.gray)
+            center("Please enter the RAW Url")
+            center("To download it.")
+            center("Example:")
+            center("https://raw.github.com/User/Repo/Branch/File")
+          elseif website == "https://github.com" then
+            center("")
+            term.setTextColor(colors.blue)
+            center("GitHub Downloading:")
+            center("")
+            term.setTextColor(colors.gray)
+            center("Visit https://raw.github.com")
+            center("For more information about downloading.")
+            center("The browser allows you to")
+            center("Directly download github files.")
+            term.setTextColor(colors.lime)
+            center("Try it out!")
+          else
             term.setTextColor(colors.black)
             center("")
             center("404: Not Found")
@@ -558,7 +611,11 @@ while true do
               term.setTextColor(colors.black)
               paintutils.drawLine(2,2,48,2,colors.white)
               term.setCursorPos(2,2)
+              local oldSite = website
               website = read()
+              if website == "" then
+                website = oldSite
+              end
               term.setCursorPos(50,2)
               term.setTextColor(colors.white)
               term.setBackgroundColor(colors.blue)
