@@ -335,6 +335,8 @@ while true do
             f.writeLine(nextData)
             f.close()
             center("Click anywhere to reboot!")
+            os.pullEvent("mouse_click")
+            os.reboot()
           end
         end
       end
