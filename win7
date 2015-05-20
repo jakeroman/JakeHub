@@ -7,6 +7,8 @@ This Copyright is to protect the following things:
   
 --]]
 
+version = "Release 1.2"
+
 website = "https://start.com"
 if pocket then
   term.setBackgroundColor(colors.lightBlue)
@@ -890,6 +892,8 @@ while true do
           print("")
           print(" Thank you for using JakeOS 2")
           print(" By JakeOS")
+          print("")
+          print(" Version: "..version)
           e,c,x,y = os.pullEvent("mouse_click")
           if x == 51 and y == 1 then
             break
