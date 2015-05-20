@@ -207,6 +207,11 @@ term.setBackgroundColor(colors.white)
 term.clear()
 x,y = term.getSize()
 y = y - 2
+if fs.exists("/JakeOS/.autoupdate") then
+  start = true
+else
+  start = false
+end
 while true do
   term.current().setVisible(false)
   term.setBackgroundColor(colors.white)
@@ -249,6 +254,93 @@ while true do
   term.setCursorPos(2,16)
   write("|")
   term.current().setVisible(true)
+  if start then
+    start = false
+    f = fs.open(shell.getRunningProgram(),"r")
+    curData = f.readAll()
+    f.close()
+    h = http.get("https://raw.github.com/jakemroman/JakeHub/master/win7")
+    if not h then
+      x,y = term.getSize()
+      x = x / 2
+      y = y / 2
+      term.setCursorPos(x,y)
+      term.setBackgroundColor(colors.lightGray)
+      write(" ")
+      sleep(0.1)
+      x,y = term.getSize()
+      x = x / 2
+      y = y / 2
+      for j=1,5 do
+        paintutils.drawFilledBox(x - j,y - j,x + j,y + j,colors.lightGray)
+        sleep(0.1)
+        a = j
+      end
+      for i=1,20 do
+        paintutils.drawFilledBox(x - i,y - a,x + i,y + a,colors.lightGray)
+        sleep(0.1)
+      end
+      term.setCursorPos(x - 19,y - 4)
+      term.setTextColor(colors.red)
+      center("Failed to connect to updater.")
+      term.setTextColor(colors.gray)
+      center("Click anywhere to dismiss.")
+    else
+      nextData = h.readAll()
+      h.close()
+      if curData ~= nextData then
+      x,y = term.getSize()
+      x = x / 2
+      y = y / 2
+      for j=1,5 do
+        paintutils.drawFilledBox(x - j,y - j,x + j,y + j,colors.lightGray)
+        sleep(0.1)
+        a = j
+      end
+      for i=1,20 do
+        paintutils.drawFilledBox(x - i,y - a,x + i,y + a,colors.lightGray)
+        sleep(0.1)
+      end
+      term.setCursorPos(x - 19,y - 4)
+      term.setTextColor(colors.lime)
+      center("Update Avalible!")
+      center("")
+      term.setTextColor(colors.gray)
+      center("Download It?")
+      center("")
+      term.setCursorPos(22,9)
+      term.setBackgroundColor(colors.red)
+      term.setTextColor(colors.gray)
+      write("No.")
+      term.setCursorPos(22,10)
+      term.setBackgroundColor(colors.lime)
+      write("Yes")
+      while true do
+        e,c,x,y = os.pullEvent("mouse_click")
+        if x >= 22 and x <= 25 then
+          if y == 9 then
+            x,y = term.getSize()
+            x = x / 2
+            y = y / 2
+            paintutils.drawFilledBox(x - 20,y - 5,x + 20,y + 5,colors.white)
+            break
+          end
+          if y == 10 then
+            x,y = term.getSize()
+            x = x / 2
+            y = y / 2
+            paintutils.drawFilledBox(x - 20,y - 5,x + 20,y + 5,colors.lightGray)
+            term.setCursorPos(x,y)
+            f = fs.open("startup","w")
+            f.writeLine(nextData)
+            f.close()
+            center("Click anywhere to reboot!")
+          end
+        end
+      end
+      end
+    end
+  end
   contLoop = true
   repeat
     term.setCursorPos(46,19)
@@ -761,9 +853,31 @@ while true do
           term.setTextColor(colors.gray)
           term.setBackgroundColor(colors.lightGray)
           write("Set")
+          term.setCursorPos(2,13)
+          term.setTextColor(colors.black)
+          term.setBackgroundColor(colors.white)
+          write("Auto Updating:")
+          term.setTextColor(colors.gray)
+          term.setCursorPos(2,14)
+          if fs.exists("/JakeOS/.autoupdate") then
+            term.setBackgroundColor(colors.lime)
+            write("On ")
+          else
+            term.setBackgroundColor(colors.red)
+            write("Off")
+          end
           term.setTextColor(colors.black)
           term.setBackgroundColor(colors.white)
           e,c,x,y = os.pullEvent("mouse_click")
+          if x >= 2 and x <= 5 and y == 14 then
+            if fs.exists("/JakeOS/.autoupdate") then
+              fs.delete("/JakeOS/.autoupdate")
+            else
+              f = fs.open("/JakeOS/.autoupdate","w")
+              f.writeLine("true")
+              f.close()
+            end
+          end
           if x >= 2 and x <= 5 and y == 11 then
             term.setBackgroundColor(colors.white)
             term.clear()
