@@ -1,0 +1,256 @@
+source = "https://notawebsite.com"
+function center(str)
+  x,y = term.getSize()
+  curX,curY = term.getCursorPos()
+  x = x / 2
+  sub = #str / 2
+  x = x - sub
+  term.setCursorPos(x,curY)
+  print(str)
+end
+term.setBackgroundColor(colors.black)
+term.clear()
+sleep(0.1)
+term.setBackgroundColor(colors.gray)
+term.clear()
+sleep(0.1)
+term.setBackgroundColor(colors.lightGray)
+term.clear()
+sleep(0.1)
+term.setBackgroundColor(colors.white)
+term.clear()
+sleep(0.2)
+wait = 0
+for yPos=1,19 do
+  for xPos=1,51 do
+    term.setCursorPos(xPos,yPos)
+    ran = math.random(1,3)
+    if ran == 1 then
+      term.setTextColor(colors.lime)
+    elseif ran == 2 then
+      term.setTextColor(colors.green)
+    elseif ran == 3 then
+      term.setTextColor(colors.black)
+    end
+    write("-")
+  end
+end
+x,y = term.getSize()
+y = y / 2
+term.setCursorPos(1,y)
+term.setTextColor(colors.gray)
+center("Quantum Box")
+term.setBackgroundColor(colors.white)
+x,y = term.getSize()
+y = y / 2
+term.setTextColor(colors.lightBlue)
+term.setCursorPos(1,y + 4)
+center("By QuantumTech")
+sleep(0.2)
+x,y = term.getSize()
+y = y / 2
+term.setCursorPos(1,y + 2)
+for i=1,51 do
+  term.setBackgroundColor(colors.black)
+  write(" ")
+end
+term.setCursorPos(1,y + 2)
+for i=1,51 do
+  term.setBackgroundColor(colors.lime)
+  write(" ")
+  sleep(0)
+end
+sleep(0.3)
+term.setBackgroundColor(colors.black)
+term.clear()
+sleep(0.05)
+if not fs.isDir("/Quantum") then
+  sleep(0.2)
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  x,y = term.getSize()
+  y = y / 2
+  term.setCursorPos(1,y)
+  term.setTextColor(colors.gray)
+  center("Welcome to your Quantum Box")
+  sleep(3)
+  center("We'll set it up for you...")
+  sleep(4)
+  center("Done!")
+  sleep(1)
+  term.clear()
+  x,y = term.getSize()
+  y = y / 2
+  fs.makeDir("/Quantum")
+  term.setCursorPos(1,y)
+  center("Rebooting...")
+  sleep(1)
+  os.reboot()
+end
+term.setBackgroundColor(colors.white)
+term.clear()
+while true do
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  term.setBackgroundColor(colors.lightGray)
+  term.clearLine()
+  term.setCursorPos(2,2)
+  write("Quantum Box")
+  term.setCursorPos(2,4)
+  term.setTextColor(colors.lightGray)
+  term.setBackgroundColor(colors.white)
+  write("Play Games")
+  term.setCursorPos(2,5)
+  write("...")
+  repeat
+    x,y = term.getSize()
+    local time = textutils.formatTime(os.time(),false)
+    local value = #time + 1
+    term.setCursorPos(x - value,2)
+    term.setBackgroundColor(colors.lightGray)
+    term.setTextColor(colors.black)
+    write(time)
+    local timer = os.startTimer(0.5)
+    evt,c,x,y = os.pullEvent()
+    if e ~= "timer" then
+      os.cancelTimer(timer)
+    end
+  until evt == "mouse_click"
+  if x >= 2 and x <= 12 and y == 2 then
+    term.setCursorPos(2,3)
+    term.setBackgroundColor(colors.gray)
+    term.setTextColor(colors.white)
+    write("Shutdown")
+    sleep(0.1)
+    term.setCursorPos(2,4)
+    write("Update  ")
+    e,c,x,y = os.pullEvent('mouse_click')
+    if x >= 2 and x <= 10 then
+      if y == 4 then
+        term.setBackgroundColor(colors.white)
+        term.clear()
+        for i=1,3 do
+          x,y = term.getSize()
+          x = x / 2
+          y = y / 2
+          paintutils.drawFilledBox(x - 1,y - 1,x + 1,y + 1,colors.lightGray)
+          paintutils.drawPixel(x,y,colors.white)
+          for i=1,8 do
+            term.current().setVisible(false)
+            paintutils.drawFilledBox(x - 1,y - 1,x + 1,y + 1,colors.lightGray)
+            paintutils.drawPixel(x,y,colors.white)
+            if i == 1 then
+              term.setCursorPos(x - 1,y - 1)
+            elseif i == 2 then
+              term.setCursorPos(x,y - 1)
+            elseif i == 3 then
+              term.setCursorPos(x + 1,y - 1)
+            elseif i == 4 then
+              term.setCursorPos(x + 1,y)
+            elseif i == 5 then
+              term.setCursorPos(x + 1,y + 1)
+            elseif i == 6 then
+              term.setCursorPos(x,y + 1)
+            elseif i == 7 then
+              term.setCursorPos(x - 1,y + 1)
+            elseif i == 8 then
+              term.setCursorPos(x - 1,y)
+            end
+            term.setBackgroundColor(colors.blue)
+            write(" ")
+            if i == 1 then
+              term.setCursorPos(x - 1,y)
+            elseif i == 2 then
+              term.setCursorPos(x - 1,y - 1)
+            elseif i == 3 then
+              term.setCursorPos(x,y - 1)
+            elseif i == 4 then
+              term.setCursorPos(x + 1,y - 1)
+            elseif i == 5 then
+              term.setCursorPos(x + 1,y)
+            elseif i == 6 then
+              term.setCursorPos(x + 1,y + 1)
+            elseif i == 7 then
+              term.setCursorPos(x,y + 1)
+            elseif i == 8 then
+              term.setCursorPos(x - 1,y + 1)
+            end
+            term.setBackgroundColor(colors.lightBlue)
+            write(" ")
+            term.current().setVisible(true)
+            sleep(0.1)
+          end
+        end
+        term.setBackgroundColor(colors.white)
+        term.clear()
+        term.setCursorPos(2,2)
+        h = http.get(source)
+        if not h then
+          term.setCursorPos(1,9)
+          term.setTextColor(colors.red)
+          center("Cannot Connect to update server.")
+          center("Try again later.")
+          os.pullEvent("key")
+        else
+          f = fs.open(shell.getRunningProgram(),"r")
+          curData = f.readAll()
+          f.close()
+          nextData = h.readAll()
+          h.close()
+          if nextData ~= curData then
+          term.setCursorPos(1,2)
+          term.setTextColor(colors.lightGray)
+          center("Would you like to download new software?")
+          term.setCursorPos(2,4)
+          term.setTextColor(colors.gray)
+          term.setBackgroundColor(colors.red)
+          write("No.")
+          term.setCursorPos(2,5)
+          term.setBackgroundColor(colors.lime)
+          write("Yes")
+          while true do
+            e,c,x,y = os.pullEvent("mouse_click")
+            if x >= 2 and x <= 5 then
+              if y == 5 then
+                fs.delete("startup")
+                f = fs.open("startup","w")
+                f.writeLine(nextData)
+                f.close()
+                term.setBackgroundColor(colors.white)
+                term.clear()
+                term.setCursorPos(1,9)
+                term.setTextColor(colors.gray)
+                center("Installed.")
+                os.pullEvent()
+                os.reboot()
+              end
+              if y == 4 then
+                break
+              end
+            end
+          end
+          end
+        end
+      end
+      if y == 3 then
+        x,y = term.getSize()
+        x = x / 2
+        y = y / 2
+        wait = false
+        for i=1,31 do
+          term.current().setVisible(false)
+          paintutils.drawFilledBox(x - i,y - i,x + i,y + i,colors.black)
+          wait = not wait
+          if wait then
+            sleep(0)
+          end
+          term.current().setVisible(true)
+        end
+        os.shutdown()
+      end
+    end
+    sleep(0)
+  end
+end
