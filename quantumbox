@@ -1,3 +1,4 @@
+--Copyright Jake Roman 2015 All rights reserved.
 source = "https://raw.github.com/jakemroman/JakeHub/master/quantumbox"
 function center(str)
   x,y = term.getSize()
