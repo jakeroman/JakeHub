@@ -121,6 +121,111 @@ while true do
       os.cancelTimer(timer)
     end
   until evt == "mouse_click"
+  if x >= 2 and x <= 11 and y == 4 then
+    term.setBackgroundColor(colors.white)
+    term.clear()
+    local listItem = 1
+    while true do
+      local gameList = fs.list("/Quantum")
+      if #gameList == 0 then
+        term.setBackgroundColor(colors.white)
+        term.clear()
+        x,y = term.getSize()
+        term.setTextColor(colors.green)
+        term.setCursorPos(1,y / 2)
+        center("No Games installed.")
+        os.pullEvent()
+        break
+      end
+      term.current().setVisible(false)
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      x,y = term.getSize()
+      paintutils.drawFilledBox(3,3,x - 3,y - 3,colors.lightGray)
+      term.setCursorPos(2,5)
+      term.setTextColor(colors.gray)
+      x,y = term.getSize()
+      center(gameList[listItem])
+      x,y = term.getSize()
+      paintutils.drawFilledBox(x - 6,y - 5,x - 3,y - 3,colors.gray)
+      x,y = term.getSize()
+      term.setCursorPos(x - 5,y - 4)
+      term.setTextColor(colors.green)
+      write("Q")
+      term.setTextColor(colors.lime)
+      write("B")
+      term.setCursorPos(1,2)
+      x,y = term.getSize()
+      term.setBackgroundColor(colors.lightGray)
+      term.setTextColor(colors.gray)
+      write(" ")
+      term.setCursorPos(1,3)
+      write("<")
+      term.setCursorPos(1,4)
+      write(" ")
+      term.setCursorPos(x,2)
+      write(" ")
+      term.setCursorPos(x,3)
+      write(">")
+      term.setCursorPos(x,4)
+      write(" ")
+      term.setCursorPos(2,y)
+      term.setTextColor(colors.gray)
+      term.setBackgroundColor(colors.red)
+      write("Exit")
+      term.setCursorPos(40,y)
+      term.setBackgroundColor(colors.lime)
+      write("Play")
+      term.current().setVisible(true)
+      e,c,x,y = os.pullEvent("mouse_click")
+      if x >= 40 and x <= 44 and y == 19 then
+        term.setCursorPos(40,19)
+        term.setTextColor(colors.gray)
+        term.setBackgroundColor(colors.blue)
+        write("Play")
+        sleep(0.2)
+        shell.run("/Quantum/"..gameList[listItem])
+      end
+      if x >= 2 and x <= 6 and y == 19 then
+        term.setCursorPos(2,19)
+        term.setBackgroundColor(colors.blue)
+        term.setTextColor(colors.gray)
+        write("Exit")
+        sleep(0.2)
+        break
+      end
+      if y >= 2 and y <= 4 then
+        if x == 51 then
+          if #gameList ~= listItem then
+            term.setCursorPos(51,2)
+            term.setBackgroundColor(colors.blue)
+            term.setTextColor(colors.gray)
+            write(" ")
+            term.setCursorPos(51,3)
+            write(">")
+            term.setCursorPos(51,4)
+            write(" ")
+            sleep(0.2)
+            listItem = listItem + 1
+          end
+        end
+        if x == 1 then
+          if listItem ~= 1 then
+            term.setCursorPos(1,2)
+            term.setBackgroundColor(colors.blue)
+            term.setTextColor(colors.gray)
+            write(" ")
+            term.setCursorPos(1,3)
+            write("<")
+            term.setCursorPos(1,4)
+            write(" ")
+            sleep(0.2)
+            listItem = listItem - 1
+          end
+        end
+      end
+    end
+  end
   if x >= 2 and x <= 12 and y == 2 then
     term.setCursorPos(2,3)
     term.setBackgroundColor(colors.gray)
