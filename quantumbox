@@ -20,6 +20,7 @@ sleep(0.1)
 term.setBackgroundColor(colors.white)
 term.clear()
 sleep(0.2)
+term.current().setVisible(false)
 wait = 0
 for yPos=1,19 do
   for xPos=1,51 do
@@ -35,6 +36,7 @@ for yPos=1,19 do
     write("-")
   end
 end
+term.current().setVisible(true)
 x,y = term.getSize()
 y = y / 2
 term.setCursorPos(1,y)
