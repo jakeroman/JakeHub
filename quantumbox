@@ -158,7 +158,7 @@ while true do
         for i=1,#diskList do
           if string.sub(diskList[i],#diskList[i] - 2,#diskList[i]) == ".qb" then
             if not fs.exists("/Quantum/"..string.sub(diskList[i],1,#diskList[i] - 2)) then
-              fs.copy("/disk/"..diskList[i],"/Quantum/"..string.sub(diskList[i],1,#diskList[i] - 2))
+              fs.copy("/disk/"..diskList[i],"/Quantum/"..string.sub(diskList[i],1,#diskList[i] - 3))
             else
               center("Game already installed skipping.")
             end
