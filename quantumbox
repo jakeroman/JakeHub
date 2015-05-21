@@ -106,7 +106,7 @@ while true do
   term.setBackgroundColor(colors.white)
   write("Play Games")
   term.setCursorPos(2,5)
-  write("...")
+  write("Download")
   repeat
     x,y = term.getSize()
     local time = textutils.formatTime(os.time(),false)
@@ -121,6 +121,57 @@ while true do
       os.cancelTimer(timer)
     end
   until evt == "mouse_click"
+  if x >= 2 and x <= 10 and y == 5 then
+    while true do
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      term.setCursorPos(2,19)
+      term.setTextColor(colors.gray)
+      term.setBackgroundColor(colors.red)
+      write("Exit")
+      paintutils.drawFilledBox(2,2,5,4,colors.lightGray)
+      term.setTextColor(colors.gray)
+      term.setCursorPos(2,2)
+      write("Disk")
+      term.setCursorPos(2,3)
+      write("/--\\")
+      term.setCursorPos(2,4)
+      write("\\--/")
+      term.setCursorPos(7,4)
+      e,c,x,y = os.pullEvent("mouse_click")
+      if x >= 2 and x <= 6 and y == 19 then
+        break
+      end
+      if x >= 2 and x <= 5 and y >= 2 and y <= 4 then
+        --DiskInstall
+        term.setBackgroundColor(colors.white)
+        term.clear()
+        x,y = term.getSize()
+        y = y / 2
+        term.setCursorPos(1,y)
+        term.setTextColor(colors.lime)
+        center("Insert a disk...")
+        os.pullEvent("disk")
+        local diskList = fs.list("/disk")
+        center("Reading...")
+        for i=1,#diskList do
+          if string.sub(diskList[i],#diskList[i] - 2,#diskList[i]) == ".qb" then
+            if not fs.exists("/Quantum/"..string.sub(diskList[i],1,#diskList[i] - 2)) then
+              fs.copy("/disk/"..diskList[i],"/Quantum/"..string.sub(diskList[i],1,#diskList[i] - 2))
+            else
+              center("Game already installed skipping.")
+            end
+          end
+        end
+        center("Installed All Games On Disk.")
+        sleep(3)
+      end
+      if x >= 7 and x <= 10 and y >= 2 and y <= 4 then
+        --PInstall
+        --Not added.
+      end
+    end
+  end
   if x >= 2 and x <= 11 and y == 4 then
     term.setBackgroundColor(colors.white)
     term.clear()
@@ -176,8 +227,38 @@ while true do
       term.setCursorPos(40,y)
       term.setBackgroundColor(colors.lime)
       write("Play")
+      term.setCursorPos(20,y)
+      term.setBackgroundColor(colors.red)
+      write("Delete")
       term.current().setVisible(true)
       e,c,x,y = os.pullEvent("mouse_click")
+      if x >= 20 and x <= 26 and y == 19 then
+        term.setBackgroundColor(colors.white)
+        term.clear()
+        term.setCursorPos(2,2)
+        term.setTextColor(colors.lightGray)
+        write("Delete "..gameList[listItem].."?")
+        term.setCursorPos(2,4)
+        term.setTextColor(colors.gray)
+        term.setBackgroundColor(colors.lime)
+        write("Yes")
+        term.setCursorPos(2,5)
+        term.setBackgroundColor(colors.red)
+        write("No ")
+        while true do
+          e,c,x,y = os.pullEvent("mouse_click")
+          if x >= 2 and x <= 5 then
+            if y == 5 then
+              break
+            end
+            if y == 4 then
+              fs.delete("/Quantum/"..gameList[listItem])
+              listItem = 1
+              break
+            end
+          end
+        end
+      end
       if x >= 40 and x <= 44 and y == 19 then
         term.setCursorPos(40,19)
         term.setTextColor(colors.gray)
