@@ -200,7 +200,7 @@ while true do
       term.setCursorPos(2,5)
       term.setTextColor(colors.gray)
       x,y = term.getSize()
-      center(strring.sub(gameList[listItem],1,#gameList[listItem] - 1))
+      center(gameList[listItem])
       x,y = term.getSize()
       paintutils.drawFilledBox(x - 6,y - 5,x - 3,y - 3,colors.gray)
       x,y = term.getSize()
