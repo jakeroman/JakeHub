@@ -1,0 +1,152 @@
+oldPull = os.pullEvent
+os.pullEvent = os.pullEventRaw
+if not fs.exists("/.config") then
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  write("Door ready")
+  term.setCursorPos(2,3)
+  write("Press Next to start creating your lock.")
+  x,y = term.getSize()
+  term.setCursorPos(2,y - 1)
+  term.setBackgroundColor(colors.lightGray)
+  write("Next")
+  while true do
+    e,c,x,y = os.pullEvent("mouse_click")
+    if x >= 2 and x <= 6 then
+      break
+    end
+  end
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  write("What side is your door on?")
+  term.setCursorPos(2,4)
+  term.setBackgroundColor(colors.lightGray)
+  write(" Left ")
+  term.setCursorPos(2,5)
+  write("Right ")
+  term.setCursorPos(2,6)
+  write(" Back ")
+  term.setCursorPos(2,7)
+  write("Front ")
+  term.setCursorPos(2,8)
+  write(" Top  ")
+  term.setCursorPos(2,9)
+  write("Bottom")
+  while true do
+    e,c,x,y = os.pullEvent("mouse_click")
+    if x >= 2 and x <= 8 then
+      if y == 4 then
+        side = "left"
+        break
+      elseif y == 5 then
+        side = "right"
+        break
+      elseif y == 6 then
+        side = "back"
+        break
+      elseif y == 7 then
+        side = "front"
+        break
+      elseif y == 8 then
+        side = "top"
+        break
+      elseif y == 9 then
+        side = "bottom"
+        break
+      end
+    end
+  end
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  write("Hold time:")
+  term.setCursorPos(2,4)
+  term.setBackgroundColor(colors.lightGray)
+  write("3 ")
+  term.setCursorPos(2,5)
+  write("5 ")
+  term.setCursorPos(2,6)
+  write("8 ")
+  term.setCursorPos(2,7)
+  write("10")
+  while true do
+    e,c,x,y = os.pullEvent("mouse_click")
+    if x >= 2 and x <= 4 then
+      if y == 4 then
+        holdTime = 3
+        break
+      elseif y == 5 then
+        holdTime = 5
+        break
+      elseif y == 6 then
+        holdTime = 6
+        break
+      elseif y == 7 then
+        holdTime = 10
+        break
+      end  
+    end
+  end
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  write("Password.")
+  paintutils.drawLine(2,4,50,4,colors.lightGray)
+  term.setCursorPos(2,4)
+  term.setTextColor(colors.black)
+  local password = read("*")
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  write("Finishing lock and rebooting...")
+  f = fs.open("/.config","w")
+  f.writeLine(side)
+  f.writeLine(holdTime)
+  f.writeLine(password)
+  f.close()
+  sleep(3)
+  os.reboot()
+end
+term.setBackgroundColor(colors.white)
+term.clear()
+while true do
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  write("QuantumTech Security")
+  term.setCursorPos(2,4)
+  term.setTextColor(colors.lightGray)
+  write("Password: ")
+  term.setTextColor(colors.black)
+  local pw = read("*")
+  f = fs.open("/.config","r")
+  local side = f.readLine()
+  local holdTime = tonumber(f.readLine())
+  local password = f.readLine()
+  f.close()
+  if pw == password then
+    term.setBackgroundColor(colors.white)
+    term.clear()
+    term.setCursorPos(2,2)
+    term.setTextColor(colors.gray)
+    write("Access Granted!")
+    rs.setOutput(side,true)
+    sleep(holdTime)
+    rs.setOutput(side,false)
+  else
+    term.setBackgroundColor(colors.white)
+    term.clear()
+    term.setCursorPos(2,2)
+    term.setTextColor(colors.gray)
+    write("Access Denied")
+    sleep(2)
+  end
+end
