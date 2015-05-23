@@ -1071,7 +1071,10 @@ if ok then
 else
   term.setBackgroundColor(colors.blue)
   term.clear()
-  paintutils.drawLine(2,2,51,2,colors.white)
+  paintutils.drawLine(2,2,50,2,colors.white)
+  if err == "Terminated" then
+    os.reboot()
+  end
   term.setTextColor(colors.gray)
   centerText("JakeOS 2 Crash",2)
   term.setBackgroundColor(colors.blue)
@@ -1079,7 +1082,38 @@ else
   centerText("Please Report report:",5)
   centerText(err,7)
   centerText("On the JakeOS 2 thread.",9)
+  centerText("Scanning for updates...",11)
+  f = fs.open("/startup","r")
+  curData = f.readAll()
+  f.close()
+  h = http.get("https://raw.github.com/jakemroman/JakeHub/master/win7")
+  term.setCursorPos(1,11)
+  term.clearLine()
+  if not h then
+    centerText("Failed.",11)
+    sleep(1)
+  end
+  if h then
+    nextData = h.readAll()
+    h.close()
+    if nextData ~= curData then
+      f = fs.open("/startup","w")
+      f.writeLine(nextData)
+      f.close()
+      centerText("Updated.",11)
+      sleep(1)
+    else
+      centerText("No Update Avalible.",11)
+      sleep(1)
+    end
+  end
+  term.setCursorPos(1,11)
+  term.clearLine()
   centerText("Rebooting Computer in",11)
+  centerText("Press Any Key to start reboot timer.",12)
+  os.pullEvent("key")
+  term.setCursorPos(1,12)
+  term.clearLine()
   centerText("5 Seconds",12)
   sleep(1)
   centerText("4 Seconds",12)
