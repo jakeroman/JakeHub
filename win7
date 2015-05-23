@@ -7,6 +7,8 @@ This Copyright is to protect the following things:
   
 --]]
 
+function operatingSystem()
+
 version = "Release 1.2"
 
 website = "https://start.com"
@@ -1051,4 +1053,46 @@ while true do
       end
     end
   end
+end
+
+end
+
+ok,err = pcall(operatingSystem)
+function centerText(str,ln)
+  x,y = term.getSize()
+  x = x / 2
+  sub = #str / 2
+  x = x - sub
+  term.setCursorPos(x,ln)
+  write(str)
+end
+if ok then
+  os.shutdown()
+else
+  term.setBackgroundColor(colors.blue)
+  term.clear()
+  paintutils.drawLine(2,2,51,2,colors.white)
+  term.setTextColor(colors.gray)
+  centerText("JakeOS 2 Crash",2)
+  term.setBackgroundColor(colors.blue)
+  term.setTextColor(colors.white)
+  centerText("If you have modified you're system",4)
+  centerText("Do not report this.",5)
+  centerText("Otherwise report:",7)
+  centerText(err,8)
+  centerText("On the JakeOS 2 thread.",9)
+  centerText("Rebooting Computer in",11)
+  centerText("5 Seconds",12)
+  sleep(1)
+  centerText("4 Seconds",12)
+  sleep(1)
+  centerText("3 Seconds",12)
+  sleep(1)
+  centerText("2 Seconds",12)
+  sleep(1)
+  term.setCursorPos(1,12)
+  term.clearLine()
+  centerText("1 Second",12)
+  sleep(1)
+  os.reboot()
 end
