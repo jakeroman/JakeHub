@@ -942,11 +942,15 @@ while true do
                   term.setTextColor(colors.black)
                   write("Add Program: ")
                   input = read()
+                  if not fs.exists("/JakeOS/programs/"..input) then
                   if fs.exists(input) then
                     fs.copy(input,"/JakeOS/programs/"..input)
                     print(" Added")
                   else
                     print(" Not Found")
+                  end
+                  else
+                    print("Already added.")
                   end
                   sleep(1)
                 end
@@ -1079,7 +1083,7 @@ else
   centerText("JakeOS 2 Crash",2)
   term.setBackgroundColor(colors.blue)
   term.setTextColor(colors.white)
-  centerText("Please Report report:",5)
+  centerText("Please Report:",5)
   centerText(err,7)
   centerText("On the JakeOS 2 thread.",9)
   centerText("Scanning for updates...",11)
