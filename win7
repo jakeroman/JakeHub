@@ -950,7 +950,7 @@ while true do
                     print(" Not Found")
                   end
                   else
-                    print("Already added.")
+                    print(" Already added.")
                   end
                   sleep(1)
                 end
@@ -1095,7 +1095,7 @@ else
   term.clearLine()
   if not h then
     centerText("Failed.",11)
-    sleep(1)
+    sleep(2)
   end
   if h then
     nextData = h.readAll()
@@ -1105,10 +1105,10 @@ else
       f.writeLine(nextData)
       f.close()
       centerText("Updated.",11)
-      sleep(1)
+      sleep(3)
     else
       centerText("No Update Avalible.",11)
-      sleep(1)
+      sleep(3)
     end
   end
   term.setCursorPos(1,11)
