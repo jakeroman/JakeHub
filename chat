@@ -1,0 +1,152 @@
+local args = {...}
+if #args < 1 then
+  print("Usage:")
+  print(shell.getRunningProgram().." <nickname>")
+  return
+end
+if not peripheral.find("modem") then
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.blue)
+  print("No Modem Found.")
+  return
+end
+local colorCodes = {
+  ["0"] = colors.black,
+  ["1"] = colors.blue,
+  ["2"] = colors.green,
+  ["3"] = colors.cyan,
+  ["4"] = colors.red,
+  ["5"] = colors.purple,
+  ["6"] = colors.orange,
+  ["7"] = colors.lightGray,
+  ["8"] = colors.gray,
+  ["9"] = colors.cyan,
+  ["a"] = colors.lime,
+  ["b"] = colors.lightBlue,
+  ["c"] = colors.red,
+  ["d"] = colors.pink,
+  ["e"] = colors.yellow,
+  ["f"] = colors.white,
+}
+
+local oldPull = os.pullEvent
+os.pullEvent = os.pullEventRaw
+local function clearMost()
+	scr_x, scr_y = term.getSize()
+	for y = 1, scr_y-1 do
+		term.setCursorPos(1,y)
+		term.clearLine()
+	end
+end
+local nickname = args[1]
+local sentHistory = {}
+local recHistory = {}
+local chat = true
+peripheral.find("modem").transmit(2048,1,{["name"] = "Join",["msg"] = "Player "..args[1].." Joined!"})
+peripheral.find("modem").closeAll()
+peripheral.find("modem").open(2048)
+local maxX,maxY = term.getSize()
+local function redraw()
+  local curX,curY = term.getCursorPos()
+  term.setBackgroundColor(colors.black)
+  clearMost()
+  term.setCursorPos(1,maxY)
+  term.setTextColor(colors.lightGray)
+  write(": ")
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.lightBlue)
+  for i=1,#recHistory do
+    term.setTextColor(colors.lightBlue)
+    write(recHistory[i]["name"])
+    term.setTextColor(colors.blue)
+    write(": ")
+    term.setTextColor(colors.white)
+    local curMessage = recHistory[i]["msg"]
+    local colored = false
+    for i=1,#curMessage do
+      local curChar = string.sub(curMessage,i,i)
+      if curChar == "&" then
+        colored = true
+      else
+        if colored then
+          if colorCodes[curChar] ~= nil then
+            term.setTextColor(colorCodes[curChar])
+          end
+          colored = false
+        else
+          write(curChar)
+        end
+      end
+    end
+    print("")
+  end
+  term.setCursorPos(1,maxY)
+  term.setTextColor(colors.lightGray)
+  write(":")
+  term.setCursorPos(3,maxY)
+  term.setTextColor(colors.white)
+end
+local function rec()
+  while chat do
+    event,side,to,from,message,distance = os.pullEvent("modem_message")
+    if message then
+      if message.name and message.msg then
+        redraw()
+        recHistory[#recHistory + 1] = {}
+        recHistory[#recHistory]["name"] = message.name
+        recHistory[#recHistory]["msg"] = message.msg
+        if #recHistory > maxY then
+          recHistory[1] = nil
+          local newHist = {}
+          for i,v in pairs(recHistory) do
+            newHist[i - 1] = v
+          end
+          recHistory = newHist
+        end
+        redraw()
+      end
+    end
+  end
+end
+local function snd()
+  while chat do
+    redraw()
+    local input = read(nil,sentHistory)
+    sentHistory[#sentHistory + 1] = input
+    local sendTable = {}
+    sendTable["name"] = nickname
+    sendTable["msg"] = input
+    recHistory[#recHistory + 1] = sendTable
+    if #recHistory == maxY then
+      recHistory[1] = nil
+      local newHist = {}
+      for i,v in pairs(recHistory) do
+        newHist[i - 1] = v
+      end
+      recHistory = newHist
+    end
+    peripheral.find("modem").transmit(2048,os.getComputerID(),sendTable)
+  end
+end
+local function termin()
+  while chat do
+    e = os.pullEventRaw("terminate")
+    if e == "terminate" then
+      peripheral.find("modem").transmit(2048,1,{["name"] = "Leave",["msg"] = "Player "..nickname.." Has left."})
+      chat = false
+      peripheral.find("modem").closeAll()
+      os.pullEvent = oldPull
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      term.setCursorPos(1,1)
+      os.queueEvent("key",28)
+      sleep(0.1)
+      term.setCursorPos(1,1)
+      os.queueEvent("terminate")
+      break
+    end
+  end
+end
+parallel.waitForAll(snd,rec,termin)
