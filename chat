@@ -104,6 +104,7 @@ local function redraw()
   write(":")
   term.setCursorPos(3,maxY)
   term.setTextColor(colors.white)
+  term.current().setVisible(true)
 end
 local function rec()
   while chat do
@@ -126,7 +127,6 @@ local function rec()
       end
     end
   end
-  term.current().setVisible(true)
 end
 local function snd()
   while chat do
