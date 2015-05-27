@@ -98,6 +98,7 @@ local function redraw()
       end
     end
     print("")
+    term.current().setVisible(true)
   end
   term.setCursorPos(1,maxY)
   term.setTextColor(colors.lightGray)
