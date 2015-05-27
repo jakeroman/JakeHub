@@ -33,13 +33,6 @@ local colorCodes = {
 
 local oldPull = os.pullEvent
 os.pullEvent = os.pullEventRaw
-local function clearMost()
-	scr_x, scr_y = term.getSize()
-	for y = 1, scr_y-1 do
-		term.setCursorPos(1,y)
-		term.clearLine()
-	end
-end
 local nickname = args[1]
 local sentHistory = {}
 local recHistory = {}
@@ -51,7 +44,7 @@ local maxX,maxY = term.getSize()
 local function redraw()
   local curX,curY = term.getCursorPos()
   term.setBackgroundColor(colors.black)
-  clearMost()
+  term.clear()
   term.setCursorPos(1,maxY)
   term.setTextColor(colors.lightGray)
   write(": ")
