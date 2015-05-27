@@ -1,8 +1,30 @@
 local args = {...}
 if #args < 1 then
   print("Usage:")
-  print(shell.getRunningProgram().." <nickname>")
+  print(shell.getRunningProgram().." <nickname>|update")
   return
+end
+if args[1] == "update" then
+  write("Updating.. ")
+  f = fs.open(shell.getRunningProgram(),"r")
+  local curData = f.readAll()
+  f.close()
+  h = http.get("https://raw.github.com/jakemroman/JakeHub/master/chat")
+  if not h then
+    printError("Cannot Connect.")
+  else
+    local nextData = h.readAll()
+    h.close()
+    if nextData ~= curData then
+      f = fs.open(shell.getRunningProgram(),"w")
+      f.writeLine(nextData)
+      f.close()
+      term.setTextColor(colors.lime)
+      print("Updated!")
+    else
+      print("Up to date.")
+    end
+  end
 end
 if not peripheral.find("modem") then
   term.setBackgroundColor(colors.black)
