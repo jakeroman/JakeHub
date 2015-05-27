@@ -64,6 +64,7 @@ peripheral.find("modem").closeAll()
 peripheral.find("modem").open(2048)
 local maxX,maxY = term.getSize()
 local function redraw()
+  term.current().setVisible(false)
   local curX,curY = term.getCursorPos()
   term.setBackgroundColor(colors.black)
   term.clear()
@@ -124,6 +125,7 @@ local function rec()
       end
     end
   end
+  term.current().setVisible(true)
 end
 local function snd()
   while chat do
