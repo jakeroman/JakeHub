@@ -25,6 +25,7 @@ if args[1] == "update" then
       print("Up to date.")
     end
   end
+  return
 end
 if not peripheral.find("modem") then
   term.setBackgroundColor(colors.black)
