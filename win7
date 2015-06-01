@@ -166,6 +166,20 @@ if not fs.isDir("JakeOS") then
   write("Installation Done!")
   fs.makeDir("JakeOS")
   fs.makeDir("JakeOS/programs")
+  f = fs.open("/JakeOS/desk","w")
+  h = http.get("https://pastebin.com/raw.php?i=XA9YNCfz")
+  if h tehn
+    f.writeLine(h.readAll())
+    h.close()
+  end
+  f.close()
+  f = fs.open("JakeOS/deskadd","w")
+  h = http.get("https://pastebin.com/raw.php?i=Hbckbjwq")
+  if h then
+    f.writeLine(h.readAll())
+    h.close()
+  end
+  f.close()
   term.setCursorPos(3,5)
   write("Ready to reboot.")
   term.setCursorPos(3,y - 2)
