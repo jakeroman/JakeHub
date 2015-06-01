@@ -168,7 +168,7 @@ if not fs.isDir("JakeOS") then
   fs.makeDir("JakeOS/programs")
   f = fs.open("/JakeOS/desk","w")
   h = http.get("https://pastebin.com/raw.php?i=XA9YNCfz")
-  if h tehn
+  if h then
     f.writeLine(h.readAll())
     h.close()
   end
