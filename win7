@@ -554,8 +554,13 @@ while true do
     write("Update")
     term.setCursorPos(2,14)
     write("Browser")
+    term.setCursorPos(2,13)
+    write("Home")
     e,c,x,y = os.pullEvent("mouse_click")
     if x >= 1 and x <= 10 then
+      if y == 13 then
+        shell.run("/JakeOS/desk")
+      end
       if y == 14 then
         while true do
           term.current().setVisible(false)
