@@ -1,0 +1,374 @@
+local source = "https://NotAWebsite.pleasedontbeawebsite.net/"
+local function mainGame()
+
+local gameLayout = {
+  "111111111111",
+  "100010000021",
+  "100010000021",
+  "100000100021",
+  "111111111111",
+}
+local x = 1
+local y = 1
+local charX = 4
+local charY = 4
+while true do
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  for i=1,#gameLayout do
+    y = y + 1
+    x = 1
+    for char=1,#gameLayout[i] do
+      x = x + 1
+      term.setCursorPos(x,y)
+      if string.sub(gameLayout[i],char,char) == "1" then
+        term.setBackgroundColor(colors.gray)
+      elseif string.sub(gameLayout[i],char,char) == "0" then
+        term.setBackgroundColor(colors.lightGray)
+      elseif string.sub(gameLayout[i],char,char) == "2" then
+        term.setBackgroundColor(colors.lightBlue)
+        buttonX = x
+      end
+      write(" ")
+    end
+    local temp = #gameLayout + 1
+    if y == temp then
+      break
+    end
+  end
+  x = 1
+  y = 1
+  term.setCursorPos(buttonX + 3,3)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.lime)
+  write("Play Game")
+  term.setCursorPos(buttonX + 3,4)
+  term.setTextColor(colors.blue)
+  write("Help")
+  term.setCursorPos(buttonX + 3,5)
+  term.setTextColor(colors.red)
+  write("Quit")
+  term.setCursorPos(charX,charY)
+  term.setTextColor(colors.black)
+  term.setBackgroundColor(colors.lightGray)
+  write("$")
+  term.setCursorPos(3,2)
+  term.setTextColor(colors.white)
+  term.setBackgroundColor(colors.gray)
+  write("Main Menu")
+  if charX == buttonX and charY == 3 then
+    charX = 4
+    charY = 4
+    local level = 1
+    game = true
+    while game do
+      local maxLevel = 3
+      if level == 1 then
+        map = {
+          "11111111111111111",
+          "10100010001000121",
+          "10101010101010101",
+          "10001000100010001",
+          "11111111111111111",
+        }
+      end
+      if level == 2 then
+        map = {
+          "11111111",
+          "100100011111111",
+          "110101000000121",
+          "110001111110001",
+          "111111111111111",
+        }
+      end
+      if level == 3 then
+        map = {
+          "1111111111111111111",
+          "1000000000000000001",
+          "1110111111111111101",
+          "1000000000010000101",
+          "1111111110111111111",
+          "1000000000010000001",
+          "1111111111000000101",
+          "1200100000011111101",
+          "1110111111110000001",
+          "1000000000000111111",
+          "11111111111111",
+        }
+      end
+      if level > maxLevel then
+        game = false
+        charX = 4
+        charY = 4
+        term.setBackgroundColor(colors.black)
+        term.clear()
+        paintutils.drawFilledBox(2,2,40,9,colors.green)
+        paintutils.drawFilledBox(3,3,39,8,colors.lightGray)
+        term.setCursorPos(4,4)
+        term.setTextColor(colors.black)
+        write("You've beaten Maze 2D!")
+        term.setCursorPos(4,6)
+        write("Press any key to continue.")
+        break
+      end
+      charX = 3
+      charY = 3
+      while true do
+        --term.current().setVisible(false)
+        term.setBackgroundColor(colors.black)
+        term.clear()
+        for y=1,#map do
+          for x=1,#map[y] do
+            term.setCursorPos(x + 1,y + 1)
+            local curChar = string.sub(map[y],x,x)
+            if curChar == "1" then
+              term.setBackgroundColor(colors.gray)
+              write(" ")
+            elseif curChar == "0" then
+              term.setBackgroundColor(colors.lightGray)
+              write(" ")
+            elseif curChar == "2" then
+              term.setBackgroundColor(colors.blue)
+              term.setTextColor(colors.green)
+              write("!")
+            end
+          end
+        end
+        term.setCursorPos(3,2)
+        term.setBackgroundColor(colors.gray)
+        term.setTextColor(colors.white)
+        write("Level "..tostring(level))
+        term.setCursorPos(charX,charY)
+        term.setBackgroundColor(colors.lightGray)
+        term.setTextColor(colors.lightBlue)
+        write("$")
+        if string.sub(map[charY - 1],charX - 1,charX - 1) == "2" then
+          break
+        end
+        --term.current().setVisible(true)
+        if game then
+          e,k = os.pullEvent("key")
+        end
+        if k == 200 then
+          if string.sub(map[charY - 2],charX - 1,charX - 1) == "0" then
+            charY = charY - 1
+          elseif string.sub(map[charY - 2],charX - 1,charX - 1) == "2" then
+            charY = charY - 1
+          end
+        elseif k == 208 then
+          if string.sub(map[charY],charX - 1,charX - 1) == "0" then
+            charY = charY + 1
+          elseif string.sub(map[charY],charX - 1,charX - 1) == "2" then
+            charY = charY + 1
+          end
+        elseif k == 203 then
+          if string.sub(map[charY - 1],charX - 2,charX - 2) == "0" then
+            charX = charX - 1
+          elseif string.sub(map[charY - 1],charX - 2,charX - 2) == "2" then
+            charX = charX - 1
+          end
+        elseif k == 205 then
+          if string.sub(map[charY - 1],charX,charX) == "0" then
+            charX = charX + 1
+          elseif string.sub(map[charY - 1],charX,charX) == "2" then
+            charX = charX + 1
+          end
+        end
+        term.setBackgroundColor(colors.black)
+        term.clear()
+      end
+      term.setBackgroundColor(colors.black)
+      term.clear()
+      for y=1,#map do
+        for x=1,#map[y] do
+          term.setCursorPos(x + 1,y + 1)
+          local curChar = string.sub(map[y],x,x)
+          if curChar == "0" then
+            term.setBackgroundColor(colors.lime)
+            write(" ")
+          elseif curChar == "1" then
+            term.setBackgroundColor(colors.green)
+            write(" ")
+          elseif curChar == "2" then
+            term.setBackgroundColor(colors.lightBlue)
+            term.setTextColor(colors.blue)
+            write("$")
+          end
+        end
+      end
+      term.setCursorPos(3,2)
+      term.setBackgroundColor(colors.green)
+      term.setTextColor(colors.gray)
+      write("Level Clear!")
+      sleep(1.5)
+      level = level + 1
+    end
+  end
+  if charX == buttonX and charY == 4 then
+    charX = 4
+    charY = 4
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    paintutils.drawFilledBox(2,2,50,9,colors.gray)
+    paintutils.drawFilledBox(3,3,49,8,colors.lightGray)
+    term.setCursorPos(4,4)
+    term.setTextColor(colors.black)
+    write("Welcome to Maze 2D")
+    term.setCursorPos(4,5)
+    write("Made by JakeOS or QuantumTech.")
+    term.setCursorPos(4,6)
+    write("Press [U] to check for updates.")
+    term.setCursorPos(4,7)
+    write("Press any key to exit.")
+    e,k = os.pullEvent("key")
+    if k == keys.u then
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      paintutils.drawFilledBox(1,1,51,1,colors.lightGray)
+      term.setCursorPos(2,1)
+      term.setTextColor(colors.black)
+      write("Maze 2D Updater")
+      for i=1,2 do
+        for z=1,5 do
+          term.setCursorPos(48,1)
+          term.setTextColor(colors.gray)
+          write("$$$")
+          if z == 1 then
+            term.setCursorPos(48,1)
+          elseif z == 2 then
+            term.setCursorPos(49,1)
+          elseif z == 3 then
+            term.setCursorPos(50,1)
+          elseif z == 4 then
+            term.setCursorPos(49,1)
+          elseif z == 5 then
+            term.setCursorPos(48,1)
+          end
+          term.setTextColor(colors.blue)
+          write("$")
+          sleep(0.2)
+        end
+      end
+      term.setCursorPos(48,1)
+      term.setBackgroundColor(colors.lightGray)
+      term.setTextColor(colors.gray)
+      write("$$$")
+      h = http.get(source)
+      if not h then
+        term.setCursorPos(48,1)
+        term.setTextColor(colors.red)
+        write("$$$")
+        term.setCursorPos(2,3)
+        term.setBackgroundColor(colors.white)
+        write("Failed to connect to update server.")
+        term.setCursorPos(2,4)
+        write("Check if HTTP is enabled and try again.")
+      else
+        term.setCursorPos(48,1)
+        term.setTextColor(colors.lime)
+        write("$$$")
+        local nextData = h.readAll()
+        h.close()
+        f = fs.open(shell.getRunningProgram(),"r")
+        local curData = f.readAll()
+        f.close()
+        if nextData ~= curData then
+          f = fs.open(shell.getRunningProgram(),"w")
+          f.writeLine(nextData)
+          f.close()
+          term.setCursorPos(2,3)
+          term.setTextColor(colors.green)
+          write("Update Downloaded!")
+          term.setCursorPos(2,4)
+          write("Quit and then reload the game for updates!")
+        else
+          term.setCursorPos(2,3)
+          term.setTextColor(colors.green)
+          write("Up to date!")
+          term.setCursorPos(2,4)
+          write("You've got the latest and greatest!")
+        end
+      end
+      term.setCursorPos(2,6)
+      term.setTextColor(colors.gray)
+      write("Press any key to continue...")
+      os.pullEvent("key")
+    end
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    paintutils.drawFilledBox(2,2,50,9,colors.gray)
+    paintutils.drawFilledBox(3,3,49,8,colors.lightGray)
+    term.setCursorPos(4,4)
+    term.setTextColor(colors.black)
+    write("Press any key to dismiss.")
+    os.queueEvent("key",28)
+  end
+  if charX == buttonX and charY == 5 then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    return
+  end
+  e,k = os.pullEvent("key")
+  if k == 200 then
+    if string.sub(gameLayout[charY - 2],charX - 1,charX - 1) == "0" then
+      charY = charY - 1
+    end
+  elseif k == 208 then
+    if string.sub(gameLayout[charY],charX - 1,charX - 1) == "0" then
+      charY = charY + 1
+    end
+  elseif k == 203 then
+    if string.sub(gameLayout[charY - 1],charX - 2,charX - 2) == "0" then
+      charX = charX - 1
+    end
+  elseif k == 205 then
+    if string.sub(gameLayout[charY - 1],charX,charX) == "0" then
+      charX = charX + 1
+    elseif string.sub(gameLayout[charY - 1],charX,charX) == "2" then
+      charX = charX + 1
+    end
+  end
+end
+
+end
+
+term.setBackgroundColor(colors.black)
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(colors.white)
+local ok,err = pcall(mainGame)
+term.setBackgroundColor(colors.black)
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(colors.white)
+if not ok then
+  if err == "Terminated" then
+    printError("Bye!")
+  else
+    paintutils.drawFilledBox(2,2,50,9,colors.red)
+    paintutils.drawFilledBox(3,3,49,8,colors.lightGray)
+    term.setCursorPos(4,2)
+    term.setBackgroundColor(colors.red)
+    term.setTextColor(colors.gray)
+    write("Game Crash")
+    term.setBackgroundColor(colors.lightGray)
+    term.setCursorPos(4,4)
+    term.setTextColor(colors.black)
+    write("The Game Has crashed!")
+    term.setCursorPos(4,5)
+    write("Please report:")
+    term.setCursorPos(4,6)
+    term.setTextColor(colors.red)
+    write(string.sub(err,string.find(err,":") + 1,#err))
+    term.setCursorPos(4,7)
+    term.setTextColor(colors.black)
+    write("To QuantumTech")
+    os.pullEvent("key")
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    term.setTextColor(colors.white)
+    return
+  end
+end
