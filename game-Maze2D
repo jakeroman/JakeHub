@@ -1,4 +1,4 @@
-local source = "https://NotAWebsite.pleasedontbeawebsite.net/"
+local source = "https://raw.github.com/jakemroman/JakeHub/master/game-Maze2D"
 local function mainGame()
 
 local gameLayout = {
