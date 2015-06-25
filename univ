@@ -6,7 +6,7 @@ if pocket then
 end
 local function center(txt)
   local curX,curY = term.getCursorPos()
-  local maxX.maxY = term.getSize()
+  local maxX,maxY = term.getSize()
   maxX = maxX / 2
   maxY = curY
   maxX = maxX - (#txt / 2)
