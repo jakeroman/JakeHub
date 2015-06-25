@@ -1,0 +1,52 @@
+term.setBackgroundColor(colors.white)
+term.clear()
+term.setCursorPos(1,1)
+if pocket then
+  error("You must use a stationary computer for installing!")
+end
+local function center(txt)
+  local curX,curY = term.getCursorPos()
+  local maxX.maxY = term.getSize()
+  maxX = maxX / 2
+  maxY = curY
+  maxX = maxX - (#txt / 2)
+  term.setCursorPos(maxX,maxY)
+  write(txt)
+end
+term.setCursorPos(1,1)
+for i=1,51 do
+  term.setBackgroundColor(colors.lightGray)
+  term.setTextColor(colors.black)
+  write("-")
+end
+term.setCursorPos(2,3)
+term.setTextColor(colors.blue)
+term.setBackgroundColor(colors.white)
+center("JakeOS v2")
+term.setCursorPos(1,51)
+term.setTextColor(colors.red)
+term.setBackgroundColor(colors.lightGray)
+write("x")
+term.setCursorPos(2,4)
+term.setBackgroundColor(colors.white)
+term.setTextColor(colors.blue)
+print("Quantum Box")
+e,c,x,y = os.pullEvent("mouse_click")
+if x == 51 and y == 1 then
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  term.setCursorPos(1,1)
+  return
+end
+if x > 1 and x < 51 then
+  if y == 3 then
+    shell.run("pastebin run 1B3rQts9")
+  end
+  if y == 4 then
+    h = http.get("https://raw.github.com/jakemroman/JakeHub/master/quantumbox").readAll())
+    f = fs.open("startup","w")
+    f.writeLine(h)
+    f.close()
+    os.reboot()
+  end
+end
