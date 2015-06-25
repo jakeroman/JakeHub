@@ -43,7 +43,7 @@ if x > 1 and x < 51 then
     shell.run("pastebin run 1B3rQts9")
   end
   if y == 4 then
-    h = http.get("https://raw.github.com/jakemroman/JakeHub/master/quantumbox").readAll())
+    h = http.get("https://raw.github.com/jakemroman/JakeHub/master/quantumbox").readAll()
     f = fs.open("startup","w")
     f.writeLine(h)
     f.close()
