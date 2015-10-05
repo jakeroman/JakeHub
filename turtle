@@ -1,0 +1,39 @@
+os.pullEvent = os.pullEventRaw
+while true do
+  --print("I am bored!")
+  _,block = turtle.inspectDown()
+  if block.name ~= "minecraft:wool" then
+    sleep(3)
+  end
+  if block.name == "minecraft:wool" then
+    if block.metadata == 12 then
+      turtle.suckUp()
+      sleep(0.1)
+      turtle.forward()
+    end
+    if block.metadata == 1 then
+      turtle.dropUp()
+      sleep(1)
+      turtle.forward()
+    end
+    if block.metadata == 11 then
+      turtle.turnLeft()
+      turtle.forward()
+    end
+    if block.metadata == 14 then
+      turtle.turnRight()
+      turtle.forward()
+    end
+    if block.metadata == 15 then
+      turtle.forward()
+    end
+    if block.metadata == 5 then
+      turtle.up()
+      turtle.forward()
+    end
+    if block.metadata == 13 then
+      turtle.forward()
+      turtle.down()
+    end
+  end
+end
