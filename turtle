@@ -6,6 +6,10 @@ while true do
     sleep(3)
   end
   if block.name == "minecraft:wool" then
+    if block.metadata == 10 then
+      os.pullEvent("redstone")
+      turtle.forward()
+    end
     if block.metadata == 12 then
       turtle.suckUp()
       sleep(0.1)
