@@ -6,6 +6,20 @@ while true do
     sleep(3)
   end
   if block.name == "minecraft:wool" then
+    if block.metadata == 6 then
+      rs.setOutput("top",true)
+      rs.setOutput("left",true)
+      rs.setOutput("right",true)
+      rs.setOutput("front",true)
+      rs.setOutput("back",true)
+      sleep(1)
+      rs.setOutput("top",false)
+      rs.setOutput("left",false)
+      rs.setOutput("right",false)
+      rs.setOutput("front",false)
+      rs.setOutput("back",false)
+      turtle.forward()
+    end
     if block.metadata == 10 then
       os.pullEvent("redstone")
       turtle.forward()
