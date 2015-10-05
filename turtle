@@ -13,6 +13,9 @@ while true do
         if block.name == "minecraft:wool" then
           break
         end
+        if turtle.detect() then
+          sleep(3)
+        end
       end
     end
     if block.metadata == 6 then
