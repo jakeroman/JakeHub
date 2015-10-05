@@ -6,6 +6,15 @@ while true do
     sleep(3)
   end
   if block.name == "minecraft:wool" then
+    if block.metadata == 7 then
+      while true do
+        turtle.forward()
+        _,block = turtle.inspectDown()
+        if block.name == "minecraft:wool" then
+          break
+        end
+      end
+    end
     if block.metadata == 6 then
       rs.setOutput("top",true)
       rs.setOutput("left",true)
