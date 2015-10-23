@@ -190,6 +190,8 @@ while true do
         ok,err = pcall(mathFunc)
         if not ok then
           say("&cDon't use functions in your math!")
+        elseif err == nil then
+          say("&cLooks like you didn't use proper math!")
         else
           say("&7The answer is &a"..err.."&7!")
         end
