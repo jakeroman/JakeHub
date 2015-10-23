@@ -169,11 +169,15 @@ while true do
     if string.sub(msg,1,5) == "math " then
       mathFunc = loadstring("return "..string.sub(msg,6,#msg))
       setfenv(mathFunc, {})
-      ok,err = pcall(mathFunc)
-      if not ok then
-        say("&cDon't use functions in your math!")
+      if mathFunc then
+        ok,err = pcall(mathFunc)
+        if not ok then
+          say("&cDon't use functions in your math!")
+        else
+          say("&7The answer is &a"..err.."&7!")
+        end
       else
-        say("&7The answer is &a"..err.."&7!")
+        say("&4I don't know whatcha did there!")
       end
     end
     if msg == "hello" then
