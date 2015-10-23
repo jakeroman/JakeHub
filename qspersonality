@@ -166,6 +166,16 @@ while true do
       say("Removed what is definition.")
       fs.delete("/disk/siri/siri-"..string.sub(msg,5,#msg))
     end
+    if string.sub(msg,1,5) == "math " then
+      mathFunction = loadstring(string.sub(msg,6,#msg))
+      setfenv(mathFunction, {})
+      ok, err = pcall(mathFunction)
+      if not ok then
+        say("&cDon't use functions in your math!")
+      else
+        say("&7The answer is &a"..err.."&7!")
+      end
+    end
     if msg == "hello" then
       say("Hello there, "..p)
     end
