@@ -85,20 +85,6 @@ jokes = {
 }
 say("&7Activated: &a&lSuccessfully")
 term.clear()
-if not metaStorage.access("QCBackup","Turing1103") then
-  metaStorage.register("QCBackup","Turing1103")
-end
-if metaStorage.access("QCBackup","Turing1103") then
-  metaTbl = metaStorage.access("QCBackup","Turing1103")
-  list = fs.list("/disk")
-  for i=1,#list do
-    f = fs.open("/disk/"..list[i],"r")
-    if not fs.isDir("/disk/"..list[i]) then
-      metaTbl[list[i]] = f.readAll()
-      f.close()
-    end
-  end
-end
 tempChat = {}
 function isAdmin(playerSel)
   f = fs.open("/disk/admins","w")
