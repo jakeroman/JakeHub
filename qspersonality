@@ -167,9 +167,9 @@ while true do
       fs.delete("/disk/siri/siri-"..string.sub(msg,5,#msg))
     end
     if string.sub(msg,1,5) == "math " then
-      mathFunction = loadstring(string.sub(msg,6,#msg))
-      setfenv(mathFunction, {})
-      ok, err = pcall(mathFunction)
+      mathFunc = loadstring(string.sub(msg,6,#msg))
+      setfenv(mathFunc, {})
+      ok,err = pcall(mathFunc)
       if not ok then
         say("&cDon't use functions in your math!")
       else
