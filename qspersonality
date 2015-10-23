@@ -181,6 +181,7 @@ while true do
       f = fs.open("/disk/smites/"..target,"w")
       f.writeLine(ammount)
       f.close()
+      say("Set smites.")
     end
     if string.sub(msg,1,5) == "math " then
       mathFunc = loadstring("return "..string.sub(msg,6,#msg))
