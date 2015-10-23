@@ -1,3 +1,6 @@
+function mainCore()
+-- Core Start
+
 if not say then
   print("It appears that you did not launch QS with personality loader!")
   print("Please construct a QS Personality disk.")
@@ -279,3 +282,33 @@ while true do
     end
   end
 end
+
+
+-- End Core
+end
+
+ok,err = pcall(mainCore)
+if err == "Terminated" then
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  term.setCursorPos(1,1)
+  return
+end
+if not ok then
+  if peripheral.find("command") then
+    peripheral.find("command").setCommand("&7Core Crashed! &4Error: &c"..err)
+    peripheral.find("command").runCommand()
+    sleep(1)
+    peripheral.find("command").setCommand("&aRebooting")
+    peripheral.find("command").runCommand()
+    os.pullEvent = oldPull
+    sleep(10)
+    os.reboot()
+  end
+end
+os.pullEvent = oldPull
+term.clear()
+term.setCursorPos(2,2)
+print("The core ended, you have 10 seconds to terminate before reboot")
+sleep(10)
+os.reboot()
