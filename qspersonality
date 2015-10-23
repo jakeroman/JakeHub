@@ -191,7 +191,7 @@ while true do
       isAdmin(p)
       say("&aAdded to admin list.")
     end
-    if string.sub(m,1,6) == "smite " then
+    if string.sub(msg,1,6) == "smite " then
       if not fs.isDir("/disk/smite") then
         fs.makeDir("/disk/smite")
       end
