@@ -191,6 +191,28 @@ while true do
       isAdmin(p)
       say("&aAdded to admin list.")
     end
+    if string.sub(m,1,6) == "smite " then
+      if not fs.isDir("/disk/smite") then
+        fs.makeDir("/disk/smite")
+      end
+      if fs.exists("/disk/smite/"..p) then
+        f = fs.open("/disk/smite/"..p,"r")
+        local curSmite = f.readAll()
+        f.close()
+        run("/smite "..string.sub(msg,10,#msg)
+        curSmite = curSmite - 1
+        say("&7You now have &8"..curSmite.." &7smites left")
+        if curSmite == 0 then
+          fs.delete("/disk/smite/"..p)
+        else
+          f = fs.open("/disk/smite/"..p,"w")
+          f.writeLine(curSmite)
+          f.close()
+        end
+      else
+        say("&4You don't have any smites!")
+      end
+    end
     if string.sub(m,1,9) == "QS, deop " and isAdmin(p) then
       adminList[string.sub(m,10,#m)] = false
       isAdmin(p)
