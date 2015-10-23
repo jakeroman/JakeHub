@@ -304,10 +304,10 @@ if err == "Terminated" then
 end
 if not ok then
   if peripheral.find("command") then
-    peripheral.find("command").setCommand("&7Core Crashed! &4Error: &c"..err)
+    peripheral.find("command").setCommand("sudo @a ping &7Core Crashed! &4Error: &c"..err)
     peripheral.find("command").runCommand()
     sleep(1)
-    peripheral.find("command").setCommand("&aRebooting")
+    peripheral.find("command").setCommand("sudo @a ping &aRebooting")
     peripheral.find("command").runCommand()
     os.pullEvent = oldPull
     sleep(10)
