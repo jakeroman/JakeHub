@@ -178,7 +178,7 @@ while true do
       repeat
         e,s,player,ammount = os.pullEvent("chat_message")
       until player == p
-      f = fs.open("/disk/smites/"..target,"w")
+      f = fs.open("/disk/smite/"..target,"w")
       f.writeLine(ammount)
       f.close()
       say("Set smites.")
