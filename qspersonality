@@ -169,6 +169,19 @@ while true do
       say("Removed what is definition.")
       fs.delete("/disk/siri/siri-"..string.sub(msg,5,#msg))
     end
+    if msg == "setsmite" and isAdmin(p) then
+      say("Player to set smites of:")
+      repeat
+        e,s,player,target = os.pullEvent("chat_message")
+      until player == p
+      say("Ammount of smites?")
+      repeat
+        e,s,player,ammount = os.pullEvent("chat_message")
+      until player == p
+      f = fs.open("/disk/smites/"..target,"w")
+      f.writeLine(ammount)
+      f.close()
+    end
     if string.sub(msg,1,5) == "math " then
       mathFunc = loadstring("return "..string.sub(msg,6,#msg))
       setfenv(mathFunc, {})
