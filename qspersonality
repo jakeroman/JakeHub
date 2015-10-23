@@ -199,7 +199,7 @@ while true do
         f = fs.open("/disk/smite/"..p,"r")
         local curSmite = f.readAll()
         f.close()
-        run("/smite "..string.sub(msg,10,#msg)
+        run("/smite "..string.sub(msg,10,#msg))
         curSmite = curSmite - 1
         say("&7You now have &8"..curSmite.." &7smites left")
         if curSmite == 0 then
