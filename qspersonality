@@ -232,7 +232,7 @@ while true do
     end
     if msg == "help" then
       say("All Avalible commands are:")
-      say("&7hello, hi, help, op me, power, wazzap, what is, what do you know")
+      say("&7hello, hi, help, op me, power, wazzap, what is, what do you know, math 2+2")
     end
     if msg == "op me" then
       sleep(1.5)
