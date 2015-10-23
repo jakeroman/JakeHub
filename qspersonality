@@ -222,9 +222,6 @@ while true do
     if msg == "wazzap" then
       say("The sky..")
     end
-    if string.sub(msg,1,4) == "lua " and isAdmin(p) then
-      loadstring(string.sub(msg,5,#msg))
-    end
     if msg == "what do you know" then
       list = fs.list("/disk/siri")
       say("&7I know &8"..#list.." &7answers")
