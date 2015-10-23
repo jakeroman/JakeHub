@@ -1,0 +1,280 @@
+if not say() then
+  print("It appears that you did not launch QS with personality loader!")
+  print("Please construct a QS Personality disk.")
+  print("I will now install the loader onto the file 'loader'")
+  f = fs.open("/loader","w")
+  h = http.get('https://raw.github.com/jakemroman/JakeHub/master/qcloader')
+  if not h then
+    print("ERROR CONNECTING!")
+    sleep(3)
+  else
+    f.writeLine(h.readAll())
+    h.close()
+  end
+  f.close()
+end
+-- Gather Admins --
+  adminList = {}
+  
+  say("&9Initializing Admins..")
+  
+  if fs.exists("/disk/admins") then
+    f = fs.open("/disk/admins","r")
+    while true do
+      local curLine = f.readLine()
+      if not curLine then break end
+      adminList[curLine] = true
+    end
+    say("&aSuccessfully initialised admins!")
+  else
+    adminList = {["jakejakey1208"] = true}
+    say("&cNo adminlist!")
+  end
+
+-- End Script --
+
+say("&cConnecting to update server...")
+h = http.get('https://raw.github.com/jakemroman/JakeHub/master/qspersonality')
+if not h then
+  say("&4Unable to connect!")
+else
+  say("&aConnected, checking for updates")
+  local newData = h.readAll()
+  h.close()
+  f = fs.open(shell.getRunningProgram(),"r")
+  local curData = f.readAll()
+  f.close()
+  if curData ~= newData then
+    say("&9Updating.")
+    f = fs.open(shell.getRunningProgram(),"w")
+    f.writeLine(newData)
+    f.close()
+  else
+    say("&3Up to date!")
+  end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jokes = {
+  "The man said it smells like updog! His brother replied what's up, dog?",
+  "A man walks into an apple store, he asks for an iWatch and is asked to leave.",
+  "A man walks into a microsoft store asking if they sold iPhone chargers",
+  "Google, stop interuptting stuff with ads!",
+  "An appl... nevermind I forgot that one",
+  "The battery display on the new iPhone now works!",
+  "Can't talk I'm driving, text me instead",
+  "MUM GET THE CAMERA!",
+  "A creeper walks into an airport, he was wondering why they we're locking the place down.",
+  "Now with 10% more jokes!",
+  "many wow, such joke, much entertain",
+  "What's 9+10? 21!",
+  "I'm a mac, are you a pc?", 
+}
+say("&7Activated: &a&lSuccessfully")
+term.clear()
+if not metaStorage.access("QCBackup","Turing1103") then
+  metaStorage.register("QCBackup","Turing1103")
+end
+if metaStorage.access("QCBackup","Turing1103") then
+  metaTbl = metaStorage.access("QCBackup","Turing1103")
+  list = fs.list("/disk")
+  for i=1,#list do
+    f = fs.open("/disk/"..list[i],"r")
+    if not fs.isDir("/disk/"..list[i]) then
+      metaTbl[list[i]] = f.readAll()
+      f.close()
+    end
+  end
+end
+tempChat = {}
+function isAdmin(playerSel)
+  f = fs.open("/disk/admins","w")
+  for i,v in pairs(adminList) do
+    if v == true then
+      f.writeLine(i)
+    end
+  end
+  f.close()
+  if adminList[playerSel] == true then
+    return true
+  end
+  return false
+end
+--adminList = {"jakejakey1208"}
+while true do
+  e,s,p,m,param = os.pullEvent()
+  if e == "chatbox_command" and p == "jakejakey1208" and m == "qc:terminate" then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    say("&c&lTerminated.")
+    os.pullEvent = oldPull
+    return
+  end
+  if e == "chatbox_command" and isAdmin(p) then
+    if string.sub(m,1,3) == "qc:" then
+    else
+      say(m)
+    end
+  end
+  if e == "chatbox_command" and isAdmin(p) and m == "qc:power off" then
+    run("setblock 205 171 81 152")
+    say("&7Turning spaceship breaker: &c&lOFF")
+  end
+  if e == "chatbox_command" and isAdmin(p) and m == "qc:power on" then
+    run("setblock 205 171 81 0")
+    say("&7Turning spaceship breaker: &a&lON")
+  end
+  if e == "chatbox_command" and isAdmin(p) and string.sub(m,1,7) == "qc:run " then
+    shell.run(string.sub(m,8,#m))
+  end
+  if e == "chatbox_command" and isAdmin(p) and m == "qc:shutdown" then
+    say("&c&lShutting down!")
+    os.shutdown()
+  end
+  if e == "chat_message" then
+    if tempChat[string.lower(m)] then
+      if string.sub(tempChat[string.lower(m)],1,1) == "!" then
+        run(string.sub(tempChat[string.lower(m)],2,#tempChat[m]))
+      else
+        say(tempChat[string.lower(m)])
+      end
+    end
+  end
+  if e == "chat_message" and string.lower(string.sub(m,1,4)) == "qs, " then
+    local msg = string.lower(string.sub(m,5,#m))
+    if msg == "admins" then
+      say("&7Admins are")
+      for i,v in pairs(adminList) do
+        if v == true then
+          say("&8"..i)
+        end
+      end
+      if not isAdmin("jakejakey1208") then say("&cNOT &4jakejakey1208?") end
+    end
+    if msg == "reboot" and isAdmin(p) then
+      say("&9&lRebooting!")
+      os.reboot()
+    end
+    if msg == "shutdown" and isAdmin(p) then
+      say("&4&lShutting down..")
+      os.shutdown()
+    end 
+    if msg == "tell me a joke" then
+      say(jokes[math.random(1,#jokes)])
+    end
+    if string.sub(msg,1,4) == "fix " and isAdmin(p) then
+      say("Removed what is definition.")
+      fs.delete("/disk/siri/siri-"..string.sub(msg,5,#msg))
+    end
+    if msg == "hello" then
+      say("Hello there, "..p)
+    end
+    if string.sub(m,1,7) == "QS, op " and isAdmin(p) then
+      adminList[string.sub(m,8,#m)] = true
+      isAdmin(p)
+      say("&aAdded to admin list.")
+    end
+    if string.sub(m,1,9) == "QS, deop " and isAdmin(p) then
+      adminList[string.sub(m,10,#m)] = false
+      isAdmin(p)
+      say("&cRemoved from admin list.")
+    end
+    if msg == "chat" and isAdmin(p) then
+      say("Trigger?")
+      repeat
+        e,s,player,trig = os.pullEvent("chat_message")
+      until isAdmin(player)
+      say("Response?")
+      repeat
+        e,s,playerj,evt = os.pullEvent("chat_message")
+      until isAdmin(playerj)
+      tempChat[string.lower(trig)] = evt
+      say("Saved Until Reboot.")
+    end
+    if msg == "brb" then
+      say("I'll set you afk.")
+      sleep(1)
+      run("/afk "..p)
+    end
+    if msg == "kill me" then
+      run("/kill "..p)
+    end
+    if msg == "hi" then
+      say("Hi there, "..p)
+    end
+    if msg == "wazzap" then
+      say("The sky..")
+    end
+    if msg == "what do you know" then
+      list = fs.list("/disk/siri")
+      say("&7I know &8"..#list.." &7answers")
+      if #list < 25 then
+        say("&7Please teach me things with QS, what is <question>")
+      elseif #list < 50 then
+        say("&7I'm a learning AI!")
+      elseif #list < 100 then
+        say("&7I'm a pretty smart AI")
+      elseif #list < 150 then
+        say("&7I'm intelligent")
+      elseif #list > 200 then
+        say("&7I'm super smart")
+      end
+    end
+    if msg == "help" then
+      say("All Avalible commands are:")
+      say("&7hello, hi, help, op me, power, wazzap, what is, what do you know")
+    end
+    if msg == "op me" then
+      sleep(1.5)
+      run("tellraw "..p..' {"color":"yellow","text":"You are now OP"}')
+      sleep(4)
+      say("That was a fake OP btw :P")
+    end
+    if msg == "power" then
+      if rs.getInput("right",true) then
+        say("&7Station Power: &a&lOnline")
+      else
+        say("&7Station Power: &4&lOffline")
+      end
+    end
+    if string.sub(msg,1,8) == "what is " then
+      local ask = string.gsub(string.lower(string.sub(msg,9,#msg)),"?","")
+      if fs.exists("/disk/siri/siri-"..ask) then
+        f = fs.open("/disk/siri/siri-"..ask,"r")
+        say(f.readAll())
+        f.close()
+      else
+        ran = math.random(1,3)
+        if ran == 1 then
+          say("What should I say next time?")
+        end
+        if ran == 2 then
+          say("I don't know, what should I say next time")
+        end
+        if ran == 3 then
+          say("What was the answer, I'll remeber")
+        end
+        repeat
+          e,s,player,m = os.pullEvent("chat_message")
+        until p == player
+        f = fs.open("/disk/siri/siri-"..ask,"w")
+        f.write(m)
+        f.close()
+        say("I'll remeber")
+      end
+    end
+  end
+end
