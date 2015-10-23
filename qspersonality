@@ -1,4 +1,4 @@
-if not say() then
+if not say then
   print("It appears that you did not launch QS with personality loader!")
   print("Please construct a QS Personality disk.")
   print("I will now install the loader onto the file 'loader'")
@@ -49,6 +49,7 @@ else
     f = fs.open(shell.getRunningProgram(),"w")
     f.writeLine(newData)
     f.close()
+    say("&aUpdated! &7Reboot to take effect.")
   else
     say("&3Up to date!")
   end
