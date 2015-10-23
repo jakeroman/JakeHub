@@ -308,7 +308,4 @@ if not ok then
 end
 os.pullEvent = oldPull
 term.clear()
-term.setCursorPos(2,2)
-print("The core ended, you have 10 seconds to terminate before reboot")
-sleep(10)
-os.reboot()
+term.setCursorPos(1,1)
