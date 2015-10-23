@@ -254,6 +254,12 @@ while true do
         say("&7Station Power: &4&lOffline")
       end
     end
+    if msg == "power on" then
+      run("/setblock 205 171 81 0")
+    end
+    if msg == "power off" then
+      run("/setblock 205 171 81 152")
+    end
     if string.sub(msg,1,8) == "what is " then
       local ask = string.gsub(string.lower(string.sub(msg,9,#msg)),"?","")
       if fs.exists("/disk/siri/siri-"..ask) then
