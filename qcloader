@@ -1,0 +1,160 @@
+-- Config --
+
+ config = {
+ 
+   commands = true, -- Allow Commands to be executed
+   terminateable = false, -- Allow termination
+   name = "&d[&7Core&d] ", -- Core name
+   
+ }
+
+-- End Config --
+
+
+
+
+
+
+
+
+
+
+
+
+
+oldPull = os.pullEvent
+if config.terminateable == false then
+os.pullEvent = os.pullEventRaw
+end
+function center(text)
+  curX,curY = term.getCursorPos()
+  maxX,maxY = term.getSize()
+  maxX = maxX / 2
+  maxX = maxX - (#text / 2)
+  term.setCursorPos(maxX,curY)
+  print(text)
+end
+function bsod(title,desc)
+  term.setBackgroundColor(colors.blue)
+  term.clear()
+  x,y = term.getSize()
+  term.setCursorPos(1,(y / 2))
+  term.setTextColor(colors.lightGray)
+  center(title)
+  term.setTextColor(colors.white)
+  term.setCursorPos(1,(y / 2)+1)
+  center(desc)
+  sleep(8)
+  os.pullEvent = oldPull
+  while true do
+    sleep(10)
+  end
+end
+
+function coreMain()
+-- Core Script
+info = {}
+if peripheral.find("chatbox_admin") then
+  chat = peripheral.find("chatbox_admin")
+  info.chat = "Admin"
+  term.clear()
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.blue)
+  write("INFO: ")
+  term.setTextColor(colors.lightBlue)
+  write("Admin ChatBox detected.")
+elseif peripheral.find("chatbox") then
+  chat = peripheral.find("chatbox")
+  info.chat = "Default"
+  term.clear()
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.yellow)
+  write("WARNING: ")
+  term.setTextColor(colors.red)
+  write("Chatbox is not administrator.")
+else
+  term.clear()
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.orange)
+  write("SEVERE ERROR: ")
+  term.setTextColor(colors.red)
+  write("No chatbox!")
+  sleep(2)
+  bsod("No ChatBox","No chat receiving hardware was detected")
+end
+if peripheral.find("command") then
+  cmd = peripheral.find("command")
+  info.cmd = true
+  term.setTextColor(colors.blue)
+  write("INFO: ")
+  term.setTextColor(colors.lightBlue)
+  write("Command block detected!")
+else
+  term.setTextColor(colors.red)
+  write("FATAL ERROR: No command block!")
+  sleep(2)
+  bsod("FATAL ERROR","No command running hardware was detected!")
+end
+function say(str)
+  cmd.setCommand("sudo @a ping "..config.name..str)
+  cmd.runCommand()
+end
+function run(str)
+  if config.commands then
+    cmd.setCommand(str)
+    cmd.runCommand()
+  end
+end
+if fs.exists("/disk") then
+  if fs.exists("/disk/info") and fs.exists("/disk/core") then
+    if fs.exists("/disk/name") then
+      f = fs.open("/disk/name","r")
+      config.name = f.readAll()
+      f.close()
+    end
+    f = fs.open("disk/info","r")
+    while true do
+      curLine = f.readLine()
+      if curLine == nil then break end
+      say(curLine)
+    end
+    sleep(1)
+    term.clear()
+    term.setCursorPos(1,1)
+    term.setTextColor(colors.blue)
+    write("INFO: ")
+    term.setTextColor(colors.lightBlue)
+    write("Loaded personality disk!")
+    sleep(3)
+    term.clear()
+    term.setCursorPos(1,1)
+    shell.run("/disk/core")
+  end
+else
+  say("&4No personality disk detected!")
+  bsod("Core Failure","No personality disk!")
+end
+--end
+
+-- End Core Script
+end
+
+ok,err = pcall(coreMain)
+if err == "Terminated" then
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  term.setCursorPos(1,1)
+  return
+else
+  if not ok then
+    term.setBackgroundColor(colors.white)
+    term.clear()
+    term.setCursorPos(1,2)
+    term.setTextColor(colors.red)
+    center(err)
+    os.pullEvent("key")
+    term.setCursorPos(1,1)
+    term.setBackgroundColor(colors.black)
+    term.clear()
+  end
+end
