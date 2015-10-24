@@ -105,6 +105,12 @@ end
 --adminList = {"jakejakey1208"}
 while true do
   e,s,p,m,param = os.pullEvent()
+  if not fs.exists("/disk") then
+    say("&4Err- &cmy disk was removed.")
+    sleep(1)
+    say("&4&lShutting down!")
+    os.shutdown()
+  end
   if e == "chatbox_command" and p == "Gonow32" and m == "op me" then
     say("Alright, since it's you gonow!")
     sleep(1)
