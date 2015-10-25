@@ -1,22 +1,5 @@
 -- Graphicals API | Copyright Jake Roman 2015
 
-function update()
-  f = fs.open(shell.getRunningProgram(),"r")
-  local graph = f.readAll()
-  f.close()
-  h = http.get("https://raw.github.com/jakemroman/JakeHub/master/graphicals")
-  if not h then
-    return false
-  end
-  local newGraph = h.readAll()
-  h.close()
-  if graph ~= newGraph then
-    f = fs.open(shell.getRunningProgram(),"w")
-    f.writeLine(newGraph)
-    f.close()
-    return true
-  end
-end
 function loading(sTime)
   bit = 0
   if not sTime then
