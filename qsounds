@@ -341,7 +341,6 @@ while true do
               break
             end
           end
-          if y == 17 then
         end
         if y == 6 then
           term.setBackgroundColor(colors.white)
