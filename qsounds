@@ -256,7 +256,7 @@ while true do
     if x >= 2 and x <= 6 and y == 1 then
       --error("We're getting somewhere")
       term.setBackgroundColor(qConfig.desktop.start)
-      clearArea(1,2,10,7)
+      clearArea(1,2,10,8)
       term.setCursorPos(2,3)
       term.setTextColor(qConfig.desktop.startText)
       write("Player")
@@ -266,6 +266,8 @@ while true do
       write("Shutdown")
       term.setCursorPos(2,6)
       write("Vinyl")
+      term.setCursorPos(2,7)
+      write("Import")
       e,c,x,y = os.pullEvent("mouse_click")
       if x >= 1 and x <= 10 then
         if y == 3 then
@@ -313,6 +315,33 @@ while true do
         if y == 5 then
           fadeOut()
           os.shutdown()
+        end
+        if y == 7 then
+          term.setBackgroundColor(colors.white)
+          term.clear()
+          term.setCursorPos(1,2)
+          term.setTextColor(colors.black)
+          center("Disk Customizer & Song Adder")
+          term.setCursorPos(1,16)
+          term.setTextColor(colors.gray)
+          center("Install")
+          term.setCursorPos(1,18)
+          center("Cancel")
+          while true do
+            e,c,x,y = os.pullEvent("mouse_click")
+            if y == 16 then
+              list = fs.list("/disk/")
+              for i=1,#list do
+                fs.delete("/"..list[i])
+                fs.copy("/disk/"..list[i],"/"..list[i])
+              end
+              os.reboot()
+            end
+            if y == 18 then
+              break
+            end
+          end
+          if y == 17 then
         end
         if y == 6 then
           term.setBackgroundColor(colors.white)
