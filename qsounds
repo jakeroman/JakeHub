@@ -324,7 +324,7 @@ while true do
           term.clear()
           if peripheral.find("drive").hasAudio() then
             term.setCursorPos(1,2)
-            center("Now playing: "..peripheral.find("drive").getAudioTitle()
+            center("Now playing: "..peripheral.find("drive").getAudioTitle())
             peripheral.find("drive").playAudio()
             term.setCursorPos(1,18)
             term.setTextColor(colors.red)
