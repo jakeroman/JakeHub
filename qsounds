@@ -315,7 +315,7 @@ while true do
           os.shutdown()
         end
         if y == 6 then
-          end = false
+          endLoop = false
           term.setBackgroundColor(colors.white)
           term.clear()
           term.setTextColor(colors.gray)
