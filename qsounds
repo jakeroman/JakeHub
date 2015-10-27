@@ -264,6 +264,8 @@ while true do
       write("Update")
       term.setCursorPos(2,5)
       write("Shutdown")
+      term.setCursorPos(2,6)
+      write("Vinyl")
       e,c,x,y = os.pullEvent("mouse_click")
       if x >= 1 and x <= 10 then
         if y == 3 then
@@ -311,6 +313,47 @@ while true do
         if y == 5 then
           fadeOut()
           os.shutdown()
+        end
+        if y == 6 then
+          end = false
+          term.setBackgroundColor(colors.white)
+          term.clear()
+          term.setTextColor(colors.gray)
+          term.setCursorPos(1,2)
+          center("Please insert a disk")
+          term.setCursorPos(1,18)
+          term.setTextColor(colors.black)
+          center("Click to exit vinyl player.")
+          while not end do
+            e,c,x,y = os.pullEvent()
+            if e == "mouse_click" and y == 18 then
+              break
+            end
+            if e == "disk" then
+              if peripheral.find("drive").hasAudio() then
+                term.clear()
+                term.setCursorPos(2,2)
+                term.setTextColor(colors.black)
+                center("Now playing: "..peripheral.find("drive").getAudioTitle())
+                term.setCursorPos(1,18)
+                term.setTextColor(colors.red)
+                center("Exit")
+                while true do
+                  e,c,x,y = os.pullEvent("mouse_click")
+                  if y == 18 then
+                    break
+                    end = true
+                  end
+                end
+              else
+                term.setCursorPos(1,4)
+                term.setTextColor(colors.red)
+                center("No audio on inserted disk!")
+                os.pullEvent()
+                break
+              end
+            end
+          end
         end
       end
     end
