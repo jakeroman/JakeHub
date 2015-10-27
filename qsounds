@@ -329,7 +329,7 @@ while true do
           center("Cancel")
           while true do
             if not fs.exists("/disk") then
-              return
+              break
             end
             e,c,x,y = os.pullEvent("mouse_click")
             if y == 16 then
