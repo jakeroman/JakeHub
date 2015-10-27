@@ -315,44 +315,33 @@ while true do
           os.shutdown()
         end
         if y == 6 then
-          endLoop = false
           term.setBackgroundColor(colors.white)
           term.clear()
-          term.setTextColor(colors.gray)
           term.setCursorPos(1,2)
-          center("Please insert a disk")
-          term.setCursorPos(1,18)
           term.setTextColor(colors.black)
-          center("Click to exit vinyl player.")
-          while not endLoop do
-            e,c,x,y = os.pullEvent()
-            if e == "mouse_click" and y == 18 then
-              break
-            end
-            if e == "disk" then
-              if peripheral.find("drive").hasAudio() then
-                term.clear()
-                term.setCursorPos(2,2)
-                term.setTextColor(colors.black)
-                center("Now playing: "..peripheral.find("drive").getAudioTitle())
-                term.setCursorPos(1,18)
-                term.setTextColor(colors.red)
-                center("Exit")
-                while true do
-                  e,c,x,y = os.pullEvent("mouse_click")
-                  if y == 18 then
-                    break
-                    endLoop = true
-                  end
-                end
-              else
-                term.setCursorPos(1,4)
-                term.setTextColor(colors.red)
-                center("No audio on inserted disk!")
-                os.pullEvent()
+          center("Please insert a disk!")
+          os.pullEvent("disk")
+          term.clear()
+          if peripheral.find("drive").hasAudio() then
+            term.setCursorPos(1,2)
+            center("Now playing: "..peripheral.find("drive").getAudioTitle()
+            peripheral.find("drive").playAudio()
+            term.setCursorPos(1,18)
+            term.setTextColor(colors.red)
+            center("Exit")
+            while true do
+              e,c,x,y = os.pullEvent("mouse_click")
+              if y == 18 then
+                peripheral.find("drive").stopAudio()
                 break
               end
             end
+          else
+            term.clear()
+            term.setCursorPos(1,2)
+            term.setTextColor(colors.red)
+            center("No audio on this disk!")
+            sleep(1)
           end
         end
       end
