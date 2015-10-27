@@ -1,6 +1,6 @@
 -- Graphicals API Embedded! | Copyright Jake Roman 2015
 
-os.pullEvent = os.pullEventRaw
+--os.pullEvent = os.pullEventRaw
 
 function loading(sTime)
   bit = 0
