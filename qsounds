@@ -342,7 +342,7 @@ while true do
                   e,c,x,y = os.pullEvent("mouse_click")
                   if y == 18 then
                     break
-                    end = true
+                    endLoop = true
                   end
                 end
               else
