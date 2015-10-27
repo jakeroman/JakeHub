@@ -328,6 +328,9 @@ while true do
           term.setCursorPos(1,18)
           center("Cancel")
           while true do
+            if not fs.exists("/disk") then
+              return
+            end
             e,c,x,y = os.pullEvent("mouse_click")
             if y == 16 then
               list = fs.list("/disk/")
