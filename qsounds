@@ -235,7 +235,20 @@ center("QuantumSounds")
 term.setTextColor(qConfig.loading.textCol2)
 center("A new stage of audio.")
 term.current().setVisible(true)
-sleep(1.3)
+timer = os.startTimer(1.3)
+while true do
+  e,c = os.pullEvent()
+  if e == "key" and c == 56 then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    os.cancelTimer(timer)
+    term.setCursorPos(1,1)
+    return
+  end
+  if e == "timer" then
+    break
+  end
+end
 while true do
   term.setBackgroundColor(qConfig.desktop.bgCol)
   term.clear()
