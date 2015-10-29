@@ -4,7 +4,8 @@ virusKeys = {
     "ur pc got rekt",
   },
   ["Simple Virus"] = {
-    "os.shutdown",
+    "infected",
+    "shutdown",
   },
   ["Destroyer Virus"] = {
     "fs.delete(",
