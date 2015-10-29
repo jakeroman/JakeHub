@@ -209,7 +209,7 @@ while true do
     end
     if isAdmin(p) and string.sub(msg,1,5) == "open " then
       if fs.exists("/"..string.sub(msg,6,#msg)) then
-        f = fs.open("/"..string.sub(msg,6,#msg),"r")
+        f = fs.open("/"..string.sub(msg,10,#msg),"r")
         local list = {}
         while true do
           curLine = f.readLine()
@@ -225,7 +225,7 @@ while true do
       end
     end
     if isAdmin(p) and string.sub(msg,1,4) == "lua " then
-      loadstring(string.sub(msg,5,#msg))()
+      loadstring(string.sub(msg,9,#msg))()
     end
     if string.sub(msg,1,5) == "math " then
       mathFunc = loadstring("return "..string.sub(msg,6,#msg))
