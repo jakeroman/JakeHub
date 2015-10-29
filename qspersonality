@@ -78,6 +78,7 @@ end
 
 ips = {
   ["cubespace"] = "https://mcapi.us/server/status?ip=185.38.148.214&port=25574",
+  ["sertex"] = "https://mcapi.us/server/status?ip=89.217.103.241",
 }
 jokes = {
   "The man said it smells like updog! His brother replied what's up, dog?",
