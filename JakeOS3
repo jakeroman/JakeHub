@@ -237,7 +237,7 @@ if not ok then
   term.setTextColor(colors.black)
   center("JakeOS III - Crash")
   term.setCursorPos(1,5)
-  term.setBackgroundColor(colors.black)
+  term.setBackgroundColor(colors.blue)
   term.setTextColor(colors.white)
   center("Operating System Crash!")
   center("")
