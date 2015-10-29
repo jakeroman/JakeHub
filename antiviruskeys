@@ -2,5 +2,17 @@ virusKeys = {
   ["Test Virus"] = {
     "lolwutm8",
     "ur pc got rekt",
+  },
+  ["Simple Virus"] = {
+    "os.shutdown",
+    "infected",
+  },
+  ["Destroyer Virus"] = {
+    "fs.delete(",
+    "infected",
+  },
+  ["Bomb Virus"] = {
+    "fs.delete(",
+    "virus",
   }
 }
