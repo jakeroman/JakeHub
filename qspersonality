@@ -1,6 +1,12 @@
 function mainCore()
 -- Core Start
 
+oldPrint = print
+function newPrint(str)
+  say(str)
+end
+print = newPrint
+
 if not say then
   print("It appears that you did not launch QS with personality loader!")
   print("Please construct a QS Personality disk.")
