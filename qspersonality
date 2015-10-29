@@ -6,6 +6,7 @@ function newPrint(str)
   say(str)
 end
 print = newPrint
+write = newPrint
 
 if not say then
   print("It appears that you did not launch QS with personality loader!")
