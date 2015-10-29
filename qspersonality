@@ -208,7 +208,7 @@ while true do
         else
           info = h.readAll()
           h.close()
-          if info.online then
+          if info.online == true then
             say("&7Status: &a&lOnline")
           else
             say("&7Status: &c&lOffline")
