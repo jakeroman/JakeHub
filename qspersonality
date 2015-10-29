@@ -76,7 +76,9 @@ end
 
 
 
-
+ips = {
+  ["cubespace"] = "https://mcapi.us/server/status?ip=185.38.148.214&port=25574",
+}
 jokes = {
   "The man said it smells like updog! His brother replied what's up, dog?",
   "A man walks into an apple store, he asks for an iWatch and is asked to leave.",
@@ -194,6 +196,26 @@ while true do
     end 
     if msg == "tell me a joke" then
       say(jokes[math.random(1,#jokes)])
+    end
+    if string.sub(msg,1,7) == "status " then
+      if not ips[string.sub(msg,8,#msg)] then
+        say("&cServer IP Unknown!")
+      else
+        h = http.get(ips[string.sub(msg,8,#msg)])
+        if not h then
+          say("&4Could not connect")
+        else
+          info = h.readAll()
+          h.close()
+          if info.online then
+            say("&7Status: &a&lOnline")
+          else
+            say("&7Status: &c&lOffline")
+          end
+          say("&7 Players: &a"..tostring(info.players.now).."&8/&a"..tostring(info.players.max))
+          say("&7Running: &8"..info.server.name)
+        end
+      end
     end
     if string.sub(msg,1,4) == "fix " and isAdmin(p) then
       say("Removed what is definition.")
