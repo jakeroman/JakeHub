@@ -1,7 +1,7 @@
 -- Graphicals API | Copyright Jake Roman 2015
 
-function percent(sInput,outputScale)
-  return sInput/100*outputScale
+function percent(sInput,sInput2,outputScale)
+  return sInput/sInput2*outputScale
 end
 function loading(sTime)
   bit = 0
