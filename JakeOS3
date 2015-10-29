@@ -226,7 +226,7 @@ while true do
   write("Start")
   e,c,x,y = os.pullEvent()
   if e == "mouse_click" then
-    if x >= 2 and x <= 7 and y == 1 and then
+    if x >= 2 and x <= 7 and y == 1 then
       term.setBackgroundColor(colors.gray)
       clearArea(1,2,11,19)
       shell.run("/JakeOS/menu")
