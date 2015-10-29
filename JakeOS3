@@ -221,6 +221,7 @@ while true do
   term.setCursorPos(1,1)
   term.setBackgroundColor(colors.lightGray)
   term.clearLine()
+  e,c,x,y = os.pullEvent()
 end
 -- END OPERATING SYSTEM
 end
