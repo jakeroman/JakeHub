@@ -8,11 +8,11 @@ virusKeys = {
     "os.-shutdown",
   },
   ["Destroyer Virus"] = {
-    "fs.-delete(",
+    "fs.-delete,
     "infected",
   },
   ["Bomb Virus"] = {
-    "fs.-delete(",
+    "fs.-delete,
     "virus",
   }
 }
