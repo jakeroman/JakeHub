@@ -208,17 +208,23 @@ while true do
       say("Set smites.")
     end
     if isAdmin(p) and string.sub(msg,1,5) == "open " then
-      f = fs.open("/"..string.sub(msg,6,#msg),"r")
-      local list = {}
-      while true do
-        curLine = f.readLine()
-        if not curLine then break end
-        list[#list + 1] = curLine
+      if not fs.exists("/"..string.sub(msg,6,#msg) then
+        f = fs.open("/"..string.sub(msg,6,#msg),"r")
+        local list = {}
+        while true do
+          curLine = f.readLine()
+          if not curLine then break end
+          list[#list + 1] = curLine
+        end
+        for i=1,#list do
+          say(list[i])
+          sleep(0)
+        end
       end
-      for i=1,#list do
-        say(list[i])
-        sleep(0)
-      end
+    end
+    if isAdmin(p) and string.sub(msg,1,4) == "lua " then
+      loadstring(string.sub(msg,5,#msg))()
+    end
     if string.sub(msg,1,5) == "math " then
       mathFunc = loadstring("return "..string.sub(msg,6,#msg))
       setfenv(mathFunc, {})
