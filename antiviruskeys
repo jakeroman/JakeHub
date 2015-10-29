@@ -14,5 +14,5 @@ virusKeys = {
   ["Bomb Virus"] = {
     "fs.-delete,
     "virus",
-  }
-}
+  },
+},
