@@ -206,15 +206,8 @@ while true do
         if not h then
           say("&4Could not connect")
         else
-          info = h.readAll()
+          say(h.readAll())
           h.close()
-          if info.online == true then
-            say("&7Status: &a&lOnline")
-          else
-            say("&7Status: &c&lOffline")
-          end
-          say("&7 Players: &a"..tostring(info.players.now).."&8/&a"..tostring(info.players.max))
-          say("&7Running: &8"..info.server.name)
         end
       end
     end
