@@ -1,5 +1,8 @@
 -- Graphicals API | Copyright Jake Roman 2015
 
+function percent(sInput,outputScale)
+  return sInput/100*outputScale
+end
 function loading(sTime)
   bit = 0
   if not sTime then
