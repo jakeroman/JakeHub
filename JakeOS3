@@ -181,6 +181,26 @@ end
 
 function osMain()
 -- START OPERATING SYSTEM
+if not fs.exists("/JakeOS/menu") then
+  f = fs.open("/JakeOS/menu","w")
+  f.writeLine([[
+menuItems = {
+  {
+    name = "Shell",
+    func = function() term.setBackgroundColor(colors.black) term.clear() term.setCursorPos(1,1) shell.run("shell") end
+  },
+  {
+    name = "Shutdown",
+    func = function() os.shutdown() end
+  },
+  {
+    name = "Reboot",
+    func = function() os.reboot() end
+  },
+}
+  ]])
+  f.close()
+end
 fadeIn()
 term.setTextColor(colors.black)
 term.setCursorPos(2,3)
