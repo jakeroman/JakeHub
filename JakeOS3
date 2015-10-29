@@ -225,23 +225,25 @@ while true do
   term.setTextColor(colors.black)
   write("Start")
   e,c,x,y = os.pullEvent()
-  if x >= 2 and x <= 7 and y == 1 and e == "mouse_click" then
-    term.setBackgroundColor(colors.gray)
-    clearArea(1,2,11,19)
-    shell.run("/JakeOS/menu")
-    y = 3
-    menu = {}
-    for i=1,#menuItems do
-      term.setCursorPos(2,y)
-      term.setTextColor(colors.white)
-      print(menuItems[i].name)
-      menu[y] = menuItems[i].func
-      y = y + 1
-    end
-    e,c,x,y = os.pullEvent("mouse_click")
-    if x >= 1 and x <= 11 then
-      if menu[y] then
-        menu[y]()
+  if e == "mouse_click" then
+    if x >= 2 and x <= 7 and y == 1 and then
+      term.setBackgroundColor(colors.gray)
+      clearArea(1,2,11,19)
+      shell.run("/JakeOS/menu")
+      y = 3
+      menu = {}
+      for i=1,#menuItems do
+        term.setCursorPos(2,y)
+        term.setTextColor(colors.white)
+        print(menuItems[i].name)
+        menu[y] = menuItems[i].func
+        y = y + 1
+      end
+      e,c,x,y = os.pullEvent("mouse_click")
+      if x >= 1 and x <= 11 then
+        if menu[y] then
+          menu[y]()
+        end
       end
     end
   end
