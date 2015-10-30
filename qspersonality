@@ -1,3 +1,6 @@
+if fs.exists("/disk/quiet") then
+  quiet = true
+end
 function mainCore()
 -- Core Start
 
@@ -26,7 +29,9 @@ end
 -- Gather Admins --
   adminList = {}
   
-  say("&9Initializing Admins..")
+  if not quiet then
+    say("&9Initializing Admins..")
+  end
   
   if fs.exists("/disk/admins") then
     f = fs.open("/disk/admins","r")
@@ -35,33 +40,47 @@ end
       if not curLine then break end
       adminList[curLine] = true
     end
-    say("&aSuccessfully initialised admins!")
+    if not quiet then
+      say("&aSuccessfully initialised admins!")
+    end
   else
     adminList = {["jakejakey1208"] = true}
-    say("&cNo adminlist!")
+    if not quiet then
+      say("&cNo adminlist!")
+    end
   end
 
 -- End Script --
 
-say("&cConnecting to update server...")
+if not quiet then
+  say("&cConnecting to update server...")
+end
 h = http.get('https://raw.github.com/jakemroman/JakeHub/master/qspersonality')
 if not h then
-  say("&4Unable to connect!")
+  if not quiet then
+    say("&4Unable to connect to update server!")
+  end
 else
-  say("&aConnected, checking for updates")
+  if not quiet then
+    say("&aConnected, checking for updates")
+  end
   local newData = h.readAll()
   h.close()
   f = fs.open(shell.getRunningProgram(),"r")
   local curData = f.readAll()
   f.close()
   if curData ~= newData then
-    say("&9Updating.")
+    if not quiet then
+      say("&9Updating.")
+    end
     f = fs.open(shell.getRunningProgram(),"w")
     f.writeLine(newData)
     f.close()
     say("&aUpdated! &7Reboot to take effect.")
   else
-    say("&3Up to date!")
+    if not quiet then
+      say("&3Up to date!")
+    end
   end
 end
 
