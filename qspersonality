@@ -179,18 +179,18 @@ while true do
       end
     end
   end
-  if e == "chatbox_command" and isAdmin(p) and m == "qc:power off" then
+  if e == "chatbox_command" and isAdmin(p,"ship.power") and m == "qc:power off" then
     run("setblock 205 171 81 152")
     say("&7Turning spaceship breaker: &c&lOFF")
   end
-  if e == "chatbox_command" and isAdmin(p) and m == "qc:power on" then
+  if e == "chatbox_command" and isAdmin(p,"ship.power") and m == "qc:power on" then
     run("setblock 205 171 81 0")
     say("&7Turning spaceship breaker: &a&lON")
   end
-  if e == "chatbox_command" and isAdmin(p) and string.sub(m,1,7) == "qc:run " then
+  if e == "chatbox_command" and isAdmin(p,"run.shell") and string.sub(m,1,7) == "qc:run " then
     shell.run(string.sub(m,8,#m))
   end
-  if e == "chatbox_command" and isAdmin(p) and m == "qc:shutdown" then
+  if e == "chatbox_command" and isAdmin(p,"core.shutdown") and m == "qc:shutdown" then
     say("&c&lShutting down!")
     os.shutdown()
   end
@@ -212,13 +212,12 @@ while true do
           say("&8"..i)
         end
       end
-      if not isAdmin("jakejakey1208") then say("&cNOT &4jakejakey1208?") end
     end
-    if msg == "reboot" and isAdmin(p) then
+    if msg == "reboot" and isAdmin(p,"core.reboot") then
       say("&9&lRebooting!")
       os.reboot()
     end
-    if msg == "shutdown" and isAdmin(p) then
+    if msg == "shutdown" and isAdmin(p,"core.shutdown") then
       say("&4&lShutting down..")
       os.shutdown()
     end 
@@ -238,7 +237,7 @@ while true do
         end
       end
     end
-    if string.sub(msg,1,4) == "fix " and isAdmin(p) then
+    if string.sub(msg,1,4) == "fix " and isAdmin(p,"define.fix") then
       say("Removed what is definition.")
       fs.delete("/disk/siri/siri-"..string.sub(msg,5,#msg))
     end
@@ -253,7 +252,7 @@ while true do
         say("&7Quiet mode &8- &a&lEnabled")
       end
     end
-    if msg == "setsmite" and isAdmin(p) then
+    if msg == "setsmite" and isAdmin(p,"smite.set") then
       say("Player to set smites of:")
       repeat
         e,s,player,target = os.pullEvent("chat_message")
@@ -267,7 +266,7 @@ while true do
       f.close()
       say("Set smites.")
     end
-    if isAdmin(p) and string.sub(msg,1,5) == "open " then
+    if isAdmin(p,"core.open") and string.sub(msg,1,5) == "open " then
       if fs.exists("/"..string.sub(m,10,#m)) then
         f = fs.open("/"..string.sub(m,10,#m),"r")
         local list = {}
@@ -284,7 +283,7 @@ while true do
         say("&4File non existant!")
       end
     end
-    if isAdmin(p) and string.sub(msg,1,4) == "lua " then
+    if isAdmin(p,"run.shell") and string.sub(msg,1,4) == "lua " then
       f = fs.open("/temp","w")
       f.writeLine(string.sub(m,9,#m))
       f.close()
@@ -310,7 +309,7 @@ while true do
     if msg == "hello" then
       say("Hello there, "..p)
     end
-    if string.sub(m,1,7) == "QS, op " and isAdmin(p) then
+    if string.sub(m,1,7) == "QS, op " and isAdmin(p,"core.op") then
       f = fs.open("/disk/admins/"..string.sub(m,8,#m),"w")
       f.write("*")
       f.close()
@@ -338,11 +337,11 @@ while true do
         say("&4You don't have any smites!")
       end
     end
-    if string.sub(m,1,9) == "QS, deop " and isAdmin(p) then
+    if string.sub(m,1,9) == "QS, deop " and isAdmin(p,"core.deop") then
       fs.delete("/disk/admins/"..string.sub(m,10,#m))
       say("&cRemoved from admin list.")
     end
-    if msg == "chat" and isAdmin(p) then
+    if msg == "chat" and isAdmin(p,"chat.trig") then
       say("Trigger?")
       repeat
         e,s,player,trig = os.pullEvent("chat_message")
