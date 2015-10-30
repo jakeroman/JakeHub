@@ -240,7 +240,7 @@ while true do
         fs.delete("/disk/quiet")
         say("&7Quiet mode &8- &c&lDisabled")
       else
-        f = fs.open("/disk/core","w")
+        f = fs.open("/disk/quiet","w")
         f.writeLine("true")
         f.close()
         say("&7Quiet mode &8- &a&lEnabled")
