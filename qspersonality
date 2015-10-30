@@ -205,14 +205,6 @@ while true do
   end
   if e == "chat_message" and string.lower(string.sub(m,1,4)) == "qs, " then
     local msg = string.lower(string.sub(m,5,#m))
-    if msg == "admins" then
-      say("&7Admins are")
-      for i,v in pairs(adminList) do
-        if v == true then
-          say("&8"..i)
-        end
-      end
-    end
     if msg == "reboot" and isAdmin(p,"core.reboot") then
       say("&9&lRebooting!")
       os.reboot()
