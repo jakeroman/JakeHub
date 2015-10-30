@@ -233,7 +233,7 @@ while true do
       say("Removed what is definition.")
       fs.delete("/disk/siri/siri-"..string.sub(msg,5,#msg))
     end
-    if msg == "quiet" and isAdmin(p) then
+    if msg == "quiet" and isAdmin(p,"chat.quiet") then
       if fs.exists("/disk/quiet") then
         fs.delete("/disk/quiet")
         say("&7Quiet mode &8- &c&lDisabled")
