@@ -235,6 +235,17 @@ while true do
       say("Removed what is definition.")
       fs.delete("/disk/siri/siri-"..string.sub(msg,5,#msg))
     end
+    if msg == "quiet" and isAdmin(p) then
+      if fs.exists("/disk/quiet") then
+        fs.delete("/disk/quiet")
+        say("&7Quiet mode &8- &c&lDisabled")
+      else
+        f = fs.open("/disk/core","w")
+        f.writeLine("true")
+        f.close()
+        say("&7Quiet mode &8- &a&lEnabled")
+      end
+    end
     if msg == "setsmite" and isAdmin(p) then
       say("Player to set smites of:")
       repeat
