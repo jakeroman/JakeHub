@@ -26,32 +26,6 @@ if not say then
   end
   f.close()
 end
--- Gather Admins --
-  adminList = {}
-  
-  if not quiet then
-    say("&9Initializing Admins..")
-  end
-  
-  if fs.exists("/disk/admins") then
-    f = fs.open("/disk/admins","r")
-    while true do
-      local curLine = f.readLine()
-      if not curLine then break end
-      adminList[curLine] = true
-    end
-    if not quiet then
-      say("&aSuccessfully initialised admins!")
-    end
-  else
-    adminList = {["jakejakey1208"] = true}
-    if not quiet then
-      say("&cNo adminlist!")
-    end
-  end
-
--- End Script --
-
 if not quiet then
   say("&cConnecting to update server...")
 end
@@ -118,16 +92,46 @@ jokes = {
 say("&7Activated: &a&lSuccessfully")
 term.clear()
 tempChat = {}
-function isAdmin(playerSel)
-  f = fs.open("/disk/admins","w")
-  for i,v in pairs(adminList) do
-    if v == true then
-      f.writeLine(i)
+function isAdmin(playerSel,permission)
+  if not fs.isDir("/disk/admins") then
+    fs.makeDir("/disk/admins")
+  end
+  adminList = {}
+  if not fs.exists("/disk/admins/"..playerSel) then
+    return false
+  end
+  local list = fs.list("/disk/admins")
+  for i=1,#list do
+    f = fs.open("/disk/admins/"..list[i],"r")
+    if f.readAll() == "*" then
+      adminList[list[i]] = true
+      f.close()
+    else
+      f.close()
+      f = fs.open("/disk/admins/"..list[i],"r")
+      adminList[list[i]] = {}
+      while true do
+        local curLine = f.readLine()
+        if not curLine then break end
+        adminList[list[i]][#adminList[list[i]] + 1] = curLine
+      end
+      f.close()
     end
   end
-  f.close()
   if adminList[playerSel] == true then
     return true
+  end
+  if adminList[playerSel] == nil then
+    return false
+  end
+  if type(adminList[playerSel]) ~= "table" then
+    return false
+  end
+  local playerList = adminList[playerSel]
+  for i=1,#playerList do
+    if playerList[i] == permission then
+      return true
+    end
   end
   return false
 end
@@ -166,7 +170,7 @@ while true do
     os.pullEvent = oldPull
     return
   end
-  if e == "chatbox_command" and isAdmin(p) then
+  if e == "chatbox_command" and isAdmin(p,"chat.say") then
     if string.sub(m,1,7) == "qc:say " then
       say(string.sub(m,8,#m))
     elseif p == "jakejakey1208" then
@@ -307,8 +311,9 @@ while true do
       say("Hello there, "..p)
     end
     if string.sub(m,1,7) == "QS, op " and isAdmin(p) then
-      adminList[string.sub(m,8,#m)] = true
-      isAdmin(p)
+      f = fs.open("/disk/admins/"..string.sub(m,8,#m),"w")
+      f.write("*")
+      f.close()
       say("&aAdded to admin list.")
     end
     if string.sub(msg,1,6) == "smite " then
@@ -334,8 +339,7 @@ while true do
       end
     end
     if string.sub(m,1,9) == "QS, deop " and isAdmin(p) then
-      adminList[string.sub(m,10,#m)] = false
-      isAdmin(p)
+      fs.delete("/disk/admins/"..string.sub(m,10,#m))
       say("&cRemoved from admin list.")
     end
     if msg == "chat" and isAdmin(p) then
