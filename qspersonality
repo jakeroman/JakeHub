@@ -337,10 +337,6 @@ while true do
         say("&4You don't have any smites!")
       end
     end
-    if string.sub(m,1,9) == "QS, deop " and isAdmin(p,"core.deop") then
-      fs.delete("/disk/admins/"..string.sub(m,10,#m))
-      say("&cRemoved from admin list.")
-    end
     if msg == "chat" and isAdmin(p,"chat.trig") then
       say("Trigger?")
       repeat
