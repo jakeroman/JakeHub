@@ -168,9 +168,6 @@ while true do
   end
   if e == "chatbox_command" and isAdmin(p) then
     if string.sub(m,1,3) == "qc:" then
-      if p == "Ale32bit" and string.sub(m,4,7) == "say" then
-        say(string.sub(m,8,#m)
-      end
     else
       if p ~= "Ale32bit" then
         say(m)
