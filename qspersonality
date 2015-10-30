@@ -258,6 +258,17 @@ while true do
       f.close()
       say("Set smites.")
     end
+    if isAdmin(p,"core.pause") and msg == "pause" then
+      say("&7Core &c&lPaused")
+      run("sudo "..p.." ping &fSay &7QS, resume &fto resume.")
+      while true do
+        e,s,p,m = os.pullEvent("chat_message")
+        if isAdmin(p,"core.pause") and m == "QS, resume" then
+          break
+        end
+      end
+      say("&7Core &a&lResumed")
+    end
     if isAdmin(p,"core.open") and string.sub(msg,1,5) == "open " then
       if fs.exists("/"..string.sub(m,10,#m)) then
         f = fs.open("/"..string.sub(m,10,#m),"r")
