@@ -1,0 +1,248 @@
+-- Graphicals API Embedded | Copyright Jake Roman 2015
+
+function percent(sInput,sInput2,outputScale)
+  return sInput/sInput2*outputScale
+end
+function loading(sTime)
+  bit = 0
+  if not sTime then
+    local sTime = 2
+  end
+  for i=1,sTime do
+    for p=1,8 do
+      sleep(0.1)
+      term.setCursorPos(25,9)
+      term.setBackgroundColor(colors.lightGray)
+      write("   ")
+      term.setCursorPos(25,10)
+      write(" ")
+      term.setCursorPos(27,10)
+      write(" ")
+      term.setCursorPos(25,11)
+      write("   ")
+      if p == 1 then
+        term.setCursorPos(25,9)
+      end
+      if p == 2 then
+        term.setCursorPos(26,9)
+      end
+      if p == 3 then
+        term.setCursorPos(27,9)
+      end
+      if p == 4 then
+        term.setCursorPos(27,10)
+      end
+      if p == 5 then
+        term.setCursorPos(27,11)
+      end
+      if p == 6 then
+        term.setCursorPos(26,11)
+      end
+      if p == 7 then
+        term.setCursorPos(25,11)
+      end
+      if p == 8 then
+        term.setCursorPos(25,10)
+      end
+      term.setBackgroundColor(colors.blue)
+      write(" ")
+      if p == 1 then
+        term.setCursorPos(25,10)
+      end
+      if p == 2 then
+        term.setCursorPos(25,9)
+      end
+      if p == 3 then
+        term.setCursorPos(26,9)
+      end
+      if p == 4 then
+        term.setCursorPos(27,9)
+      end
+      if p == 5 then
+        term.setCursorPos(27,10)
+      end
+      if p == 6 then
+        term.setCursorPos(27,11)
+      end
+      if p == 7 then
+        term.setCursorPos(26,11)
+      end
+      if p == 8 then
+        term.setCursorPos(25,11)
+      end
+      term.setBackgroundColor(colors.lightBlue)
+      write(" ")
+    end
+  end
+end
+function fadeIn()
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  sleep(0.1)
+  term.setBackgroundColor(colors.gray)
+  term.clear()
+  sleep(0.1)
+  term.setBackgroundColor(colors.lightGray)
+  term.clear()
+  sleep(0.1)
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  sleep(0.1)
+end
+function rainbowPrint(str)
+  color = 0
+  for i=1,#str do
+    color = color + 1
+    if color == 1 then
+      term.setTextColor(colors.red)
+    end
+    if color == 2 then
+      term.setTextColor(colors.orange)
+    end
+    if color == 3 then
+      term.setTextColor(colors.yellow)
+    end
+    if color == 4 then
+      term.setTextColor(colors.lime)
+    end
+    if color == 5 then
+      term.setTextColor(colors.blue)
+      color = 0
+    end
+    write(string.sub(str,i,i))
+  end
+  print("")
+end
+function box(xPos1,yPos1,xPos2,yPos2,sColor,inCol)
+  paintutils.drawFilledBox(xPos1,yPos1,xPos2,yPos2,sColor)
+  if inCol then
+    paintutils.drawFilledBox(xPos1 + 1,yPos1 + 1,xPos2 - 1,yPos2 - 1,inCol)
+  end
+end
+function center(str,rainbow)
+  maxX,maxY = term.getSize()
+  curX,curY = term.getCursorPos()
+  maxX = maxX / 2
+  subX = #str / 2
+  maxX = maxX - subX
+  term.setCursorPos(maxX,curY)
+  if rainbow then
+    rainbowPrint(str)
+  else
+    print(str)
+  end
+end
+function fadeOut()
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  sleep(0.2)
+  term.setBackgroundColor(colors.lightGray)
+  term.clear()
+  sleep(0.2)
+  term.setBackgroundColor(colors.gray)
+  term.clear()
+  sleep(0.2)
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  sleep(0.2)
+end
+function fadeTo(sColor)
+  for i=1,19 do
+    term.setCursorPos(1,i)
+    term.setBackgroundColor(sColor)
+    term.clearLine()
+    sleep(0.1)
+  end
+end
+function loadBar(col1,col2)
+  if not col1 then col1 = colors.red end
+  if not col2 then col2 = colors.lime end
+  curX,curY = term.getCursorPos()
+  term.setCursorPos(2,curY)
+  term.setBackgroundColor(col1)
+  for i=1,49 do
+    write(" ")
+  end
+  term.setCursorPos(2,curY)
+  term.setBackgroundColor(col2)
+  for i=1,49 do
+    sleep(0)
+    write(" ")
+  end
+end
+function clearArea(xPos1,yPos1,xPos2,yPos2)
+  for curY=yPos1,yPos2 do
+    for curX=xPos1,xPos2 do
+      term.setCursorPos(curX,curY)
+      write(" ")
+    end
+  end
+end
+
+fadeIn()
+local doneLoad = 7
+local function renderLoading(cur,done)
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.blue)
+  write("Installing JakeOS...")
+  local percentHundred = math.floor(percent(cur,done,100))
+  term.setCursorPos(50 - #tostring(percentHundred),2)
+  term.setTextColor(colors.lightBlue)
+  write(tostring(percentHundred).."%")
+  term.setCursorPos(2,18)
+  term.setBackgroundColor(colors.lightGray)
+  for i=1,49 do
+    write(" ")
+  end
+  term.setCursorPos(2,18)
+  term.setBackgroundColor(colors.lime)
+  for i=1,percent(cur,done,49) do
+    write(" ")
+  end
+end
+renderLoading(0,doneLoad)
+h = http.get("https://raw.github.com/jakemroman/JakeHub/master/JakeOS3")
+if not h then
+  error("Could not connect to download server!")
+end
+renderLoading(1,doneLoad)
+local file = h.readAll()
+h.close()
+f = fs.open("/startup","w")
+f.writeLine(file)
+f.close()
+sleep(0.3)
+renderLoading(2,doneLoad)
+fs.makeDir("/JakeOS")
+sleep(0.35)
+renderLoading(3,doneLoad)
+--f = fs.open("/JakeOS/menu","w")
+--f.writeLine([[
+--menuItems = {
+--  {
+--    name = "Shutdown",
+--    func = function() os.shutdown() end,
+--  },
+--}
+--]])
+--f.close()
+sleep(0.2)
+renderLoading(4,doneLoad)
+term.setCursorPos(1,16)
+term.setTextColor(colors.black)
+term.setBackgroundColor(colors.white)
+sleep(0.3)
+renderLoading(5,doneLoad)
+if peripheral.find("drive") then
+  local eject = true
+end
+renderLoading(6,doneLoad)
+if eject == true then
+  peripheral.find("drive").ejectDisk()
+end
+sleep(0.4)
+renderLoading(7,doneLoad)
+sleep(0.7)
+os.reboot()
