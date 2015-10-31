@@ -61,6 +61,11 @@ else
     end
   end
 end
+say = nil
+function say(str)
+  peripheral.find("command").setCommand("say "..fmt(str))
+  peripheral.find("command").runCommand()
+end
 
 
 
