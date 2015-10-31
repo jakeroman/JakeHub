@@ -262,7 +262,12 @@ while true do
         if not h then
           say("&4Could not connect")
         else
-          say(h.readAll())
+          local status = h.readAll()
+          if string.sub(status,string.find(status,'"online,"'),string.find(status,'"online,"') + 5) == "false" then
+            say("&7Status: &c&lOffline")
+          else
+            say("&7Status: &a&lOnline")
+          end
           h.close()
         end
       end
