@@ -258,6 +258,15 @@ while true do
       f.close()
       say("Set smites.")
     end
+    if isAdmin(p,"core.destroy") and msg == "self destruct" then
+      if not fs.exists("/disk/selfdestruct") then
+        say("&cSelf destruct system not found!")
+      else
+        say("&4&l&k!!! &c&lALERT &4&l&k!!! &cSelf destruct initiated!")
+        sleep(0.5)
+        shell.run("/disk/selfdestruct")
+      end
+    end
     if isAdmin(p,"core.pause") and msg == "pause" then
       say("&7Core &c&lPaused")
       run("sudo "..p.." ping &fSay &7QS, resume &fto resume.")
