@@ -64,6 +64,7 @@ end
 if fs.exists("/disk/say") then
   say = nil
   function say(str)
+    sleep(0)
     peripheral.find("command").setCommand("say "..fmt(str))
     peripheral.find("command").runCommand()
   end
