@@ -241,7 +241,7 @@ while true do
     if msg == "tell me a joke" then
       say(jokes[math.random(1,#jokes)])
     end
-    if msg == "ping" and isAdmin(p,core.ping)
+    if msg == "ping" and isAdmin(p,core.ping) then
       say("&4WARNING: &cThis config requires a core reboot to take effect.")
       if fs.exists("/disk/say") then
         fs.delete("/disk/say")
