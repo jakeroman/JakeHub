@@ -61,10 +61,12 @@ else
     end
   end
 end
-say = nil
-function say(str)
-  peripheral.find("command").setCommand("say "..fmt(str))
-  peripheral.find("command").runCommand()
+if fs.exists("/disk/say") then
+  say = nil
+  function say(str)
+    peripheral.find("command").setCommand("say "..fmt(str))
+    peripheral.find("command").runCommand()
+  end
 end
 
 
@@ -238,6 +240,18 @@ while true do
     end
     if msg == "tell me a joke" then
       say(jokes[math.random(1,#jokes)])
+    end
+    if msg == "ping" and isAdmin(p,core.ping)
+      say("&4WARNING: &cThis config requires a core reboot to take effect.")
+      if fs.exists("/disk/say") then
+        fs.delete("/disk/say")
+        say("&7The core will now use &c&lPing")
+      else
+        f = fs.open("/disk/say","w")
+        f.write("true")
+        f.close()
+        say("&7The core will now use &a&lSay")
+      end
     end
     if string.sub(msg,1,7) == "status " then
       if not ips[string.sub(msg,8,#msg)] then
