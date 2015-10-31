@@ -213,7 +213,7 @@ while true do
       say("&4&lShutting down..")
       os.shutdown()
     end
-    if msg == "create item" and isAdmin(p,"core.give") then
+    if string.sub(msg,1,7) == "create " and isAdmin(p,"core.give") then
       say("Item name")
       while true do
         e,s,player,message = os.pullEvent("chat_message")
@@ -225,7 +225,7 @@ while true do
         if player == p then break end
       end
       say("There you go!")
-      run('/give '..p..' 293 1 0 {display:{Name:"'..message..'",Lore:["'..lore..'"]}}')
+      run('/give '..p..' '..string.sub(msg,8,#msg)..' 1 0 {display:{Name:"'..message..'",Lore:["'..lore..'"]}}')
     end
     if msg == "tell me a joke" then
       say(jokes[math.random(1,#jokes)])
