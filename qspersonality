@@ -165,7 +165,7 @@ while true do
   if not fs.exists("/disk") then
     say("&4Err- &cmy disk was removed.")
     say("@p &7is the nearest player")
-    sleep(1)
+    sleep(5.4)
     say("&4&lShutting down!")
     os.shutdown()
   end
