@@ -254,24 +254,6 @@ while true do
         say("&7The core will now use &a&lSay")
       end
     end
-    if string.sub(msg,1,7) == "status " then
-      if not ips[string.sub(msg,8,#msg)] then
-        say("&cServer IP Unknown!")
-      else
-        h = http.get(ips[string.sub(msg,8,#msg)])
-        if not h then
-          say("&4Could not connect")
-        else
-          local status = h.readAll()
-          if string.sub(status,string.find(status,'"online",'),string.find(status,'"online",') + 5) == "false" then
-            say("&7Status: &c&lOffline")
-          else
-            say("&7Status: &a&lOnline")
-          end
-          h.close()
-        end
-      end
-    end
     if string.sub(msg,1,4) == "fix " and isAdmin(p,"define.fix") then
       say("Removed what is definition.")
       fs.delete("/disk/siri/siri-"..string.sub(msg,5,#msg))
