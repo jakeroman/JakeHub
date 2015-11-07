@@ -222,7 +222,7 @@ while true do
       os.reboot()
     end
     if string.sub(msg,1,5) == "kick " then
-      run("minecraft:kick "..string.sub(msg,6,#msg))
+      run("minecraft:kick "..string.sub(fmt(msg,6,#msg)))
     end
     if msg == "shutdown" and isAdmin(p,"core.shutdown") then
       say("&4&lShutting down..")
