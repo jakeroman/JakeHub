@@ -104,32 +104,33 @@ jokes = {
 say("&7Activated: &a&lSuccessfully")
 term.clear()
 tempChat = {}
-function isAdmin(playerSel,permission)
-  if not fs.isDir("/disk/admins") then
-    fs.makeDir("/disk/admins")
-  end
-  adminList = {}
-  if not fs.exists("/disk/admins/"..playerSel) then
-    return false
-  end
-  local list = fs.list("/disk/admins")
-  for i=1,#list do
+
+if not fs.isDir("/disk/admins") then
+  fs.makeDir("/disk/admins")
+end
+adminList = {}
+if not fs.exists("/disk/admins/"..playerSel) then
+  return false
+end
+local list = fs.list("/disk/admins")
+for i=1,#list do
+  f = fs.open("/disk/admins/"..list[i],"r")
+  if f.readAll() == "*" then
+    adminList[list[i]] = true
+    f.close()
+  else
+    f.close()
     f = fs.open("/disk/admins/"..list[i],"r")
-    if f.readAll() == "*" then
-      adminList[list[i]] = true
-      f.close()
-    else
-      f.close()
-      f = fs.open("/disk/admins/"..list[i],"r")
-      adminList[list[i]] = {}
-      while true do
-        local curLine = f.readLine()
-        if not curLine then break end
-        adminList[list[i]][#adminList[list[i]] + 1] = curLine
-      end
-      f.close()
+    adminList[list[i]] = {}
+    while true do
+      local curLine = f.readLine()
+      if not curLine then break end
+      adminList[list[i]][#adminList[list[i]] + 1] = curLine
     end
+    f.close()
   end
+end
+function isAdmin(playerSel,permission)
   if adminList[playerSel] == true then
     return true
   end
