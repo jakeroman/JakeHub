@@ -240,12 +240,17 @@ term.setCursorPos(46,2)
 term.setBackgroundColor(colors.lightBlue)
 term.setTextColor(colors.blue)
 write("Update")
+local endLoopMode = false
 while true do
+  if endLoopMode then
+    break
+  end
   e,c,x,y = os.pullEvent("mouse_click")
   if x >= 1 and x <= 4 and y == 2 then
     break
   end
   if x >= 46 and x <= 51 and y == 2 then
+    endLoopMode = true
     term.setCursorPos(2,2)
     term.setBackgroundColor(colors.white)
     term.clearLine()
