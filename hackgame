@@ -1,5 +1,7 @@
 -- Graphicals API Embedded | Copyright Jake Roman 2015
 
+setVisibleOn = false
+
 local resGood = true
 maxX,maxY = term.getSize()
 if maxX ~= 51 then
@@ -204,7 +206,9 @@ end
 -- GAME START
 
 local function visible(setValue)
-  term.current().setVisible(setValue)
+  if setVisibleOn then
+    term.current().setVisible(setValue)
+  end
 end
 local function ipGen()
   local ipTemplate = "$$$.$.$$$.$$"
@@ -232,7 +236,7 @@ term.setCursorPos(1,2)
 term.setBackgroundColor(colors.lightGray)
 term.setTextColor(colors.gray)
 write("Play")
-term.setCursorPos(45,2)
+term.setCursorPos(46,2)
 term.setBackgroundColor(colors.lightBlue)
 term.setTextColor(colors.blue)
 write("Update")
@@ -241,7 +245,7 @@ while true do
   if x >= 1 and x <= 4 and y == 2 then
     break
   end
-  if x >= 45 and x <= 51 and y == 2 then
+  if x >= 46 and x <= 51 and y == 2 then
     term.setCursorPos(2,2)
     term.setBackgroundColor(colors.white)
     term.clearLine()
