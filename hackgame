@@ -240,6 +240,7 @@ term.setCursorPos(46,2)
 term.setBackgroundColor(colors.lightBlue)
 term.setTextColor(colors.blue)
 write("Update")
+visible(true)
 local endLoopMode = false
 while true do
   if endLoopMode then
@@ -287,7 +288,6 @@ end
 term.setCursorPos(2,2)
 term.setBackgroundColor(colors.white)
 term.clearLine()
-visible(true)
 sleep(1.5)
 term.setCursorPos(2,2)
 term.setBackgroundColor(colors.white)
