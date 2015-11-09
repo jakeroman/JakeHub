@@ -109,9 +109,6 @@ if not fs.isDir("/disk/admins") then
   fs.makeDir("/disk/admins")
 end
 adminList = {}
-if not fs.exists("/disk/admins/"..playerSel) then
-  return false
-end
 local list = fs.list("/disk/admins")
 for i=1,#list do
   f = fs.open("/disk/admins/"..list[i],"r")
@@ -131,6 +128,9 @@ for i=1,#list do
   end
 end
 function isAdmin(playerSel,permission)
+  if not fs.exists("/disk/admins/"..playerSel) then
+    return false
+  end
   if adminList[playerSel] == true then
     return true
   end
