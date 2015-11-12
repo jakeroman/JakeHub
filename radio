@@ -1,0 +1,35 @@
+args = {...}
+if not args[1] then
+  printError("Usage: radio <station>")
+  return
+end
+if not peripheral.find("iron_note") then
+  printError("No Iron Note block!")
+  return
+end
+if not peripheral.find("modem") then
+  printError("No modem found.")
+  return
+end
+if not tonumber(args[1]) then
+  printError("Station must be a number!")
+  return
+end
+peripheral.find("modem").open(tonumber(args[1]))
+print("Press space to stop listening.")
+while true do
+  e,s,r,c,m = os.pullEvent()
+  if e == "key" then
+    if s == 57 then
+      peripheral.find("modem").closeAll()
+      break
+    end
+  end
+  if e == "modem_message" then
+    if type(m) == "table" then
+      if m.note1 and m.note2 then
+        pcall(loadstring("peripheral.find('iron_note').playNote("..m.note1..","..m.note2..")"))
+      end
+    end
+  end
+end
