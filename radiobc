@@ -1,0 +1,19 @@
+argsBc = {...}
+if not argsBc[1] then
+  printError("Usage: radiobc <station>")
+  return
+end
+periphModem = peripheral.find("modem")
+oldPeripheralFind = peripheral.find
+peripheral.find = nil
+function peripheral.find(args)
+  if args == "iron_note" then
+    return {
+      ["playNote"] = function(note1,note2)
+        periphModem.transmit(tonumber(argsBc[1]),1,{note1 = note1, note2 = note2})
+      end
+    }
+  else
+    return oldPeripheralFind(args)
+  end
+end
