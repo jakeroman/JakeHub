@@ -1,0 +1,31 @@
+term.setBackgroundColor(colors.white)
+term.clear()
+term.setCursorPos(2,2)
+term.setTextColor(colors.black)
+write("Updating JakeOS X")
+fs.copy("/JakeOS/Desktop","/Temp")
+if fs.exists("/JakeOS/time") then
+  time = true
+end
+if fs.exists("/JakeOS/anims") then
+  animations = true
+end
+fs.copy("/JakeOS/apis","/apiTemp")
+fs.delete("/JakeOS")
+f = fs.open("/startup","w")
+f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeosx").readAll())
+f.close()
+fs.makeDir("/JakeOS")
+fs.move("/Temp","/JakeOS/Desktop")
+fs.move("/apiTemp","/JakeOS/apis")
+if animations then
+  f = fs.open("/JakeOS/anims","w")
+  f.writeLine("true")
+  f.close()
+end
+if time then
+  f = fs.open("/JakeOS/time","w")
+  f.writeLine("true")
+  f.close()
+end
+os.reboot()
