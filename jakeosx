@@ -1,0 +1,265 @@
+-- Variables
+if fs.exists("/.time") then
+  timeType = true
+else
+  timeType = false
+end
+
+debugMode = false
+clockFreq = 0.1
+
+-- Default Icons
+iconList = {
+  ["explorer"] = function(x,y)
+    term.setCursorPos(x,y)
+    term.setBackgroundColor(colors.lightGray)
+    term.setTextColor(colors.gray)
+    write("|")
+    term.setCursorPos(x,y + 1)
+    write("|")
+    term.setCursorPos(x,y + 2)
+    write("|")
+    paintutils.drawFilledBox(x + 1,y,x + 2,y + 2,colors.yellow)
+  end,
+  ["shell"] = function(x,y)
+    term.setCursorPos(x,y)
+    term.setBackgroundColor(colors.black)
+    term.setTextColor(colors.yellow)
+    write(">")
+    term.setTextColor(colors.white)
+    write("_ ")
+    term.setCursorPos(x,y + 1)
+    write("   ")
+    term.setCursorPos(x,y + 2)
+    write("   ")
+  end,
+  ["file"] = function(x,y)
+    paintutils.drawFilledBox(x,y,x + 2,y + 2,colors.lightGray)
+    term.setCursorPos(x,y)
+    term.setTextColor(colors.gray)
+    write("ABC")
+    term.setCursorPos(x,y + 1)
+    write("---")
+    term.setCursorPos(x,y + 2)
+    write("---")
+  end,
+  ["image"] = function(x,y)
+    term.setCursorPos(x,y)
+    term.setBackgroundColor(colors.lightBlue)
+    term.setTextColor(colors.yellow)
+    write("@")
+    term.setBackgroundColor(colors.lightBlue)
+    write("  ")
+    term.setCursorPos(x,y + 1)
+    write("   ")
+    term.setCursorPos(x,y + 2)
+    term.setBackgroundColor(colors.lime)
+    term.setTextColor(colors.green)
+    write("---")
+  end,
+  ["script"] = function(x,y)
+    term.setCursorPos(x,y)
+    term.setBackgroundColor(colors.lightGray)
+    term.setTextColor(colors.gray)
+    paintutils.drawFilledBox(x,y,x + 2,y + 2,colors.lightGray)
+    term.setBackgroundColor(colors.yellow)
+    term.setCursorPos(x + 1,y)
+    write("/>")
+    term.setCursorPos(x + 1,y + 1)
+    write("#")
+    term.setCursorPos(x,y + 2)
+    write("</")
+  end,
+}
+
+-- Functions
+function center(str,ln)
+  local curX,curY = term.getCursorPos()
+  local maxX,maxY = term.getSize()
+  maxX = maxX / 2
+  maxX = maxX - (#str / 2)
+  if ln then
+    term.setCursorPos(maxX,ln)
+  else
+    term.setCursorPos(maxX,curY)
+  end
+  write(str)
+end
+function crash(errorStr)
+  if not errorStr then
+    errorStr = "no information"
+  end
+  errorStr = string.lower(errorStr)
+  --if not reason then
+  local reason = nil
+  if string.find(errorStr,"attempt to call nil") then
+    reason = "Non existant value/function was called on"
+  else
+    reason = "Unknown error!"
+  end
+ -- end
+  term.setBackgroundColor(colors.blue)
+  term.clear()
+  paintutils.drawLine(2,2,50,2,colors.white)
+  term.setTextColor(colors.gray)
+  center("JakeOS X Crash",2)
+  term.setCursorPos(2,4)
+  term.setBackgroundColor(colors.blue)
+  term.setTextColor(colors.white)
+  write("JakeOS X seems to have crashed.")
+  term.setCursorPos(2,6)
+  write("Error reason:")
+  term.setCursorPos(2,7)
+  term.setTextColor(colors.lightGray)
+  write(reason)
+  term.setCursorPos(2,9)
+  term.setTextColor(colors.white)
+  write("You could try:")
+  term.setCursorPos(4,11)
+  write("- Rebooting this computer")
+  term.setCursorPos(4,12)
+  write("- Reinstalling the operating system")
+  term.setCursorPos(4,13)
+  write("- Opening an issue on GitHub")
+  term.setCursorPos(2,15)
+  write("Error:")
+  term.setCursorPos(2,16)
+  term.setTextColor(colors.lightGray)
+  write(errorStr)
+  term.setTextColor(colors.white)
+  term.setCursorPos(2,18)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.white)
+  write(" Reboot ")
+  while true do
+    e,c,x,y = os.pullEvent("mouse_click")
+    if x >= 2 and x <= 10 and y == 18 then
+      break
+    end
+  end
+  os.reboot()
+end
+function graphics(graphicName)
+  if not http then
+    return nil
+  end
+  if fs.exists("/.graphics/"..graphicName) then
+    return paintutils.loadImage("/.graphics/"..graphicName)
+  end
+  graphHttp = http.get("https://raw.github.com/jakemroman/JakeHub/master/graphic-"..graphicName)
+  if not graphHttp then
+    return nil
+  end
+  f = fs.open("/.graphics/"..graphicName,"w")
+  local graphicLoad = graphHttp.readAll()
+  f.writeLine(graphicLoad)
+  f.close()
+  return paintutils.loadImage("/.graphics/"..graphicName)
+end
+function debug(str)
+  if not debugMode then
+    return
+  end
+  local oldX,oldY = term.getCursorPos()
+  if term.getBackgroundColor then
+    local oldBg = term.getBackgroundColor()
+    local oldTxt = term.getTextColor()
+  end
+  term.setCursorPos(1,1)
+  term.setBackgroundColor(colors.white)
+  term.clearLine()
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.black)
+  write(str)
+  if oldBg and oldTxt then
+    term.setBackgroundColor(oldBg)
+    term.setTextColor(oldTxt)
+  end
+  term.setCursorPos(oldX,oldY)
+end
+
+-- Pre Initalization
+local apiList = fs.list("/.apis")
+for i=1,#apiList do
+  os.loadAPI("/.apis/"..apiList[i])
+end
+
+-- Testing
+if not graphicals then
+  crash("Graphicals API not detected.")
+end
+
+-- OS
+function operatingSys()
+  paintutils.drawImage(graphics("background"),1,1)
+  sleep(0.3)
+  paintutils.drawImage(graphics("x"),1,1)
+  sleep(1.3)
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setTextColor(colors.black)
+  if not fs.isDir("/Desktop") then
+    fs.makeDir("/Desktop")
+  end
+  while true do
+    if not debugMode then
+      term.current().setVisible(false)
+    end
+    term.setBackgroundColor(colors.white)
+    term.clear()
+    local time = textutils.formatTime(os.time(),timeType)
+    term.setCursorPos(49 - #time,19)
+    term.setBackgroundColor(colors.lightGray)
+    term.setTextColor(colors.black)
+    write(" "..time.." ")
+    local desktop = fs.list("/Desktop")
+    local clicks = {}
+    for i=1,#desktop do
+      clicks[#clicks + 1] = {}
+      f = fs.open("/Desktop/"..desktop[i],"r")
+      local imgX = tonumber(f.readLine())
+      local imgY = tonumber(f.readLine())
+      local prog = f.readLine()
+      local icon = f.readLine()
+      f.close()
+      clicks[#clicks].x = imgX
+      clicks[#clicks].y = imgY
+      clicks[#clicks].program = prog
+      clicks[#clicks].icon = icon
+      if not icon then
+        paintutils.drawFilledBox(imgX,imgY,imgX + 2,imgY + 2,colors.black)
+      elseif iconList[icon] then
+        iconList[icon](imgX,imgY)
+      elseif paintutils.loadImage(icon) then
+        paintutils.drawImage(paintutils.loadImage(icon),imgX,imgY)
+      else
+        paintutils.drawFilledBox(imgX,imgY,imgX + 2,imgY + 2,colors.gray)
+      end
+    end
+    timer = os.startTimer(clockFreq)
+    term.current().setVisible(true)
+    e,c,x,y = os.pullEvent()
+    if e ~= "timer" then
+      os.cancelTimer(timer)
+    end
+    if e == "mouse_click" then
+      for i=1,#clicks do
+        if x >= (clicks[i].x) and x <= (clicks[i].x + 2) and y >= (clicks[i].y) and y <= (clicks[i].y + 2) then
+          term.setBackgroundColor(colors.black)
+          term.clear()
+          term.setCursorPos(1,1)
+          term.setTextColor(colors.white)
+          shell.run(clicks[i].program)
+        end
+      end
+    end
+  end
+end
+
+-- BSOD
+local ok,err = pcall(operatingSys)
+if err == "Terminated" then return end
+if not ok then
+  crash(err)
+end
+os.reboot()
