@@ -1,10 +1,13 @@
 -- Variables
-if fs.exists("/.time") then
+if not fs.exists("/JakeOS/") then
+  fs.makeDir("/JakeOS/")
+end
+if fs.exists("/JakeOS/time") then
   timeType = true
 else
   timeType = false
 end
-if fs.exists("/.anims") then
+if fs.exists("/JakeOS/anims") then
   animations = true
 else
   animations = false
@@ -154,11 +157,11 @@ function graphics(graphicName)
   if not graphHttp then
     return nil
   end
-  f = fs.open("/.graphics/"..graphicName,"w")
+  f = fs.open("/JakeOS/graphics/"..graphicName,"w")
   local graphicLoad = graphHttp.readAll()
   f.writeLine(graphicLoad)
   f.close()
-  return paintutils.loadImage("/.graphics/"..graphicName)
+  return paintutils.loadImage("/JakeOS/graphics/"..graphicName)
 end
 function debug(str)
   if not debugMode then
@@ -183,9 +186,9 @@ function debug(str)
 end
 
 -- Pre Initalization
-local apiList = fs.list("/.apis")
+local apiList = fs.list("/JakeOS/apis")
 for i=1,#apiList do
-  os.loadAPI("/.apis/"..apiList[i])
+  os.loadAPI("/JakeOS/apis/"..apiList[i])
 end
 
 -- Testing
@@ -202,8 +205,8 @@ function operatingSys()
   term.setBackgroundColor(colors.white)
   term.clear()
   term.setTextColor(colors.black)
-  if not fs.isDir("/Desktop") then
-    fs.makeDir("/Desktop")
+  if not fs.isDir("/JakeOS/Desktop") then
+    fs.makeDir("/JakeOS/Desktop")
   end
   while true do
     if not debugMode then
@@ -220,11 +223,11 @@ function operatingSys()
     term.setBackgroundColor(colors.gray)
     term.setTextColor(colors.lightGray)
     write(" /\\ ")
-    local desktop = fs.list("/Desktop")
+    local desktop = fs.list("/JakeOS/Desktop")
     local clicks = {}
     for i=1,#desktop do
       clicks[#clicks + 1] = {}
-      f = fs.open("/Desktop/"..desktop[i],"r")
+      f = fs.open("/JakeOS/Desktop/"..desktop[i],"r")
       local imgX = tonumber(f.readLine())
       local imgY = tonumber(f.readLine())
       local prog = f.readLine()
@@ -309,7 +312,7 @@ function operatingSys()
               term.setTextColor(colors.black)
               write("Animations")
               term.setTextColor(colors.gray)
-              if fs.exists("/.anims") then
+              if fs.exists("/JakeOS/anims") then
                 term.setCursorPos(48,3)
                 term.setBackgroundColor(colors.lime)
                 write("ON")
@@ -325,7 +328,7 @@ function operatingSys()
               term.setTextColor(colors.gray)
               term.setCursorPos(47,5)
               term.setBackgroundColor(colors.lightGray)
-              if fs.exists("/.time") then
+              if fs.exists("/JakeOS/time") then
                 write("24h")
               else
                 write("12h")
@@ -336,19 +339,19 @@ function operatingSys()
               end
               if x >= 2 and x <= 50 then
                 if y == 5 then
-                  if fs.exists("/.time") then
-                    fs.delete("/.time")
+                  if fs.exists("/JakeOS/time") then
+                    fs.delete("/JakeOS/time")
                   else
-                    f = fs.open("/.time","w")
+                    f = fs.open("/JakeOS/time","w")
                     f.write("true")
                     f.close()
                   end
                 end
                 if y == 3 then
-                  if fs.exists("/.anims") then
-                    fs.delete("/.anims")
+                  if fs.exists("/JakeOS/anims") then
+                    fs.delete("/JakeOS/anims")
                   else
-                    f = fs.open("/.anims","w")
+                    f = fs.open("/JakeOS/anims","w")
                     f.write("true")
                     f.close()
                   end
