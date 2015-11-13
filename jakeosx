@@ -4,7 +4,11 @@ if fs.exists("/.time") then
 else
   timeType = false
 end
-
+if fs.exists("/.anims") then
+  animations = true
+else
+  animations = false
+end
 debugMode = false
 clockFreq = 0.1
 
@@ -212,6 +216,10 @@ function operatingSys()
     term.setBackgroundColor(colors.lightGray)
     term.setTextColor(colors.black)
     write(" "..time.." ")
+    term.setCursorPos(2,19)
+    term.setBackgroundColor(colors.gray)
+    term.setTextColor(colors.lightGray)
+    write(" /\\ ")
     local desktop = fs.list("/Desktop")
     local clicks = {}
     for i=1,#desktop do
@@ -243,6 +251,133 @@ function operatingSys()
       os.cancelTimer(timer)
     end
     if e == "mouse_click" then
+      if x >= 2 and x <= 6 and y == 19 then
+        --error("works")
+        local y = 20
+        for i=1,19 do
+          y = y - 1
+          term.setCursorPos(1,y)
+          term.setBackgroundColor(colors.lightGray)
+          term.clearLine()
+          term.setCursorPos(2,y - 1)
+          term.setBackgroundColor(colors.gray)
+          term.setTextColor(colors.lightGray)
+          write(" /\\ ")
+          if animations then
+            sleep(0)
+          end
+        end
+        if animations then
+          sleep(0.15)
+        end
+        while true do
+          term.setBackgroundColor(colors.white)
+          term.clear()
+          term.setCursorPos(51,1)
+          term.setTextColor(colors.white)
+          term.setBackgroundColor(colors.red)
+          write("X")
+          paintutils.drawLine(1,1,50,1,colors.lightGray)
+          term.setCursorPos(2,1)
+          term.setTextColor(colors.black)
+          write("Start")
+          term.setCursorPos(2,3)
+          term.setBackgroundColor(colors.white)
+          term.setTextColor(colors.gray)
+          write("Settings")
+          e,c,x,y = os.pullEvent("mouse_click")
+          if x == 51 and y == 1 then
+            break
+          end
+          if x >= 2 and x <= 10 and y == 3 then
+            while true do
+              term.setBackgroundColor(colors.white)
+              term.clear()
+              term.setCursorPos(1,1)
+              term.setBackgroundColor(colors.lightGray)
+              term.clearLine()
+              term.setCursorPos(51,1)
+              term.setBackgroundColor(colors.red)
+              term.setTextColor(colors.white)
+              write("X")
+              term.setCursorPos(2,1)
+              term.setBackgroundColor(colors.lightGray)
+              term.setTextColor(colors.black)
+              write("Settings")
+              term.setCursorPos(2,3)
+              term.setBackgroundColor(colors.white)
+              term.setTextColor(colors.black)
+              write("Animations")
+              term.setTextColor(colors.gray)
+              if fs.exists("/.anims") then
+                term.setCursorPos(48,3)
+                term.setBackgroundColor(colors.lime)
+                write("ON")
+              else
+                term.setCursorPos(47,3)
+                term.setBackgroundColor(colors.red)
+                write("OFF")
+              end
+              term.setCursorPos(2,5)
+              term.setBackgroundColor(colors.white)
+              term.setTextColor(colors.black)
+              write("Time Format")
+              term.setTextColor(colors.gray)
+              term.setCursorPos(47,5)
+              term.setBackgroundColor(colors.lightGray)
+              if fs.exists("/.time") then
+                write("24h")
+              else
+                write("12h")
+              end
+              e,c,x,y = os.pullEvent("mouse_click")
+              if x == 51 and y == 1 then
+                break
+              end
+              if x >= 2 and x <= 50 then
+                if y == 5 then
+                  if fs.exists("/.time") then
+                    fs.delete("/.time")
+                  else
+                    f = fs.open("/.time","w")
+                    f.write("true")
+                    f.close()
+                  end
+                end
+                if y == 3 then
+                  if fs.exists("/.anims") then
+                    fs.delete("/.anims")
+                  else
+                    f = fs.open("/.anims","w")
+                    f.write("true")
+                    f.close()
+                  end
+                end
+              end
+            end
+          end
+        end
+        term.setBackgroundColor(colors.lightGray)
+        term.clear()
+        if animations then
+          sleep(0.15)
+        end
+        for i=1,19 do
+          term.setBackgroundColor(colors.white)           
+          term.setCursorPos(1,i)
+          term.clearLine()
+          term.setCursorPos(2,i)
+          term.setBackgroundColor(colors.gray)
+          term.setTextColor(colors.lightGray)
+          write(" /\\ ")
+          term.setCursorPos(1,i - 1)
+          term.setBackgroundColor(colors.white)
+          write("        ")
+          if animations then
+            sleep(0)
+          end
+        end
+      end
       for i=1,#clicks do
         if x >= (clicks[i].x) and x <= (clicks[i].x + 2) and y >= (clicks[i].y) and y <= (clicks[i].y + 2) then
           term.setBackgroundColor(colors.black)
