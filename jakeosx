@@ -348,9 +348,59 @@ function operatingSys()
           write("Settings")
           term.setCursorPos(2,4)
           write("Update")
+          term.setCursorPos(2,5)
+          write("Power")
           e,c,x,y = os.pullEvent("mouse_click")
           if x == 51 and y == 1 then
             break
+          end
+          if x >= 2 and x <= 7 and y == 5 then
+            term.setBackgroundColor(colors.white)
+            term.clear()
+            term.setCursorPos(2,2)
+            term.setTextColor(colors.black)
+            write("Power:")
+            term.setCursorPos(2,4)
+            term.setTextColor(colors.gray)
+            term.setBackgroundColor(colors.lightGray)
+            write("Shutdown")
+            term.setCursorPos(2,6)
+            write("Sleep")
+            term.setCursorPos(2,8)
+            write("Reboot")
+            term.setCursorPos(2,10)
+            write("Cancel")
+            while true do
+              e,c,x,y = os.pullEvent("mouse_click")
+              if x >= 2 and x <= 10 and y == 4 then
+                graphicals.fadeOut()
+                os.shutdown()
+              end
+              if x >= 2 and x <= 7 and y == 6 then
+                graphicals.fadeOut()
+                while true do
+                  e,c,x,y = os.pullEvent()
+                  if e == "key" then
+                    break
+                  end
+                  if e == "mouse_click" then
+                    break
+                  end
+                  if e == "scroll" then
+                    break
+                  end
+                end
+                if x >= 2 and x <= 8 and y == 8 then
+                  graphicals.fadeOut()
+                  sleep(2)
+                  graphicals.fadeIn()
+                  os.reboot()
+                end
+                if x >= 2 and x <= 6 and y == 10 then
+                  break
+                end
+              end
+            end
           end
           if x >= 2 and x <= 8 and y == 4 then
             term.setBackgroundColor(colors.white)
