@@ -23,6 +23,9 @@ if fs.exists("/JakeOS/.password") then
   password = true
   os.pullEvent = os.pullEventRaw
 end
+if not fs.isDir("/JakeOS/autorun") then
+  fs.makeDir("/JakeOS/autorun")
+end
 
 -- Default Icons
 iconList = {
@@ -254,6 +257,12 @@ for i=1,#apiList do
   os.loadAPI("/JakeOS/apis/"..apiList[i])
 end
 term.clear()
+local autorunList = fs.list("/JakeOS/autorun")
+if #autorunList > 0 then
+  for i=1,#autorunList do
+    shell.run("/JakeOS/autorun/"..autorunList[i])
+  end
+end
 
 -- Testing
 if not graphicals then
