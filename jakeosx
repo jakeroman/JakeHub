@@ -388,7 +388,7 @@ function operatingSys()
             break
           end
           if x >= 2 and x <= 10 and y == 6 then
-            while true do
+            for i=1,1 do
               term.setBackgroundColor(colors.white)
               term.clear()
               term.setCursorPos(1,1)
