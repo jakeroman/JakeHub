@@ -312,11 +312,18 @@ function operatingSys()
             else
               local newData = h.readAll()
               h.close()
-              term.setCursorPos(2,4)
-              term.setTextColor(colors.lime)
-              write("Updating!")
-              sleep(1.5)
-              loadstring(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeosxupdater").readAll())()
+              if newData ~= curData then
+                term.setCursorPos(2,4)
+                term.setTextColor(colors.lime)
+                write("Updating!")
+                sleep(1.5)
+                loadstring(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeosxupdater").readAll())()
+              else
+                term.setCursorPos(2,4)
+                term.setTextColor(colors.blue)
+                write("Up to date")
+                sleep(1)
+              end
             end
           end
           if x >= 2 and x <= 10 and y == 3 then
