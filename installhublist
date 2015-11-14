@@ -2,4 +2,5 @@ return {
   {
     ["name"] = "JakeOS X",
     ["pastebin"] = "pastebin run TxZCzddc",
+  },
 }
