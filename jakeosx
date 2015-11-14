@@ -245,6 +245,7 @@ local apiList = fs.list("/JakeOS/apis")
 for i=1,#apiList do
   os.loadAPI("/JakeOS/apis/"..apiList[i])
 end
+term.clear()
 
 -- Testing
 if not graphicals then
@@ -256,6 +257,7 @@ end
 
 -- OS
 function operatingSys()
+  graphicals.fadeIn()
   paintutils.drawImage(graphics("background"),1,1)
   sleep(0.3)
   paintutils.drawImage(graphics("x"),1,1)
