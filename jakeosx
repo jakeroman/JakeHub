@@ -146,7 +146,7 @@ function crash(errorStr)
     if x >= 2 and x <= 10 and y == 18 then
       break
     end
-    if x >= 45 and x <= 45 and y == 18 then
+    if x >= 45 and x <= 50 and y == 18 then
       term.setBackgroundColor(colors.white)
       term.clear()
       term.setCursorPos(2,2)
