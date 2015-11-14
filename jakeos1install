@@ -1,0 +1,31 @@
+if term.isColor() == false then
+print("JakeOS is for gold pcs only :(")
+print("Sorry D:")
+return
+end
+shell.run("mkdir disk")
+shell.run("pastebin get 03jV94rN disk/startup")
+shell.run("pastebin get SYWwDYrc disk/run")
+shell.run("pastebin get dCbGSYjp disk/JakeOS/desktop")
+shell.run("pastebin get FvFrdhyt disk/JakeOS/LyqydOS")
+shell.run("pastebin get AJbJLpFF disk/JakeOS/shell")
+shell.run('pastebin get vyAZc6tJ disk/JakeOS/luaide')
+shell.run("pastebin get A7wGH3ty disk/JakeOS/firewolf")
+shell.run("pastebin get JUGfuPBK disk/JakeOS/settings")
+shell.run("pastebin get a3k1uGFj disk/JakeOS/sha256")
+shell.run("pastebin get Ey58HjLR disk/JakeOS/.pacman")
+shell.run("pastebin get 56RbxYSN disk/JakeOS/scr")
+h = http.get("https://raw.github.com/jakemroman/JakeHub/master/JakeOS-AppStore")
+if h == nil then
+  fs.delete("/disk")
+  print("There was an error while installing.")
+  return
+end
+f = fs.open("disk/JakeOS/apps","w")
+f.writeLine(h.readAll())
+f.close()
+h.close()
+term.setTextColor(colors.white)
+shell.run("disk/startup")
+sleep(1)
+os.reboot()
