@@ -19,7 +19,7 @@ osver = "1"
 -- System Initalization
 oldPull = os.pullEvent
 password = false
-if fs.exists("/jakeos/.password") then
+if fs.exists("/JakeOS/.password") then
   password = true
   os.pullEvent = os.pullEventRaw
 end
