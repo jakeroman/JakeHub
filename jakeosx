@@ -288,9 +288,36 @@ function operatingSys()
           term.setBackgroundColor(colors.white)
           term.setTextColor(colors.gray)
           write("Settings")
+          term.setCursorPos(2,4)
+          write("Update")
           e,c,x,y = os.pullEvent("mouse_click")
           if x == 51 and y == 1 then
             break
+          end
+          if x >= 2 and x <= 8 and y == 4 then
+            term.setBackgroundColor(colors.white)
+            term.clear()
+            term.setCursorPos(2,2)
+            term.setTextColor(colors.black)
+            write("Checking for updates")
+            f = fs.open("/startup","r")
+            local curData = f.readAll()
+            f.close()
+            h = http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeosx")
+            if not h then
+              term.setCursorPos(2,4)
+              term.setTextColor(colors.red)
+              write("Cannot connect.")
+              sleep(2)
+            else
+              local newData = h.readAll()
+              h.close()
+              term.setCursorPos(2,4)
+              term.setTextColor(colors.lime)
+              write("Updating!")
+              sleep(1.5)
+              loadstring(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeosxupdate").readAll())()
+            end
           end
           if x >= 2 and x <= 10 and y == 3 then
             while true do
