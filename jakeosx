@@ -390,15 +390,15 @@ function operatingSys()
                     break
                   end
                 end
-                if x >= 2 and x <= 8 and y == 8 then
-                  graphicals.fadeOut()
-                  sleep(2)
-                  graphicals.fadeIn()
-                  os.reboot()
-                end
-                if x >= 2 and x <= 6 and y == 10 then
-                  break
-                end
+              end
+              if x >= 2 and x <= 8 and y == 8 then
+                graphicals.fadeOut()
+                sleep(2)
+                graphicals.fadeIn()
+                os.reboot()
+              end
+              if x >= 2 and x <= 6 and y == 10 then
+                break
               end
             end
           end
