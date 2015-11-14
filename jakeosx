@@ -16,6 +16,14 @@ debugMode = false
 clockFreq = 0.1
 osver = "1"
 
+-- System Initalization
+oldPull = os.pullEvent
+password = false
+if fs.exists("/jakeos/.password") then
+  password = true
+  os.pullEvent = os.pullEventRaw
+end
+
 -- Default Icons
 iconList = {
   ["explorer"] = function(x,y)
@@ -307,8 +315,28 @@ function operatingSys()
         paintutils.drawFilledBox(imgX,imgY,imgX + 2,imgY + 2,colors.gray)
       end
     end
-    timer = os.startTimer(clockFreq)
     term.current().setVisible(true)
+    if password then
+      paintutils.drawFilledBox(1,5,51,9,colors.lightGray)
+      term.setCursorPos(1,6)
+      term.setTextColor(colors.gray)
+      center("Please sign in")
+      while true do
+        paintutils.drawLine(1,8,51,8,colors.gray)
+        term.setCursorPos(2,8)
+        term.setTextColor(colors.white)
+        input = sha256.sha256(read("*"))
+        f = fs.open("/JakeOS/.password","r")
+        local passwordSha = f.readAll()
+        f.close()
+        if input == passwordSha then
+          break
+        end
+      end
+      password = false
+      os.pullEvent = oldPull
+    end
+    timer = os.startTimer(clockFreq)
     e,c,x,y = os.pullEvent()
     if e ~= "timer" then
       os.cancelTimer(timer)
@@ -353,9 +381,74 @@ function operatingSys()
           write("Update")
           term.setCursorPos(2,5)
           write("Power")
+          term.setCursorPos(2,6)
+          write("Password")
           e,c,x,y = os.pullEvent("mouse_click")
           if x == 51 and y == 1 then
             break
+          end
+          if x >= 2 and x <= 10 and y == 6 then
+            while true do
+              term.setBackgroundColor(colors.white)
+              term.clear()
+              term.setCursorPos(1,1)
+              term.setBackgroundColor(colors.lightGray)
+              term.clearLine()
+              term.setCursorPos(51,1)
+              term.setBackgroundColor(colors.red)
+              term.setTextColor(colors.white)
+              write("X")
+              term.setCursorPos(2,1)
+              term.setBackgroundColor(colors.lightGray)
+              term.setTextColor(colors.black)
+              write("Password Manager")
+              term.setCursorPos(2,3)                
+              term.setBackgroundColor(colors.lightGray)
+              term.setTextColor(colors.gray)
+              write("Remove Password")
+              term.setCursorPos(2,5)
+              write("Set Password")
+              while true do
+                e,c,x,y = os.pullEvent("mouse_click")
+                if x >= 2 and x <= 20 then
+                  if y == 3 then
+                    term.setCursorPos(2,3)
+                    term.setBackgroundColor(colors.green)
+                    term.setTextColor(colors.gray)
+                    write("Remove Password")
+                    sleep(0.2)
+                    fs.delete("/JakeOS/.password")
+                    term.setCursorPos(2,3)
+                    term.setBackgroundColor(colors.lightGray)
+                    term.setTextColor(colors.gray)
+                    write("Remove Password")
+                  end
+                  if y == 5 then
+                    term.setCursorPos(2,5)
+                    term.setBackgroundColor(colors.green)
+                    term.setTextColor(colors.gray)
+                    write("Set Password")
+                    sleep(0.2)
+                    term.setCursorPos(2,5)
+                    term.setBackgroundColor(colors.lightGray)
+                    write("Set Password")
+                    term.setCursorPos(2,18)
+                    term.setBackgroundColor(colors.white)
+                    term.setTextColor(colors.black)
+                    write("Password: ")
+                    term.setTextColor(colors.lightGray)
+                    f = fs.open("/JakeOS/.password","w")
+                    f.write(sha256.sha256(read("*")))
+                    f.close()
+                    term.setCursorPos(2,18)
+                    term.clearLine()
+                  end
+                end
+                if x == 51 and y == 1 then
+                  break
+                end
+              end
+            end
           end
           if x >= 2 and x <= 7 and y == 5 then
             term.setBackgroundColor(colors.white)
