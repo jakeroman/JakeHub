@@ -331,7 +331,8 @@ function operatingSys()
         if animations then
           sleep(0.15)
         end
-        while true do
+        local powerMenu = true
+        while powerMenu do
           term.setBackgroundColor(colors.white)
           term.clear()
           term.setCursorPos(51,1)
@@ -381,12 +382,15 @@ function operatingSys()
                 while true do
                   e,c,x,y = os.pullEvent()
                   if e == "key" then
+                    powerMenu = false
                     break
                   end
                   if e == "mouse_click" then
+                    powerMenu = false
                     break
                   end
                   if e == "scroll" then
+                    powerMenu = false
                     break
                   end
                 end
