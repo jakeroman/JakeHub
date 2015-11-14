@@ -366,9 +366,9 @@ function operatingSys()
             term.setBackgroundColor(colors.lightGray)
             write("Shutdown")
             term.setCursorPos(2,6)
-            write("Sleep")
-            term.setCursorPos(2,8)
             write("Reload")
+            term.setCursorPos(2,8)
+            write("Reboot")
             term.setCursorPos(2,10)
             write("Cancel")
             while true do
@@ -377,7 +377,7 @@ function operatingSys()
                 graphicals.fadeOut()
                 os.shutdown()
               end
-              if x >= 2 and x <= 7 and y == 6 then
+              if x >= 2 and x <= 8 and y == 6 then
                 shell.run("/startup")
               end
               if x >= 2 and x <= 8 and y == 8 then
