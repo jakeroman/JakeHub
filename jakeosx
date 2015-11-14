@@ -368,7 +368,7 @@ function operatingSys()
             term.setCursorPos(2,6)
             write("Sleep")
             term.setCursorPos(2,8)
-            write("Reboot")
+            write("Reload")
             term.setCursorPos(2,10)
             write("Cancel")
             while true do
@@ -378,22 +378,7 @@ function operatingSys()
                 os.shutdown()
               end
               if x >= 2 and x <= 7 and y == 6 then
-                graphicals.fadeOut()
-                while true do
-                  e,c,x,y = os.pullEvent()
-                  if e == "key" then
-                    powerMenu = false
-                    break
-                  end
-                  if e == "mouse_click" then
-                    powerMenu = false
-                    break
-                  end
-                  if e == "scroll" then
-                    powerMenu = false
-                    break
-                  end
-                end
+                shell.run("/startup")
               end
               if x >= 2 and x <= 8 and y == 8 then
                 graphicals.fadeOut()
