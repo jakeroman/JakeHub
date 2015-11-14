@@ -14,6 +14,7 @@ else
 end
 debugMode = false
 clockFreq = 0.1
+osver = "1"
 
 -- Default Icons
 iconList = {
@@ -135,13 +136,67 @@ function crash(errorStr)
   write(errorStr)
   term.setTextColor(colors.white)
   term.setCursorPos(2,18)
-  term.setBackgroundColor(colors.black)
-  term.setTextColor(colors.white)
+  term.setBackgroundColor(colors.lightGray)
+  term.setTextColor(colors.gray)
   write(" Reboot ")
+  term.setCursorPos(45,18)
+  write(" Help ")
   while true do
     e,c,x,y = os.pullEvent("mouse_click")
     if x >= 2 and x <= 10 and y == 18 then
       break
+    end
+    if x >= 45 and x <= 45 and y == 18 then
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      term.setCursorPos(2,2)
+      term.setTextColor(colors.gray)
+      center("Scanning...")
+      if not fs.exists("/JakeOS/copy") then
+        center("Could not find operating system clean install!")
+        sleep(1)
+        break
+      end
+      f = fs.open("/JakeOS/copy","r")
+      local copy = f.readAll()
+      f.close()
+      f = fs.open(shell.getRunningProgram(),"r")
+      local curr = f.readAll()
+      f.close()
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      term.setCursorPos(2,2)
+      term.setTextColor(colors.black)
+      if copy == curr then
+        write("Creating error report... ")
+        f = fs.open("/report","w")
+        f.writeLine("-- JakeOS X Error Report --")
+        f.writeLine(errorStr)
+        f.writeLine("-- Information --")
+        f.writeLine("ID: "..tostring(os.getComputerID()))
+        f.writeLine("OS Release: "..osver)
+        f.writeLine("-- Advanced --")
+        f.writeLine(curr)
+        f.close()
+        write("Done!")
+        term.setCursorPos(2,4)
+        term.setTextColor(colors.gray)
+        shell.run("pastebin put report")
+        term.setCursorPos(2,17)
+        term.setTextColor(colors.black)
+        write("Please provide the pastebin adress in a GitHub issue")
+        term.setCursorPos(2,18)
+        write("on the repository: jakemroman/JakeHub")
+        sleep(80)
+        os.reboot()
+      else
+        center("The operating system is modified!")
+        center("Installing original version of OS..")
+        fs.delete("/startup")
+        fs.copy("/JakeOS/copy","/startup")
+        sleep(3)
+        os.reboot()
+      end
     end
   end
   os.reboot()
@@ -194,6 +249,9 @@ end
 -- Testing
 if not graphicals then
   crash("Graphicals API not detected.")
+end
+if not fs.exists("/JakeOS/copy") then
+  fs.copy("/startup","/JakeOS/copy")
 end
 
 -- OS
