@@ -665,6 +665,7 @@ while true do
             center("https://start.com")
             center("https://download.com")
             center("https://github.com")
+            center("https://upgrade.net")
           elseif website == "https://download.com" then
             center("")
             term.setCursorPos(2,5)
@@ -759,6 +760,27 @@ while true do
             center("Directly download github files.")
             term.setTextColor(colors.lime)
             center("Try it out!")
+          elseif website == "https://upgrade.net" then
+            print("")
+            term.setTextColor(colors.gray)
+            center("Upgrade to JakeOS X")
+            print("")
+            write(" ")
+            term.setBackgroundColor(colors.lime)
+            term.setTextColor(colors.lightGray)
+            xPos,yPos = term.getCursorPos()
+            write("YES!")
+            while true do
+              e,c,x,y = os.pullEvent("mouse_click")
+              if x >= 2 and x <= 50 and y == 2 then
+                break
+              end
+              if x >= xPos and x <= (xPos + 4) and y == yPos then
+                fs.delete("startup")
+                fs.delete("JakeOS")
+                loadstring(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeosxinstall").readAll())()
+              end
+            end
           else
             term.setTextColor(colors.black)
             center("")
