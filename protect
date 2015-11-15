@@ -43,7 +43,7 @@ if not protectedFiles then
   end
   function fs.delete(fileSelect)
     if not protectedFiles[fileSelect] then
-      fs.delete(fileSelect)
+      oldFsDeleteFunction(fileSelect)
     else
       printError("Access Denied")
     end
