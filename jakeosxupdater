@@ -22,6 +22,7 @@ f = fs.open("/startup","w")
 f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeosx").readAll())
 f.close()
 fs.makeDir("/JakeOS")
+fs.move("/autoRun","/JakeOS/autorun")
 fs.move("/Temp","/JakeOS/Desktop")
 fs.move("/apiTemp","/JakeOS/apis")
 if animations then
