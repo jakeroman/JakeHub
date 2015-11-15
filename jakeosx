@@ -283,7 +283,10 @@ function operatingSys()
   paintutils.drawImage(graphics("background"),1,1)
   sleep(0.3)
   paintutils.drawImage(graphics("x"),1,1)
-  sleep(1.3)
+  sleep(0.6)
+  if fs.exists("/JakeOS/autorun/bios") then
+    shell.run("/JakeOS/autorun/bios")
+  end
   term.setBackgroundColor(colors.white)
   term.clear()
   term.setTextColor(colors.black)
