@@ -1,0 +1,66 @@
+args = {...}
+if not protectedFiles then
+  shell.setAlias("protect","JakeOS/autorun/protect")
+  if not fs.exists("/.protectedFiles") then
+    f = fs.open("/.protectedFiles","w")
+    f.writeLine("/.protectedFiles")
+    f.writeLine(".protectedFiles")
+    f.close()
+  end
+  protectedFiles = {}
+  f = fs.open(".protectedFiles","r")
+  while true do
+    curLine = f.readLine()
+    if not curLine then break end
+    protectedFiles[curLine] = true
+  end
+  f.close()
+  oldFsOpenFunction = fs.open
+  oldFsDeleteFunction = fs.delete
+  oldFsIsReadOnlyFunction = fs.isReadOnly
+  oldFsMoveFunction = fs.move
+  _G.fs.open = nil
+  _G.fs.delete = nil
+  _G.fs.isReadOnly = nil
+  _G.fs.move = nil
+  function fs.move(fileSelect,endSelect)
+    if protectedFiles[fileSelect] then
+      printError("Access Denied")
+    else
+      oldFsMoveFunction(fileSelect,endSelect)
+    end
+  end
+  function fs.open(fileSelect,mode)
+    if protectedFiles[fileSelect] then
+      if mode ~= "w" then
+        return oldFsOpenFunction(fileSelect,mode)
+      else
+        return nil
+      end
+    else
+      return oldFsOpenFunction(fileSelect,mode)
+    end
+  end
+  function fs.delete(fileSelect)
+    if not protectedFiles[fileSelect] then
+      fs.delete(fileSelect)
+    else
+      printError("Access Denied")
+    end
+  end
+  function fs.isReadOnly(fileSelect)
+    if protectedFiles[fileSelect] then
+      return true
+    else
+      return oldFsIsReadOnlyFunction(fileSelect)
+    end
+  end
+end
+if not args[1] then
+  return
+end
+print("Protected File")
+f = oldFsOpenFunction("/.protectedFiles","a")
+f.writeLine("/"..args[1])
+f.writeLine(args[1])
+f.close()
