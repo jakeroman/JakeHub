@@ -24,3 +24,37 @@ if speedMode then
     end
   end
 end
+if not debug then
+  if not term.getBackgroundColor then
+    oldTextColor = term.setTextColor
+    oldBackgroundColor = term.setBackgroundColor
+    curBackgroundColor = colors.black
+    curTextColor = colors.black
+    function newTextColor(setColor)
+      curTextColor = setColor
+      oldTextColor(setColor)
+    end
+    function newBackgroundColor(setColor)
+      curBackgroundColor = setColor
+      oldBackgroundColor(setColor)
+    end
+    function newGetTextColor()
+      return curTextColor
+    end
+    function newGetBackgroundColor()
+      return curBackgroundColor
+    end
+    _G.term.setBackgroundColor = nil
+    _G.term.setBackgroundColour = nil
+    _G.term.setTextColor = nil
+    _G.term.setTextColour = nil
+    _G.term.setBackgroundColor = newBackgroundColor
+    _G.term.setBackgroundColour = newBackgroundColor
+    _G.term.setTextColor = newTextColor
+    _G.term.setTextColour = newTextColor
+    _G.term.getBackgroundColor = newGetBackgroundColor
+    _G.term.getBackgroundColour = newGetBackgroundColor
+    _G.term.getTextColor = newGetTextColor
+    _G.term.getTextColour = newGetTextColor
+  end
+end
