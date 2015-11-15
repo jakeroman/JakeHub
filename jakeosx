@@ -25,6 +25,9 @@ if fs.exists("/JakeOS/.password") then
 end
 if not fs.isDir("/JakeOS/autorun") then
   fs.makeDir("/JakeOS/autorun")
+  f = fs.open("/JakeOS/autorun/bios","w")
+  f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/xbios").readAll())
+  f.close()
 end
 
 -- Default Icons
@@ -274,7 +277,6 @@ end
 
 -- OS
 function operatingSys()
-  graphicals.fadeIn()
   paintutils.drawImage(graphics("background"),1,1)
   sleep(0.3)
   paintutils.drawImage(graphics("x"),1,1)
@@ -567,6 +569,20 @@ function operatingSys()
                 write("24h")
               else
                 write("12h")
+              end
+              term.setCursorPos(2,7)
+              term.setBackgroundColor(colors.white)
+              term.setTextColor(colors.black)
+              write("Speed Mode")
+              term.setTextColor(colors.gray)
+              if fs.exists("/JakeOS/speed") then
+                term.setCursorPos(49,7)
+                term.setBackgroundColor(colors.lime)
+                write("ON")
+              else
+                term.setCursorPos(48,7)
+                term.setBackgroundColor(colors.red)
+                write("OFF")
               end
               e,c,x,y = os.pullEvent("mouse_click")
               if x == 51 and y == 1 then
