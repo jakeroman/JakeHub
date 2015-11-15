@@ -3,6 +3,12 @@ term.clear()
 term.setCursorPos(2,2)
 term.setTextColor(colors.black)
 write("Updating JakeOS X")
+if fs.exits("/JakeOS/autorun") then
+  fs.copy("/JakeOS/autorun","/autoRun")
+  f = fs.open("/autoRun/bios","w")
+  f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/xbios").readAll())
+  f.close()
+end
 fs.copy("/JakeOS/Desktop","/Temp")
 if fs.exists("/JakeOS/time") then
   time = true
