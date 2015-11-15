@@ -3,6 +3,9 @@ if fs.exists("/JakeOS/speed") then
 else
   speedMode = false
 end
+if animations then
+  graphicals.fadeIn()
+end
 if speedMode then
   oldDrawFilledBox = paintutils.drawFilledBox
   oldDrawImage = paintutils.drawImage
@@ -20,6 +23,4 @@ if speedMode then
       term.current().setVisible(true)
     end
   end
-else
-  graphicals.fadeIn()
 end
