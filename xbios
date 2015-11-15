@@ -1,0 +1,31 @@
+term.setBackgroundColor(colors.gray)
+term.clear()
+sleep(0.1)
+term.setBackgroundColor(colors.lightGray)
+term.clear()
+sleep(0.1)
+term.setBackgroundColor(colors.white)
+term.clear()
+if fs.exists("/JakeOS/speed") then
+  speedMode = true
+else
+  speedMode = false
+end
+if speedMode then
+  oldDrawFilledBox = paintutils.drawFilledBox
+  oldDrawImage = paintutils.drawImage
+  function paintutils.drawFilledBox(startXpos,startYpos,endXpos,endYpos,objColor)
+    if startXpos and startYpos and endXpos and endYpos and objColor then
+      term.current().setVisible(false)
+      oldDrawFilledBox(startXpos,startYpos,endXpos,endYpos,objColor)
+      term.current().setVisible(true)
+    end
+  end
+  function paintutils.drawImage(image,imgX,imgY)
+    if image and imgX and imgY then
+      term.current().setVisible(false)
+      oldDrawImage(image,imgX,imgY)
+      term.current().setVisible(true)
+    end
+  end
+end
