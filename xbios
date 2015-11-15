@@ -20,4 +20,6 @@ if speedMode then
       term.current().setVisible(true)
     end
   end
+else
+  graphicals.fadeIn()
 end
