@@ -48,7 +48,7 @@ f.writeLine(http.get('https://raw.github.com/jakemroman/JakeHub/master/graphical
 f.close()
 status("JakeHub/processapi -> JakeOS/apis/JakeOS")
 sleep(0.4)
-f = fs.open("/JakeOS/apis/JakeOS")
+f = fs.open("/JakeOS/apis/JakeOS","w")
 f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/processapi").readAll())
 f.close()
 status("JakeHub/shellApp -> JakeOS/Desktop/shell")
