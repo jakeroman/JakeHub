@@ -688,10 +688,6 @@ function operatingSys()
   end
 end
 
--- BSOD
-local ok,err = pcall(operatingSys)
-if err == "Terminated" then return end
-if not ok then
-  crash(err)
-end
-os.reboot()
+JakeOS.startProcess(operatingSys,"JakeOS X")
+JakeOS.handleProcesses()
+os.shutdown()
