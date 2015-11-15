@@ -1,6 +1,6 @@
 args = {...}
 if not protectedFiles then
-  shell.setAlias("protect","JakeOS/autorun/protect")
+  shell.setAlias("protect",shell.getRunningProgram())
   if not fs.exists("/.protectedFiles") then
     f = fs.open("/.protectedFiles","w")
     f.writeLine("/.protectedFiles")
