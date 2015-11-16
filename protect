@@ -1,5 +1,5 @@
 args = {...}
-if not protectedFiles then
+--if not protectedFiles then
   shell.setAlias("protect",shell.getRunningProgram())
   if not fs.exists("/.protectedFiles") then
     f = fs.open("/.protectedFiles","w")
@@ -55,7 +55,7 @@ if not protectedFiles then
       return oldFsIsReadOnlyFunction(fileSelect)
     end
   end
-end
+--end
 if not args[1] then
   return
 end
@@ -64,7 +64,3 @@ f = oldFsOpenFunction("/.protectedFiles","a")
 f.writeLine("/"..args[1])
 f.writeLine(args[1])
 f.close()
-print("Done!")
-print("Rebooting in 3 seconds")
-sleep(3)
-os.reboot()
