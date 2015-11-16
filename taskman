@@ -35,7 +35,7 @@ while true do
   e,c,x,y = os.pullEvent("mouse_click")
   y = y - 2
   if processes[y] then
-    if x >= 47 and x <= 50 then
+    if x >= 48 and x <= 50 then
       local endProcess = true
       if processes[y]["sName"] == "JakeOS X" then
         term.current().setVisible(false)
