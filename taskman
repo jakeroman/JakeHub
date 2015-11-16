@@ -1,0 +1,87 @@
+if not JakeOS then
+  error("Please install JakeOS X and try again")
+end
+
+while true do
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(1,1)
+  term.setBackgroundColor(colors.lightGray)
+  term.clearLine()
+  term.setCursorPos(2,1)
+  term.setTextColor(colors.gray)
+  write("Task Manager")
+  processes = JakeOS.listProcesses()
+  term.setCursorPos(51,1)
+  term.setBackgroundColor(colors.red)
+  term.setTextColor(colors.white)
+  write("X")
+  for i=1,#processes do
+    term.setCursorPos(2,i + 2)
+    term.setBackgroundColor(colors.white)
+    term.setTextColor(colors.black)
+    write(processes[i]["sName"])
+    term.setCursorPos(48,i + 2)
+    if processes[i]["sName"] == "JakeOS X" then
+      term.setBackgroundColor(colors.lightGray)
+      term.setTextColor(colors.gray)
+    else
+      term.setBackgroundColor(colors.red)
+      term.setTextColor(colors.white)
+    end
+    write("End")
+  end
+  term.setBackgroundColor(colors.white)
+  e,c,x,y = os.pullEvent("mouse_click")
+  y = y - 2
+  if processes[y] then
+    if x >= 47 and x <= 50 then
+      local endProcess = true
+      if processes[y]["sName"] == "JakeOS X" then
+        term.current().setVisible(false)
+        paintutils.drawFilledBox(3,3,49,10,colors.lightGray)
+        paintutils.drawFilledBox(4,4,48,9,colors.gray)
+        term.current().setVisible(true)
+        term.setCursorPos(4,4)
+        term.setBackgroundColor(colors.gray)
+        term.setTextColor(colors.lightGray)
+        graphicals.center("WARNING")
+        term.setCursorPos(4,5)
+        term.setTextColor(colors.white)
+        graphicals.center("JakeOS X is a system process and")
+        term.setCursorPos(4,6)
+        graphicals.center("if you end it, the OS might crash")
+        term.setCursorPos(4,8)
+        term.setTextColor(colors.red)
+        graphicals.center("Yes, end the process")
+        term.setCursorPos(4,9)
+        term.setTextColor(colors.blue)
+        graphicals.center("No, do not end the process")
+        while true do
+          e,c,x,y = os.pullEvent("mouse_click")
+          if x >= 4 and x <= 48 then
+            if y == 8 then
+              endProcess = true
+              break
+            end
+            if y == 9 then
+              endProcess = false
+              break
+            end
+          end
+        end
+      end
+      if endProcess then
+        JakeOS.deleteProcess(processes[y]["sName"])
+        term.setCursorPos(48,y + 2)
+      end
+    end
+  end
+  if x == 51 and y == -1 then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    term.setTextColor(colors.white)
+    return
+  end
+end
