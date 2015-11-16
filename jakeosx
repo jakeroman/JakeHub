@@ -60,7 +60,7 @@ iconList = {
     term.setTextColor(colors.black)
     term.setCursorPos(x,y + 2)
     write("--")
-    term.setTextColor(colors.red)
+    term.setTextColor(colors.gray)
     write("=")
   end,
   ["shell"] = function(x,y)
