@@ -34,7 +34,7 @@ if setupProtection then
   _G.fs.move = nil
   function fs.move(fileSelect,endSelect)
     if protectedFiles[fileSelect] then
-      printError("Access Denied")
+      printError("delete:12:Access Denied")
     else
       oldFsMoveFunction(fileSelect,endSelect)
     end
@@ -54,7 +54,7 @@ if setupProtection then
     if not protectedFiles[fileSelect] then
       oldFsDeleteFunction(fileSelect)
     else
-      printError("Access Denied")
+      printError("delete:12:Access Denied")
     end
   end
   function fs.isReadOnly(fileSelect)
