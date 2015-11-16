@@ -1,5 +1,6 @@
 args = {...}
---if not protectedFiles then
+if not protectedFiles then
+  setupProtection = true
   shell.setAlias("protect",shell.getRunningProgram())
   if not fs.exists("/.protectedFiles") then
     f = fs.open("/.protectedFiles","w")
@@ -7,14 +8,17 @@ args = {...}
     f.writeLine(".protectedFiles")
     f.close()
   end
-  protectedFiles = {}
-  f = fs.open(".protectedFiles","r")
-  while true do
-    curLine = f.readLine()
-    if not curLine then break end
-    protectedFiles[curLine] = true
-  end
-  f.close()
+end
+protectedFiles = {}
+f = fs.open(".protectedFiles","r")
+while true do
+  curLine = f.readLine()
+  if not curLine then break end
+  protectedFiles[curLine] = true
+end
+f.close()
+if setupProtection then
+  setupProtection = false
   oldFsOpenFunction = fs.open
   oldFsDeleteFunction = fs.delete
   oldFsIsReadOnlyFunction = fs.isReadOnly
@@ -55,7 +59,7 @@ args = {...}
       return oldFsIsReadOnlyFunction(fileSelect)
     end
   end
---end
+end
 if not args[1] then
   return
 end
