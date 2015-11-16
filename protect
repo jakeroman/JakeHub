@@ -9,6 +9,8 @@ if not protectedFiles then
     f.close()
   end
 end
+function reloadProtection()
+--RELOADPROTECT
 protectedFiles = {}
 f = fs.open(".protectedFiles","r")
 while true do
@@ -17,6 +19,9 @@ while true do
   protectedFiles[curLine] = true
 end
 f.close()
+--ENDRELOADPROTECT
+end
+reloadProtection()
 if setupProtection then
   setupProtection = false
   oldFsOpenFunction = fs.open
@@ -68,3 +73,4 @@ f = oldFsOpenFunction("/.protectedFiles","a")
 f.writeLine("/"..args[1])
 f.writeLine(args[1])
 f.close()
+reloadProtection()
