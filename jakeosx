@@ -707,4 +707,8 @@ end
 
 JakeOS.startProcess(operatingSys,"JakeOS X")
 JakeOS.handleProcesses()
-os.shutdown()
+term.setBackgroundColor(colors.black)
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(colors.yellow)
+print("You have exited JakeOS")
