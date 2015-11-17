@@ -294,6 +294,25 @@ end
 if not fs.exists("/JakeOS/copy") then
   fs.copy("/startup","/JakeOS/copy")
 end
+oldColors = colors
+newColors = {
+  ["green"] = colors.gray,
+  ["brown"] = colors.gray,
+  ["black"] = colors.black,
+  ["pink"] = colors.lightGray,
+  ["yellow"] = colors.lightGray,
+  ["orange"] = colors.lightGray,
+  ["magenta"] = colors.gray,
+  ["purple"] = colors.gray,
+  ["cyan"] = colors.lightGray,
+  ["red"] = colors.lightGray,
+  ["white"] = colors.white,
+  ["lightBlue"] = colors.lightGray,
+  ["blue"] = colors.gray,
+  ["lightGray"] = colors.gray,
+  ["gray"] = colors.black,
+  ["lime"] = colors.lightGray,
+}
 
 -- OS
 function operatingSys()
@@ -331,6 +350,10 @@ function operatingSys()
     _G.term.getBackgroundColour = newGetBackgroundColor
     _G.term.getTextColor = newGetTextColor
     _G.term.getTextColour = newGetTextColor
+  end
+  if password then
+    _G.colors = nil
+    colors = newColors
   end
   term.setBackgroundColor(colors.white)
   term.clear()
@@ -379,6 +402,8 @@ function operatingSys()
     end
     term.current().setVisible(true)
     if password then
+      _G.colors = nil
+      colors = oldColors
       paintutils.drawFilledBox(1,5,51,9,colors.lightGray)
       term.setCursorPos(1,6)
       term.setTextColor(colors.gray)
