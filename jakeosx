@@ -402,8 +402,8 @@ function operatingSys()
     end
     term.current().setVisible(true)
     if password then
-      _G.colors = nil
-      colors = oldColors
+      --_G.colors = nil
+      --colors = oldColors
       paintutils.drawFilledBox(1,5,51,9,colors.lightGray)
       term.setCursorPos(1,6)
       term.setTextColor(colors.gray)
