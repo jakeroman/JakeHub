@@ -52,6 +52,9 @@ end
 
 function handleProcesses()
   while true do
+    if #processes <= 0 then
+      return
+    end
     local e = {os.pullEventRaw()}
     local queue = {}
     for i,v in pairs(processes) do
