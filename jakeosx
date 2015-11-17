@@ -351,10 +351,10 @@ function operatingSys()
     _G.term.getTextColor = newGetTextColor
     _G.term.getTextColour = newGetTextColor
   end
-  if password then
-    _G.colors = nil
-    colors = newColors
-  end
+  --if password then
+    --_G.colors = nil
+    --colors = newColors
+  --end
   term.setBackgroundColor(colors.white)
   term.clear()
   term.setTextColor(colors.black)
