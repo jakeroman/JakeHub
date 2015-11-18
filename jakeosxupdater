@@ -14,7 +14,7 @@ if fs.exists("/JakeOS/autorun") then
 end
 fs.copy("/JakeOS/Desktop","/Temp")
 if fs.exists("/JakeOS/time") then
-  time = true
+  --time = true
 end
 if fs.exists("/JakeOS/anims") then
   animations = true
