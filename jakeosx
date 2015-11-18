@@ -13,8 +13,8 @@ else
   animations = false
 end
 debugMode = false
-clockFreq = 0.1
-osver = "1"
+clockFreq = 0.9
+osver = "2"
 
 -- System Initalization
 oldPull = os.pullEvent
