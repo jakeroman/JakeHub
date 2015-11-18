@@ -368,7 +368,7 @@ function operatingSys()
     term.setBackgroundColor(colors.white)
     term.clear()
     f = fs.open("/JakeOS/time","r")
-    local timezone = f.readAll()
+    local timezone = tostring(tonumber(f.readAll())+24)
     f.close()
     if tonumber(timezone) >= 0 then
       h = http.get("http://www.timeapi.org/utc/in+"..timezone.."+hours")
@@ -713,7 +713,7 @@ function operatingSys()
                     write("UTC "..time)
                     term.setCursorPos(2,7)
                     term.setTextColor(colors.gray)
-                    write("Negative Doesn't Work")
+                    --write("Negative Doesn't Work")
                     e,c,x,y = os.pullEvent("mouse_click")
                     if y == 2 then
                       time = time + 1
