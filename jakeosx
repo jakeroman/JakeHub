@@ -13,7 +13,7 @@ else
   animations = false
 end
 debugMode = false
-clockFreq = 0.9
+clockFreq = 0.2
 osver = "2"
 
 -- System Initalization
