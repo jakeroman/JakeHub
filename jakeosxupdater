@@ -43,6 +43,8 @@ if time then
   f.writeLine("true")
   f.close()
 end
+f = fs.open("/JakeOS/time","w")
+f.writeLine(1)
 f = fs.open("/JakeOS/browser","w")
 f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/browser").readAll())
 f.close()
