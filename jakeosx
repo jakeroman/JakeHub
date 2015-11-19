@@ -13,7 +13,7 @@ else
   animations = false
 end
 debugMode = false
-clockFreq = 1
+clockFreq = 0.1
 osver = "2"
 
 -- System Initalization
@@ -315,6 +315,22 @@ newColors = {
 }
 
 -- OS
+function clockHandler()
+  time = "LoadingT00:00:00+00:00"
+  while true do
+    file = fs.open("/JakeOS/time","r")
+    tzone = tostring(tonumber(file.readAll())+24)
+    file.close()
+    httpGet = http.get("http://www.timeapi.org/utc/in+"..tzone.."+hours")
+    if httpGet then
+      time = httpGet.readAll()
+      httpGet.close()
+    else
+      time = "ErrorT??:??:??+00:00"
+    end
+    sleep(clockFreq)
+  end
+end
 function operatingSys()
   paintutils.drawImage(graphics("background"),1,1)
   paintutils.drawImage(graphics("x"),1,1)
@@ -367,31 +383,15 @@ function operatingSys()
     end
     term.setBackgroundColor(colors.white)
     term.clear()
-    f = fs.open("/JakeOS/time","r")
-    local timezone = tostring(tonumber(f.readAll())+24)
-    f.close()
-    if tonumber(timezone) >= 0 then
-      h = http.get("http://www.timeapi.org/utc/in+"..timezone.."+hours")
-      if not h then
-        time = "ErrorT??:??:??+00:00"
-      else
-        time = h.readAll()
-        h.close()
-      end
+    if time then
+      timeCur = string.sub(time,(string.find(time,"T")+1),(string.find(time,"+")-1))
     else
-      h = http.get("http://www.timeapi.org/utc/back+"..string.sub(timezone,2,#timezone).."+hours")
-      if not h then
-        time = "ErrorT??:??:??+00:00"
-      else
-        time = h.readAll()
-        h.close()
-      end
+      timeCur = "00:00:00"
     end
-    time = string.sub(time,(string.find(time,"T")+1),(string.find(time,"+")-1))
-    term.setCursorPos(49 - #time,19)
+    term.setCursorPos(49 - #timeCur,19)
     term.setBackgroundColor(colors.lightGray)
     term.setTextColor(colors.black)
-    write(" "..time.." ")
+    write(" "..timeCur.." ")
     term.setCursorPos(2,19)
     term.setBackgroundColor(colors.gray)
     term.setTextColor(colors.lightGray)
@@ -775,11 +775,17 @@ function operatingSys()
     end
   end
 end
-
-JakeOS.startProcess(operatingSys,"JakeOS X")
-JakeOS.handleProcesses()
-term.setBackgroundColor(colors.black)
-term.clear()
-term.setCursorPos(1,1)
-term.setTextColor(colors.yellow)
-print("You have exited JakeOS")
+if not debugMode then
+  JakeOS.startProcess(clockHandler,"System Task")
+  JakeOS.startProcess(operatingSys,"JakeOS X")
+  JakeOS.handleProcesses()
+else
+  parallel.waitForAll(clockHandler,operatingSys)
+end
+if not debugMode then
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.yellow)
+  print("You have exited JakeOS")
+end
