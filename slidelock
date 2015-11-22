@@ -1,0 +1,71 @@
+term.current().setVisible(false)
+term.setBackgroundColor(colors.black)
+term.clear()
+paintutils.drawFilledBox(1,1,51,19,colors.white)
+paintutils.drawFilledBox(1,17,51,19,colors.lightGray)
+paintutils.drawLine(2,18,50,18,colors.gray)
+term.current().setVisible(true)
+slid = 2
+waitTime = 0.4
+text = "Slide to unlock"
+while true do
+  term.current().setVisible(false)
+  paintutils.drawLine(2,18,50,18,colors.gray)
+  term.setCursorPos(slid,18)
+  term.setBackgroundColor(colors.white)
+  term.setTextColor(colors.black)
+  write(" > ")
+  if slid <= 5 then
+    maxX,maxY = term.getSize()
+    maxX = maxX / 2
+    maxX = maxX - (#text / 2)
+    term.setCursorPos(math.ceil(maxX),18)
+    if slid == 2 then
+      term.setTextColor(colors.white)
+    elseif slid == 3 then
+      term.setTextColor(colors.white)
+    elseif slid == 4 then
+      term.setTextColor(colors.lightGray)
+    elseif slid == 5 then
+      term.setTextColor(colors.lightGray)
+    end
+    term.setBackgroundColor(colors.gray)
+    write(text)
+  end
+  term.current().setVisible(true)
+  if slid >= 48 then
+    break
+  end
+  timer = os.startTimer(waitTime)
+  while true do
+    e,c,x,y = os.pullEvent()
+    if e == "mouse_drag" then break end
+    if e == "timer" then break end
+  end
+  if e ~= "timer" then
+    os.cancelTimer(timer)
+  end
+  if e == "timer" then
+    if slid > 2 then
+      slid = slid - 1
+    end
+    waitTime = 0.2
+  end
+  if e == "mouse_drag" then
+    if x >= 2 and x <= 48 then
+      if y == 18 then
+        waitTime = 1.2
+        slid = x
+      end
+    end
+  end
+end
+pos = 19
+for i=1,19 do
+  term.scroll(1)
+  term.current().setVisible(false)
+  paintutils.drawLine(1,pos,51,pos,colors.black)
+  term.current().setVisible(true)
+  pos = pos - 1
+  sleep(0)
+end
