@@ -40,14 +40,13 @@ end
 iconList = {
   ["explorer"] = function(x,y)
     term.setCursorPos(x,y)
-    term.setBackgroundColor(colors.lightGray)
+    term.setBackgroundColor(colors.yellow)
     term.setTextColor(colors.gray)
-    write("|")
+    write("--")
     term.setCursorPos(x,y + 1)
-    write("|")
+    write("===")
     term.setCursorPos(x,y + 2)
-    write("|")
-    paintutils.drawFilledBox(x + 1,y,x + 2,y + 2,colors.yellow)
+    write("== ")
   end,
   ["tasks"] = function(x,y)
     term.setCursorPos(x,y)
