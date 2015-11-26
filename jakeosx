@@ -43,6 +43,7 @@ iconList = {
     term.setBackgroundColor(colors.yellow)
     term.setTextColor(colors.gray)
     write("--")
+    term.setTextColor(colors.black)
     term.setCursorPos(x,y + 1)
     write("===")
     term.setCursorPos(x,y + 2)
