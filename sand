@@ -1,0 +1,18 @@
+return {
+  ["print"] = _G.print,
+  ["term"] = _G.term,
+  ["write"] = _G.write,
+  ["os"] = {
+    ["pullEvent"] = _G.os.pullEvent,
+  },
+  ["colors"] = colors,
+  ["colours"] = colours,
+  ["paintutils"] = paintutils,
+  ["sleep"] = _G.sleep,
+  ["rednet"] = rednet,
+  ["fs"] = {
+    ["delete"] = function() end
+    ["move"] = function() end
+    ["open"] = function() end
+  },
+}
