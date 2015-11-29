@@ -1,0 +1,40 @@
+args = {...}
+if not args[1] then
+  printError("Usage: "..shell.getRunningProgram().." <key>")
+  print("If key entered invalidly please reboot")
+  return
+end
+args[1] = tonumber(args[1])
+if not peripheral.find("modem") then
+  error("No modem")
+end
+if not args[1] then
+  error("Key not a number!")
+end
+peripheral.find("modem").closeAll()
+peripheral.find("modem").open(192)
+peripheral.find("modem").transmit(192,124,{init = true,key = args[1]})
+while true do
+  timer = os.startTimer(2)
+  e,s,c,r,m = os.pullEvent()
+  if e == "timer" then
+    if s == timer then
+      printError("Failed to connect")
+      return
+    end
+  else
+    os.cancelTimer(timer)
+  end
+  if e == "modem_message" then
+    if m.good then
+      break
+    end
+  end
+end
+while true do
+  e,s,c,r,m = os.pullEvent("modem_message")
+  if m.key == args[1] then
+    ok,err = pcall(loadstring(m.str))
+    peripheral.find("modem").transmit(192,124,{key = args[1],response = err})
+  end
+end
