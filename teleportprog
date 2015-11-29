@@ -1,0 +1,69 @@
+os.pullEvent = os.pullEventRaw
+t = peripheral.wrap("right")
+term.clear()
+term.setCursorPos(2,2)
+term.setBackgroundColor(colors.white)
+term.clearLine()
+term.setCursorPos(2,2)
+term.setTextColor(colors.gray)
+write("Turtle Teleportation Controller")
+term.setCursorPos(2,4)
+term.setBackgroundColor(colors.black)
+term.setTextColor(colors.white)
+write("X: ")
+x,y = term.getCursorPos()
+term.setCursorPos(2,5)
+write("Y: ")
+term.setCursorPos(2,6)
+write("Z: ")
+term.setTextColor(colors.lightGray)
+term.setCursorPos(x,4)
+posX = read()
+term.setCursorPos(x,5)
+posY = read()
+term.setCursorPos(x,6)
+posZ = read()
+term.setCursorPos(2,8)
+if not tonumber(posX) then
+  os.shutdown()
+end
+if not tonumber(posY) then
+  os.shutdown()
+end
+if not tonumber(posZ) then
+  os.shutdown()
+end
+posX = tonumber(posX)
+posY = tonumber(posY)
+posZ = tonumber(posZ)
+term.setTextColor(colors.white)
+write("Required Fuel: ")
+term.setTextColor(colors.lightGray)
+local fuel = tostring(t.requiredFuel(posX,posY,posZ))
+write(fuel)
+timer = 5
+while true do
+  term.setCursorPos(2,10)
+  term.setTextColor(colors.white)
+  term.clearLine()
+  term.setCursorPos(2,10)
+  term.setTextColor(colors.white)
+  write("Teleporting in ")
+  term.setTextColor(colors.lightGray)
+  write(timer)
+  sleep(1)
+  timer = timer - 1
+  if timer <= 0 then
+    break
+  end
+end
+term.setCursorPos(2,12)
+term.setTextColor(colors.white)
+local tp = t.teleportTo(posX,posY,posZ)
+if tp then
+  write("Teleportation Successful!")
+else
+  write("Teleportation Failed.")
+end
+sleep(12)
+os.shutdown()
