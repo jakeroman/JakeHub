@@ -1,0 +1,250 @@
+if not peripheral.find("modem") then
+  printError("Modem needed!")
+  return
+end
+term.setBackgroundColor(colors.white)
+term.clear()
+paintutils.drawFilledBox(2,2,50,6,colors.black)
+term.setCursorPos(3,3)
+term.setTextColor(colors.white)
+write("Generating turtle key... ")
+tKey = math.random(1,16384)
+sleep(0.2)
+write("Done")
+sleep(0.1)
+term.setCursorPos(3,5)
+write("Key is "..tostring(tKey).." type it on turtle")
+peripheral.find("modem").closeAll()
+peripheral.find("modem").open(192)
+while true do
+  e,s,c,r,m = os.pullEvent("modem_message")
+  if r == 124 then
+    if m.init then
+      if m.key == tKey then
+        peripheral.find("modem").transmit(192,124,{good = true})
+        break
+      end
+    end
+  end
+end
+function control(str)
+  peripheral.find("modem").transmit(192,124,{str = str,key = tKey})
+  while true do
+    nTimer = os.startTimer(3)
+    e,s,c,r,m = os.pullEvent()
+    if e ~= "timer" then
+      os.cancelTimer(nTimer)
+    end
+    if e == "modem_message" then
+      if m.key == tKey then
+        return m.response
+      end
+    end
+    if e == "timer" then
+      return
+    end
+  end
+end
+sleep(0.3)
+term.setBackgroundColor(colors.black)
+term.clear()
+term.setCursorPos(2,2)
+term.setTextColor(colors.white)
+write("Turtle Fuel Level: ")
+term.setTextColor(colors.lightGray)
+write(control("return turtle.getFuelLevel()"))
+term.setCursorPos(2,3)
+term.setTextColor(colors.white)
+write("Turtle Advanced: ")
+if control("return term.isColor()") then
+  term.setTextColor(colors.lime)
+  write("Yes")
+else
+  term.setTextColor(colors.red)
+  write("No")
+end
+sleep(0.5)
+term.setBackgroundColor(colors.white)
+term.clear()
+blocks = {
+  ["minecraft:cobblestone"] = {
+    ["bgcol"] = colors.gray,
+    ["color"] = colors.white,
+    ["text"] = " ",
+  },
+  ["minecraft:dirt"] = {
+    ["bgcol"] = colors.brown,
+    ["color"] = colors.black,
+    ["text"] = " ",
+  },
+  ["minecraft:grass"] = {
+    ["bgcol"] = colors.green,
+    ["color"] = colors.black,
+    ["text"] = " ",
+  },
+  ["minecraft:diamond_ore"] = {
+    ["bgcol"] = colors.gray,
+    ["color"] = colors.lightBlue,
+    ["text"] = "D",
+  },
+  ["minecraft:coal_ore"] = {
+    ["bgcol"] = colors.gray,
+    ["color"] = colors.black,
+    ["text"] = "C",
+  },
+  ["minecraft:gold_ore"] = {
+    ["bgcol"] = colors.gray,
+    ["color"] = colors.yellow,
+    ["text"] = "G",
+  },
+  ["minecraft:iron_ore"] = {
+    ["bgcol"] = colors.gray,
+    ["color"] = colors.lightGray,
+    ["text"] = "I",
+  },
+  ["minecraft:lava"] = {
+    ["bgcol"] = colors.orange,
+    ["color"] = colors.yellow,
+    ["text"] = "#",
+  },
+  ["minecraft:stonebrick"] = {
+    ["bgcol"] = colors.gray,
+    ["color"] = colors.white,
+    ["text"] = " ",
+  },
+  ["minecraft:glass_pane"] = {
+    ["bgcol"] = colors.white,
+    ["color"] = colors.white,
+    ["text"] = " ",
+  },
+  ["minecraft:stone"] = {
+    ["bgcol"] = colors.lightGray,
+    ["color"] = colors.white,
+    ["text"] = " ",
+  },
+  ["ComputerCraft:CC-TurtleAdvanced"] = {
+    ["bgcol"] = colors.black,
+    ["color"] = colors.yellow,
+    ["text"] = "T",
+  },
+  ["ComputerCraft:CC-Turtle"] = {
+    ["bgcol"] = colors.black,
+    ["color"] = colors.lightGray,
+    ["text"] = "T",
+  },
+}
+term.setBackgroundColor(colors.black)
+term.clear()
+function senseBlock()
+  if control("return turtle.detect()") then
+    block = control("sucess,block = turtle.inspect() return block.name")
+    if blocks[block] then
+      term.setTextColor(blocks[block]["color"])
+      term.setBackgroundColor(blocks[block]["bgcol"])
+      write(blocks[block]["text"])
+    else
+      term.setBackgroundColor(colors.black)
+      term.setTextColor(colors.white)
+      write("?")
+    end
+  end
+end
+while true do
+  term.setCursorPos(1,1)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.white)
+  term.clearLine()
+  term.setCursorPos(1,1)
+  gpsFound = control("return {gps.locate()}")
+  if gpsFound then
+    write("X: "..gpsFound[1].."  Y: "..gpsFound[2].."  Z: "..gpsFound[3])
+  else
+    write("Error finding coordinates")
+  end
+  term.setCursorPos(49,19)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.white)
+  write("...")
+  paintutils.drawFilledBox(24,9,26,11,colors.black)
+  term.setCursorPos(25,10)
+  term.setTextColor(colors.lightGray)
+  write("@")
+  term.setCursorPos(25,9)
+  senseBlock()
+  control("turtle.turnLeft()")
+  term.setCursorPos(25,10)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.lightGray)
+  write("@")
+  term.setCursorPos(24,10)
+  senseBlock()
+  sleep(0)
+  control("turtle.turnLeft()")
+  term.setCursorPos(25,10)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.lightGray)
+  write("@")
+  term.setCursorPos(25,11)
+  senseBlock()
+  sleep(0)
+  control("turtle.turnLeft()")
+  term.setCursorPos(25,10)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.lightGray)
+  write("@")
+  term.setCursorPos(26,10)
+  senseBlock()
+  sleep(0)
+  control("turtle.turnLeft()")
+  term.setCursorPos(25,10)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.lightGray)
+  write("^")
+  term.setCursorPos(49,19)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.white)
+  write("   ")
+  skipBreak = false
+  while true do
+    e,c,x,y = os.pullEvent()
+    if e == "mouse_click" then 
+      if c == 1 then
+        control("turtle.dig()")
+      else
+        control("turtle.place()")
+      end
+      if not skipBreak then
+        break 
+      end
+    end
+    if e == "key" then
+      if c == keys.w then
+        control("turtle.forward()")
+      end
+      if c == keys.a then
+        control("turtle.turnLeft()")
+      end
+      if c == keys.d then
+        control("turtle.turnRight()")
+      end
+      if c == keys.s then
+        control("turtle.back()")
+      end
+      if c == keys.space then
+        control("turtle.up()")
+      end
+      if c == keys.leftShift then
+        control("turtle.down()")
+      end
+      if c == keys.v then
+        control("turtle.digDown()")
+      end
+      if c == keys.b then
+        skipBreak = not skipBreak
+      end
+      if not skipBreak then
+        break
+      end
+    end
+  end
+end
