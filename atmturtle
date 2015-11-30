@@ -1,4 +1,8 @@
 os.pullEvent = os.pullEventRaw
+turtle.equipLeft()
+turtle.equipLeft()
+turtle.equipRight()
+turtle.equipRight()
 local chan = 12345
 turtle.select(1)
 peripheral.find("modem").open(chan)
