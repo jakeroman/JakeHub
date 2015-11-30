@@ -1,0 +1,35 @@
+os.pullEvent = os.pullEventRaw
+local chan = 12345
+turtle.select(1)
+peripheral.find("modem").open(chan)
+while true do
+  e,s,c,r,m,d = os.pullEvent("modem_message")
+  if r == 123 and d < 2 then
+    if string.sub(m,1,4) == "draw" then
+      local draw = tonumber(string.sub(m,5,#m))
+      turtle.suckDown(draw)
+      if turtle.getItemCount() < draw then
+        peripheral.find("modem").transmit(chan,123,"empty")
+        turtle.dropDown()
+      else
+        peripheral.find("modem").transmit(chan,123,"done")
+        turtle.drop()
+      end
+    end
+    if m == "deposit" then
+      turtle.suck()
+      if turtle.getItemCount() > 0 then
+        block = turtle.getItemDetail()
+        if block.name ~= "minecraft:diamond" then
+          peripheral.find("modem").transmit(chan,123,"0")
+          turtle.drop()
+        else
+          peripheral.find("modem").transmit(chan,123,tostring(turtle.getItemCount()))
+          turtle.dropDown()
+        end
+      else
+        peripheral.find("modem").transmit(chan,123,"0")
+      end
+    end
+  end
+end
