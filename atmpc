@@ -1,0 +1,191 @@
+function program()
+os.pullEvent = os.pullEventRaw
+local chan = 12345
+peripheral.find("modem").open(chan)
+if not fs.exists("/users") then
+  fs.makeDir("/users")
+end
+if not fs.exists("/balance") then
+  fs.makeDir("/balance")
+end
+if not fs.exists("/sha256") then
+  f = fs.open("sha256",'w')
+  f.writeLine(http.get('https://raw.github.com/jakemroman/JakeHub/master/sha256').readAll())
+  f.close()
+end
+os.loadAPI("sha256")
+function getBal(user)
+  f = fs.open("/balance/"..user,"r")
+  local bal = tonumber(f.readAll())
+  f.close()
+  return bal
+end
+while true do
+  term.setBackgroundColor(colors.white)
+  term.current().setVisible(false)
+  term.clear()
+  paintutils.drawFilledBox(40,1,51,19,colors.lightGray)
+  term.current().setVisible(true)
+  term.setCursorPos(2,2)
+  term.setBackgroundColor(colors.white)
+  term.setTextColor(colors.black)
+  write("QuantumTech Banking")
+  term.setCursorPos(2,14)
+  write("If you do not have an account then")
+  term.setCursorPos(2,15)
+  write("enter your credentials now.")
+  term.setCursorPos(2,17)
+  write("Username: ")
+  local username = read()
+  term.setCursorPos(2,18)
+  write("Password: ")
+  local password = sha256.sha256(read("*"))
+  term.setCursorPos(2,4)
+  if fs.exists("/users/"..username) then
+    f = fs.open("/users/"..username,"r")
+    local pw = f.readAll()
+    f.close()
+    if pw == password then
+      term.setTextColor(colors.green)
+      write("Access Granted!")
+      sleep(1)
+      while true do
+        term.setBackgroundColor(colors.white)
+        term.current().setVisible(false)
+        term.clear()
+        paintutils.drawFilledBox(40,1,51,19,colors.lightGray)
+        term.setCursorPos(2,2)
+        term.setBackgroundColor(colors.white)
+        term.setTextColor(colors.black)
+        write("Logged in as "..username)
+        term.setCursorPos(2,4)
+        write("Balance: ")
+        term.setTextColor(colors.lightGray)
+        write(tostring(getBal(username)))
+        term.current().setVisible(true)
+        term.setCursorPos(2,18)
+        term.setTextColor(colors.gray)
+        term.setBackgroundColor(colors.lightGray)
+        write("Logout")
+        paintutils.drawLine(41,2,51,2,colors.gray)
+        paintutils.drawLine(41,4,51,4,colors.gray)
+        term.setCursorPos(41,2)
+        term.setTextColor(colors.white)
+        term.setBackgroundColor(colors.gray)
+        write("Deposit")
+        term.setCursorPos(41,4)
+        write("Withdrawl")
+        e,c,x,y = os.pullEvent("mouse_click")
+        if x >= 2 and x <= 8 and y == 18 then
+          break
+        end
+        if x >= 41 then
+          if y == 4 then
+            term.setBackgroundColor(colors.white)
+            term.clear()
+            term.current().setVisible(false)
+            paintutils.drawFilledBox(40,1,51,19,colors.lightGray)
+            term.current().setVisible(true)
+            term.setCursorPos(2,2)
+            term.setBackgroundColor(colors.white)
+            term.setTextColor(colors.black)
+            write("Withdrawl from account.")
+            term.setCursorPos(2,4)
+            write("Amount: ")
+            local draw = read()
+            term.setCursorPos(2,18)
+            if tonumber(draw) == nil then
+              term.setTextColor(colors.red)
+              write("Invalid amount")
+              sleep(2)
+            else
+              if getBal(username) >= tonumber(draw) then
+                peripheral.find("modem").transmit(chan,123,"draw"..draw)
+                while true do
+                  e,s,c,r,m,d = os.pullEvent("modem_message")
+                  if r == 123 and d < 2 then
+                    break
+                  end
+                end
+                if m == "empty" then
+                  term.setTextColor(colors.gray)
+                  write("ATM out of cash.")
+                  sleep(1)
+                elseif m == "done" then
+                  term.setTextColor(colors.green)
+                  write("Successful!")
+                  local oldBal = getBal(username)
+                  f = fs.open("/balance/"..username,"w")
+                  f.write(oldBal - tonumber(draw))
+                  f.close()
+                  sleep(1.3)
+                else
+                  term.setTextColor(colors.black)
+                  write("Something went wrong..")
+                  sleep(2)
+                end
+              else
+                printError("Insufficent funds.")
+                sleep(1.2)
+              end
+            end
+          end
+          if y == 2 then
+            term.setBackgroundColor(colors.white)
+            term.clear()
+            term.current().setVisible(false)
+            paintutils.drawFilledBox(40,1,51,19,colors.lightGray)
+            term.current().setVisible(true)
+            term.setCursorPos(2,2)
+            term.setBackgroundColor(colors.white)
+            term.setTextColor(colors.gray)
+            write("Please insert deposit into dropper.")
+            term.setCursorPos(2,3)
+            write("Once inserted, press the button!")
+            term.setCursorPos(2,5)
+            term.setBackgroundColor(colors.lightGray)
+            term.setTextColor(colors.gray)
+            write("Deposit")
+            while true do
+              e,c,x,y = os.pullEvent("mouse_click")
+              if x >= 2 and x <= 11 and y == 5 then
+                break
+              end
+            end
+            term.setCursorPos(2,5)
+            term.setBackgroundColor(colors.gray)
+            term.setTextColor(colors.black)
+            write("Deposit")
+            peripheral.find("modem").transmit(chan,123,"deposit")
+            while true do
+              e,s,c,r,m,d = os.pullEvent("modem_message")
+              if r == 123 and d < 2 then
+                local oldBal = getBal(username)
+                f = fs.open("/balance/"..username,"w")
+                f.writeLine(oldBal + tonumber(m))
+                f.close()
+                break
+              end
+            end
+          end
+        end
+      end
+    else
+      term.setTextColor(colors.red)
+      textutils.slowWrite("Access Denied!")
+      sleep(2)
+    end
+  else
+    write("Registered!")
+    f = fs.open("/users/"..username,"w")
+    f.write(password)
+    f.close()
+    f = fs.open("/balance/"..username,"w")
+    f.write("0")
+    f.close()
+    sleep(2.3)
+  end
+end
+end
+pcall(program)
+os.reboot()
