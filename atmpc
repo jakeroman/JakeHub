@@ -35,7 +35,7 @@ while true do
   write("If you do not have an account then")
   term.setCursorPos(2,15)
   write("enter your credentials now.")
-  term.setCursorPos(2,4)
+  term.setCursorPos(2,12)
   term.setTextColor(colors.gray)
   write("Currency: ")
   term.setTextColor(colors.black)
