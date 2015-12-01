@@ -82,6 +82,12 @@ end
 
 
 
+recipes = {
+  ["bonemeal"] = {
+    "Place one bone in the crafting grid",
+    "Grab the output from the crafting table.",
+  },
+}
 ips = {
   ["cubespace"] = "https://mcapi.us/server/status?ip=185.38.148.214&port=25574",
   ["sertex"] = "https://mcapi.us/server/status?ip=89.217.103.241",
@@ -289,6 +295,16 @@ while true do
       f.writeLine(ammount)
       f.close()
       say("Set smites.")
+    end
+    if string.sub(msg,1,7) == "recipe " then
+      if recipes[string.sub(msg,8,#msg]) then
+        local currentRecipe = recipes[string.sub(msg,8,#msg)]
+        for i=1,#currentRecipe do
+          print(currentRecipe[i])
+        end
+      else
+        say("I'm sorry, but I don't currently know the recipe for "..string.sub(msg,8,#msg))
+      end
     end
     if isAdmin(p,"core.destroy") and msg == "self destruct" then
       if not fs.exists("/disk/selfdestruct") then
