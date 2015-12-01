@@ -1,9 +1,10 @@
 os.pullEvent = os.pullEventRaw
-turtle.equipLeft()
-turtle.equipLeft()
-turtle.equipRight()
-turtle.equipRight()
+local currency = "minecraft:diamond"
 local chan = 12345
+turtle.equipLeft()
+turtle.equipLeft()
+turtle.equipRight()
+turtle.equipRight()
 turtle.select(1)
 peripheral.find("modem").open(chan)
 while true do
@@ -24,7 +25,7 @@ while true do
       turtle.suck()
       if turtle.getItemCount() > 0 then
         block = turtle.getItemDetail()
-        if block.name ~= "minecraft:diamond" then
+        if block.name ~= currency then
           peripheral.find("modem").transmit(chan,123,"0")
           turtle.drop()
         else
