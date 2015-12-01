@@ -100,7 +100,7 @@ while true do
               sleep(2)
             else
               if tonumber(draw) > 64 then
-                printError("Ammount too large, please try again with less")
+                printError("Ammount too large, please try again!")
                 sleep(2)
               elseif getBal(username) >= tonumber(draw) then
                 peripheral.find("modem").transmit(chan,123,"draw"..draw)
