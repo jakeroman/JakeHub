@@ -300,7 +300,7 @@ while true do
       if recipes[string.sub(msg,8,#msg)] then
         local currentRecipe = recipes[string.sub(msg,8,#msg)]
         for i=1,#currentRecipe do
-          print(currentRecipe[i])
+          say(currentRecipe[i])
         end
       else
         say("I'm sorry, but I don't currently know the recipe for "..string.sub(msg,8,#msg))
