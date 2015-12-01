@@ -99,7 +99,10 @@ while true do
               write("Invalid amount")
               sleep(2)
             else
-              if getBal(username) >= tonumber(draw) then
+              if tonumber(draw) > 64 then
+                printError("Ammount too large, please try again with less")
+                sleep(2)
+              elseif getBal(username) >= tonumber(draw) then
                 peripheral.find("modem").transmit(chan,123,"draw"..draw)
                 while true do
                   e,s,c,r,m,d = os.pullEvent("modem_message")
