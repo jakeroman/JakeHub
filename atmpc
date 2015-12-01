@@ -1,6 +1,5 @@
 function program()
 os.pullEvent = os.pullEventRaw
-local currency = "minecraft:diamond"
 local currencyName = "Diamonds"
 local chan = 12345
 peripheral.find("modem").open(chan)
