@@ -102,6 +102,9 @@ while true do
               if tonumber(draw) > 64 then
                 printError("Ammount too large, please try again!")
                 sleep(2)
+              elseif tonumber(draw) < 1 then
+                printError("Withdraw diamonds: 0-64 range")
+                sleep(3)
               elseif getBal(username) >= tonumber(draw) then
                 peripheral.find("modem").transmit(chan,123,"draw"..draw)
                 while true do
