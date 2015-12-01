@@ -1,5 +1,7 @@
 function program()
 os.pullEvent = os.pullEventRaw
+local currency = "minecraft:diamond"
+local currencyName = "Diamonds"
 local chan = 12345
 peripheral.find("modem").open(chan)
 if not fs.exists("/users") then
@@ -34,6 +36,11 @@ while true do
   write("If you do not have an account then")
   term.setCursorPos(2,15)
   write("enter your credentials now.")
+  term.setCursorPos(2,4)
+  term.setTextColor(colors.gray)
+  write("Currency: ")
+  term.setTextColor(colors.black)
+  write(currencyName)
   term.setCursorPos(2,17)
   write("Username: ")
   local username = read()
@@ -103,7 +110,7 @@ while true do
                 printError("Ammount too large, please try again!")
                 sleep(2)
               elseif tonumber(draw) < 1 then
-                printError("Withdraw diamonds: 0-64 range")
+                printError("Withdraw 0-64 range")
                 sleep(3)
               elseif getBal(username) >= tonumber(draw) then
                 peripheral.find("modem").transmit(chan,123,"draw"..draw)
