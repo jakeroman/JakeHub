@@ -297,7 +297,7 @@ while true do
       say("Set smites.")
     end
     if string.sub(msg,1,7) == "recipe " then
-      if recipes[string.sub(msg,8,#msg]) then
+      if recipes[string.sub(msg,8,#msg)] then
         local currentRecipe = recipes[string.sub(msg,8,#msg)]
         for i=1,#currentRecipe do
           print(currentRecipe[i])
