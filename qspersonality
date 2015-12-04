@@ -87,6 +87,12 @@ recipes = {
     "Place one bone in the crafting grid",
     "Grab the output from the crafting table.",
   },
+  ["chatbox"] = {
+    "Place the recipe for golden leggings into the crafting grid",
+    "Then put a note block in a center",
+    "And finally place a computercraft networking cable",
+    "below it.",
+  },
 }
 ips = {
   ["cubespace"] = "https://mcapi.us/server/status?ip=185.38.148.214&port=25574",
