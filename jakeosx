@@ -242,8 +242,8 @@ function graphics(graphicName)
   if not http then
     return nil
   end
-  if fs.exists("/.graphics/"..graphicName) then
-    return paintutils.loadImage("/.graphics/"..graphicName)
+  if fs.exists("/JakeOS/graphics/"..graphicName) then
+    return paintutils.loadImage("/JakeOS/graphics/"..graphicName)
   end
   graphHttp = http.get("https://raw.github.com/jakemroman/JakeHub/master/graphic-"..graphicName)
   if not graphHttp then
