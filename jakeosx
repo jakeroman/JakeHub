@@ -31,9 +31,9 @@ if not fs.isDir("/JakeOS/autorun") then
   f = fs.open("/JakeOS/autorun/protect","w")
   f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/protect").readAll())
   f.close()
-  f = fs.open("/JakeOS/autorun/lockscreen","w")
-  f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/slidelock").readAll())
-  f.close()
+  --f = fs.open("/JakeOS/autorun/lockscreen","w")
+  --f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/slidelock").readAll())
+  --f.close()
 end
 
 -- Default Icons
