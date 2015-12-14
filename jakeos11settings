@@ -55,7 +55,7 @@ while true do
       term.setCursorPos(41,7)
       term.setTextColor(colors.gray)
       local icon = read()
-      if not fs.exists("icon") then
+      if not fs.exists(icon) then
         term.setTextColor(colors.red)
         term.setBackgroundColor(colors.white)
         term.setCursorPos(2,18)
