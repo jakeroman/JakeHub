@@ -88,6 +88,7 @@ if setupMode then
     'fs.makeDir("/JakeOS/menu")',
     'fs.makeDir("/JakeOS/dock")',
     'fs.makeDir("/JakeOS/icons")',
+    'fs.makeDir("/JakeOS/desktop")',
     'f = fs.open("/JakeOS/menu/Shell","w") f.writeLine("term.setBackgroundColor(colors.black)") f.writeLine("term.clear()") f.writeLine("term.setCursorPos(1,1)") f.writeLine("shell.run('.."'shell'"..')") f.close()',
     'f = fs.open("/JakeOS/menu/Settings","w") f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeos11settings").readAll()) f.close()',
   }
@@ -181,6 +182,7 @@ systemFiles = {
   "/JakeOS/menu",
   "/JakeOS/dock",
   "/JakeOS/icons",
+  "/JakeOS/desktop",
 }
 function bsod(reason)
   x,y = term.getSize()
@@ -288,6 +290,7 @@ function operatingSystem()
   center("JakeOS XI")
   sleep(0.45)
   bar = {}
+  editMode = false
   function drawDock()
     paintutils.drawFilledBox(3,16,48,19,colors.white)
     paintutils.drawLine(4,19,47,19,colors.lightGray)
@@ -320,6 +323,11 @@ function operatingSystem()
     paintutils.drawLine(1,1,51,1,colors.lightGray)
     term.setCursorPos(1,1)
     term.setTextColor(colors.black)
+    if editMode then
+      bar["edit"] = "|EDIT-MODE|"
+    else
+      bar["edit"] = nil
+    end
     bar["clock"] = textutils.formatTime(os.time(),false)
     xPos = 51
     for z,v in pairs(bar) do
@@ -332,13 +340,51 @@ function operatingSystem()
     term.setTextColor(colors.gray)
     write("@")
     drawDock()
+    list = fs.list("/JakeOS/desktop")
+    desktop = {}
+    for i=1,#list do
+      desktop[i] = {}
+      desktop[i]["file"] = "/JakeOS/desktop/"..list[i]
+      local tableHandle = dofile(desktop[i]["file"])
+      desktop[i]["x"] = tableHandle.x
+      desktop[i]["y"] = tableHandle.y
+      desktop[i]["icon"] = tableHandle.icon
+      desktop[i]["program"] = tableHandle.program
+      paintutils.drawImage(paintutils.loadImage(tableHandle.icon),tableHandle.x,tableHandle.y)
+    end
     term.current().setVisible(true)
     nTimer = os.startTimer(0.2)
     e,c,x,y = os.pullEvent()
     if e ~= "timer" then
       os.cancelTimer(nTimer)
     end
-    if e == "mouse_click" then
+    if e == "mouse_drag" and editMode then
+      for i=1,#desktop do
+        if x >= desktop[i]["x"]-2 and x <= desktop[i]["x"]+2 and y >= desktop[i]["y"]-2 and y <= desktop[i]["y"]+2 then
+          f = fs.open(desktop[i]["file"],"w")
+          f.writeLine('return {')
+          f.writeLine('  ["x"] = '..tostring(x)..",")
+          f.writeLine('  ["y"] = '..tostring(y)..",")
+          f.writeLine('  ["icon"] = "'..desktop[i]["icon"]..'",')
+          f.writeLine('  ["program"] = "'..desktop[i]["program"]..'",')
+          f.writeLine('}')
+          f.close()
+        end
+      end
+    elseif e == "mouse_click" then
+      if c == 1 then
+        for i=1,#desktop do
+          if not editMode and x >= desktop[i]["x"] and x <= desktop[i]["x"]+2 and y >= desktop[i]["y"] and y <= desktop[i]["y"]+2 then
+            term.setBackgroundColor(colors.black)
+            term.clear()
+            term.setCursorPos(1,1)
+            term.setTextColor(colors.white)
+            shell.run(desktop[i]["program"])
+          end
+        end
+      elseif c == 2 then
+        editMode = not editMode
+      end
       for i=1,#dock do
         if y >= 16 and y <= 18 and x >= dock[i]["x"] and x <= (dock[i]["x"] + 2) then
           term.current().setVisible(false)
@@ -435,6 +481,7 @@ if err == "Terminated" then
   return
 end
 if not ok then
+  term.current().setVisible(true)
   bsod(err)
 else
   print("OS Ended?")
