@@ -1,0 +1,441 @@
+---------------------------------------------------
+--[[     | Copyright Jake Roman 2015 (c) |     ]]--
+--[[     |         JakeOS     XI         |     ]]--
+---------------------------------------------------
+
+
+--[[ Vital Functions ]]--
+function alert(line1,line2,line3,line4)
+  paintutils.drawFilledBox(5,6,46,13,colors.white)
+  term.setCursorPos(6,7)
+  term.setTextColor(colors.lightGray)
+  write("   ^   ")
+  term.setCursorPos(6,8)
+  write("  / \\  ")
+  term.setCursorPos(6,9)
+  write(" / ! \\ ")
+  term.setCursorPos(6,10)
+  write("/     \\")
+  term.setCursorPos(6,11)
+  write("=-----=")
+  term.setCursorPos(6,12)
+  term.setTextColor(colors.gray)
+  write("!")
+  term.setTextColor(colors.red)
+  write("ALERT")
+  term.setTextColor(colors.gray)
+  write("!")
+  local xPos,yPos = term.getCursorPos()
+  xPos = xPos + 2
+  term.setCursorPos(xPos,8)
+  term.setTextColor(colors.black)
+  if line1 then
+    write(line1)
+  end
+  term.setCursorPos(xPos,9)
+  if line2 then
+    write(line2)
+  end
+  term.setCursorPos(xPos,10)
+  if line3 then
+    write(line3)
+  end
+  term.setCursorPos(xPos,11)
+  if line4 then
+    write(line4)
+  end
+  local textWrite = " Dismiss "
+  startX = 46
+  term.setCursorPos(startX - #textWrite,12)
+  term.setBackgroundColor(colors.blue)
+  term.setTextColor(colors.white)
+  write(textWrite)
+  while true do
+    e,c,x,y = os.pullEvent("mouse_click")
+    if x >= (startX - #textWrite) and x <= (startX - 1) and y == 12 then
+      break
+    end
+  end
+end
+function center(str)
+  maxX,maxY = term.getSize()
+  maxX = maxX / 2
+  maxX = maxX - (#str / 2)
+  curX,curY = term.getCursorPos()
+  term.setCursorPos(maxX,curY)
+  print(str)
+end
+function rightSide(str,position)
+  if position then
+    maxX = position
+  else
+    maxX,maxY = term.getSize()
+  end
+  curX,curY = term.getCursorPos()
+  term.setCursorPos(maxX - #str,curY)
+  print(str)
+  return (maxX - #str),(maxX - 1)
+end
+
+--[[ Find out if this is first run. ]]--
+setupMode = false
+if not fs.exists("/JakeOS") then
+  setupMode = true
+end
+if setupMode then
+  local setupTasks = {
+    'fs.makeDir("/JakeOS")',
+    'fs.makeDir("/JakeOS/menu")',
+    'fs.makeDir("/JakeOS/dock")',
+    'fs.makeDir("/JakeOS/icons")',
+    'f = fs.open("/JakeOS/menu/Shell","w") f.writeLine("term.setBackgroundColor(colors.black)") f.writeLine("term.clear()") f.writeLine("term.setCursorPos(1,1)") f.writeLine("shell.run('.."'shell'"..')") f.close()',
+    'f = fs.open("/JakeOS/menu/Settings","w") f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeos11settings").readAll()) f.close()',
+  }
+  term.current().setVisible(false)
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  paintutils.drawFilledBox(1,1,51,3,colors.lightGray)
+  term.setCursorPos(2,2)
+  term.setTextColor(colors.gray)
+  center("JakeOS XI Setup")
+  term.current().setVisible(true)
+  term.setCursorPos(1,4)
+  term.setBackgroundColor(colors.white)
+  term.setTextColor(colors.black)
+  print([[
+  
+ -+-
+  |  +--\ /-- -+- /-\ |   |
+  |  |  | |    |  |_| |   |
+  |  |  | \-\  |  | | |   |
+ -+- |  | --/  |  | | +-- +-- 
+ 
+  ]])
+  term.setCursorPos(2,18)
+  term.setTextColor(colors.gray)
+  write("Ready to install..")
+  term.setBackgroundColor(colors.lightGray)
+  startX,endX = rightSide(" Install ")
+  while true do
+    e,c,x,y = os.pullEvent("mouse_click")
+    if x >= startX and x <= endX and y == 18 then
+      break
+    end
+  end
+  for z=1,#setupTasks do
+    sleep(0.25)
+    term.current().setVisible(false)
+    term.clear()
+    term.setBackgroundColor(colors.white)
+    term.clear()
+    term.setCursorPos(1,1)
+    paintutils.drawFilledBox(1,1,51,3,colors.lightGray)
+    term.setCursorPos(2,2)
+    term.setTextColor(colors.gray)
+    center("Installation")
+    term.setCursorPos(1,5)
+    term.setBackgroundColor(colors.white)
+    term.setTextColor(colors.black)
+    print([[
+    
+ -+-
+  |  +--\ /-- -+- /-\ |   |   -+- +--\ /-\
+  |  |  | |    |  |_| |   |    |  |  | | _
+  |  |  | \-\  |  | | |   |    |  |  | | |
+ -+- |  | --/  |  | | +-- +-- -+- |  | \-/ o o o
+ 
+    ]])
+    term.current().setVisible(true)
+    term.setCursorPos(2,18)
+    term.setBackgroundColor(colors.lightGray)
+    for i=1,49 do
+      write(" ")
+    end
+    term.setCursorPos(2,18)
+    term.setBackgroundColor(colors.lime)
+    for i=1,(math.ceil((z / #setupTasks) * 49)) do
+      write(" ")
+    end
+    loadstring(setupTasks[z])()
+  end
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  sleep(0.1)
+  term.setBackgroundColor(colors.lightGray)
+  term.clear()
+  sleep(0.1)
+  term.setBackgroundColor(colors.gray)
+  term.clear()
+  sleep(0.1)
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  sleep(0.3)
+  term.setBackgroundColor(colors.gray)
+  term.clear()
+end
+
+
+--[[ Error Checking ]]--
+systemFiles = {
+  "/JakeOS",
+  "/JakeOS/menu",
+  "/JakeOS/dock",
+  "/JakeOS/icons",
+}
+function bsod(reason)
+  x,y = term.getSize()
+  for i=1,y do
+    term.current().setVisible(false)
+    paintutils.drawLine(1,i,x,i,colors.gray)
+    term.current().setVisible(true)
+    sleep(0)
+  end
+  term.current().setVisible(false)
+  paintutils.drawFilledBox(4,5,x - 4,y - 5,colors.white)
+  term.setCursorPos(5,6)
+  if fs.exists("/.crash") then
+    term.setTextColor(colors.gray)
+    center("Repeated Crash!")
+    term.setCursorPos(5,8)
+    term.setTextColor(colors.black)
+    write("You're computer experienced a crash")
+    term.setCursorPos(5,9)
+    write("before reaching a successful boot.")
+    term.setCursorPos(5,10)
+    write("You can choose to re-install the OS")
+    term.setCursorPos(5,12)
+    term.setBackgroundColor(colors.red)
+    term.setTextColor(colors.white)
+    write(" No. ")
+    term.setCursorPos(5,13)
+    term.setBackgroundColor(colors.lime)
+    write(" Yes ")
+    term.current().setVisible(true)
+    while true do
+      e,c,x,y = os.pullEvent("mouse_click")
+      if x >= 5 and x <= 10 then
+        if y == 12 then
+          sleep(0.3)
+          os.reboot()
+        end
+        if y == 13 then
+          fs.delete("/JakeOS")
+          sleep(0.3)
+          os.reboot()
+        end
+      end
+    end
+  else
+    --term.current().setVisible(true)
+    term.setTextColor(colors.gray)
+    center("JakeOS XI Crash")
+    term.setCursorPos(5,8)
+    term.setTextColor(colors.black)
+    write("It appears your JakeOS computer crashed.")
+    term.setCursorPos(5,9)
+    write("You may be able to fix this issue by")
+    term.setCursorPos(5,10)
+    write("rebooting.")
+    term.setCursorPos(5,12)
+    write("Error: ")
+    term.setTextColor(colors.gray)
+    write(tostring(reason))
+    --term.current().setVisible(false)
+    paintutils.drawFilledBox(1,1,3,y,colors.gray)
+    paintutils.drawFilledBox(x - 3,1,x,y,colors.gray)
+    term.current().setVisible(true)
+    timer = 10
+    term.setBackgroundColor(colors.white)
+    f = fs.open("/.crash","w")
+    f.write("Crash Warning")
+    f.close()
+    while timer > 0 do
+      term.setCursorPos(5,13)
+      term.setTextColor(colors.blue)
+      write("Rebooting system in "..tostring(timer).."  ")
+      sleep(1)
+      timer = timer - 1
+    end
+    sleep(0.3)
+    os.reboot()
+  end
+end
+for i=1,#systemFiles do
+  if not fs.exists(systemFiles[i]) then
+    bsod("Missing file: "..systemFiles[i])
+  end
+end
+
+
+--[[ Operating system ]]--
+crashMode = false
+if fs.exists("/.crash") then
+  crashMode = true
+  fs.delete("/.crash")
+end
+function operatingSystem()
+  term.setBackgroundColor(colors.gray)
+  term.clear()
+  sleep(0.1)
+  term.setBackgroundColor(colors.lightGray)
+  term.clear()
+  sleep(0.1)
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  x,y = term.getSize()
+  term.setCursorPos(x/2,y/2)
+  term.setTextColor(colors.gray)
+  center("JakeOS XI")
+  sleep(0.45)
+  bar = {}
+  function drawDock()
+    paintutils.drawFilledBox(3,16,48,19,colors.white)
+    paintutils.drawLine(4,19,47,19,colors.lightGray)
+    paintutils.drawLine(5,18,46,18,colors.lightGray)
+    paintutils.drawLine(6,17,45,17,colors.lightGray)
+    dock = {}
+    local list = fs.list("/JakeOS/dock")
+    xPos = 7
+    for z=1,#list do
+      dock[z] = {}
+      f = fs.open("/JakeOS/dock/"..list[z],"r")
+      dock[z]["icon"] = f.readLine()
+      dock[z]["program"] = f.readLine()
+      f.close()
+      dock[z]["x"] = xPos
+      xPos = xPos + 4
+    end
+    for z=1,#dock do
+      if not fs.exists(dock[z]["icon"]) then
+        alert("Dock error.")
+      else
+        paintutils.drawImage(paintutils.loadImage(dock[z]["icon"]),dock[z]["x"],16)
+      end
+    end
+  end
+  while true do
+    term.current().setVisible(false)
+    term.setBackgroundColor(colors.white)
+    term.clear()
+    paintutils.drawLine(1,1,51,1,colors.lightGray)
+    term.setCursorPos(1,1)
+    term.setTextColor(colors.black)
+    bar["clock"] = textutils.formatTime(os.time(),false)
+    xPos = 51
+    for z,v in pairs(bar) do
+      xPos = xPos - #v
+      term.setCursorPos(xPos,1)
+      write(v)
+      xPos = xPos - 1
+    end
+    term.setCursorPos(3,1)
+    term.setTextColor(colors.gray)
+    write("@")
+    drawDock()
+    term.current().setVisible(true)
+    nTimer = os.startTimer(0.2)
+    e,c,x,y = os.pullEvent()
+    if e ~= "timer" then
+      os.cancelTimer(nTimer)
+    end
+    if e == "mouse_click" then
+      for i=1,#dock do
+        if y >= 16 and y <= 18 and x >= dock[i]["x"] and x <= (dock[i]["x"] + 2) then
+          term.current().setVisible(false)
+          paintutils.drawFilledBox(dock[i]["x"],17,dock[i]["x"] + 2,18,colors.lightGray)
+          paintutils.drawLine(dock[i]["x"],16,dock[i]["x"] + 2,16,colors.white)
+          paintutils.drawImage(paintutils.loadImage(dock[i]["icon"]),dock[i]["x"],15)
+          term.current().setVisible(true)
+          sleep(0.15)
+          term.current().setVisible(false)
+          paintutils.drawFilledBox(dock[i]["x"],15,dock[i]["x"] + 2,16,colors.white)
+          paintutils.drawLine(dock[i]["x"],17,dock[i]["x"] + 2,17,colors.lightGray)
+          paintutils.drawImage(paintutils.loadImage(dock[i]["icon"]),dock[i]["x"],14)
+          term.current().setVisible(true)
+          sleep(0.23)
+          term.current().setVisible(false)
+          paintutils.drawFilledBox(dock[i]["x"],14,dock[i]["x"] + 2,16,colors.white)
+          paintutils.drawImage(paintutils.loadImage(dock[i]["icon"]),dock[i]["x"],15)
+          term.current().setVisible(true)
+          sleep(0.15)
+          term.current().setVisible(false)
+          paintutils.drawLine(dock[i]["x"],15,dock[i]["x"] + 2,15,colors.white)
+          drawDock()
+          term.current().setVisible(true)
+          sleep(0.18)
+          term.setBackgroundColor(colors.black)
+          term.clear()
+          term.setCursorPos(1,1)
+          term.setTextColor(colors.white)
+          shell.run(dock[i]["program"])
+        end
+      end
+      if x >= 2 and x <= 4 and y == 1 then
+        term.setCursorPos(2,1)
+        term.setBackgroundColor(colors.lightBlue)
+        term.setTextColor(colors.lightGray)
+        write(" @ ")
+        list = fs.list("/JakeOS/menu")
+        x = 2
+        y = 2
+        for i=1,#list do
+          if #list[i] > (x + 1) then
+            x = #list[i]+1
+          end
+          y = y + 1
+        end
+        x = x + 2
+        term.current().setVisible(false)
+        paintutils.drawFilledBox(2,2,x,y,colors.lightGray)
+        term.current().setVisible(true)
+        sleep(0.1)
+        term.setCursorPos(2,1)
+        term.setBackgroundColor(colors.blue)
+        term.setTextColor(colors.white)
+        write(" @ ")
+        term.current().setVisible(false)
+        paintutils.drawFilledBox(2,2,x,y,colors.gray)
+        term.current().setVisible(true)
+        menuClick = {}
+        for i=1,#list do
+          term.setCursorPos(2,i + 1)
+          term.setTextColor(colors.lightGray)
+          write(" "..list[i].." ")
+          menuClick[i + 1] = "/JakeOS/menu/"..list[i]
+        end
+        e,c,xPos,yPos = os.pullEvent("mouse_click")
+        if xPos >= 2 and xPos <= x then
+          if menuClick[yPos] then
+            term.setCursorPos(2,yPos)
+            term.setTextColor(colors.white)
+            term.setBackgroundColor(colors.black)
+            write(string.rep(" ",x-1))
+            term.setCursorPos(2,yPos)
+            write(" "..list[yPos - 1].." ")
+            sleep(0.2)
+            term.setBackgroundColor(colors.white)
+            term.setTextColor(colors.black)
+            shell.run(menuClick[yPos])
+          end
+        end
+      end
+    end
+  end
+end
+
+
+--[[ BSOD ]]--
+ok,err = pcall(operatingSystem)
+if err == "Terminated" then
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.yellow)
+  print("Operating System Terminated.")
+  return
+end
+if not ok then
+  bsod(err)
+else
+  print("OS Ended?")
+end
