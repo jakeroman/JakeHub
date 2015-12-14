@@ -51,7 +51,7 @@ while true do
       term.setBackgroundColor(colors.white)
       term.setTextColor(colors.black)
       write("Item icon")
-      paintutils.drawLine(40,5,50,5,colors.lightGray)
+      paintutils.drawLine(40,7,50,7,colors.lightGray)
       term.setCursorPos(41,7)
       term.setTextColor(colors.gray)
       local icon = read()
