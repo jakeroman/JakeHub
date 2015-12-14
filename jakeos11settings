@@ -25,9 +25,59 @@ while true do
   term.setTextColor(colors.gray)
   term.setBackgroundColor(colors.white)
   write("Exit")
+  terma.setCursorPos(2,7)
+  term.setTextColor(colors.black)
+  write("Desktop items")
+  term.setCursorPos(48,7)
+  term.setBackgroundColor(colors.lightGray)
+  term.setTextColor(colors.gray)
+  write("Add")
   e,c,x,y = os.pullEvent("mouse_click")
   if x >= 2 and x <= 6 and y == 18 then
     break
+  end
+  if x >= 48 and x <= 50 and y == 7 then
+    while true do
+      term.setBackgroundColor(colors.white)
+      term.clear()
+      draw("Desktop Items - Add")
+      term.setCursorPos(2,5)
+      write("Item name")
+      paintutils.drawLine(40,5,50,5,colors.lightGray)
+      term.setCursorPos(41,5)
+      term.setTextColor(colors.gray)
+      local item = read()
+      term.setCursorPos(2,7)
+      term.setBackgroundColor(colors.white)
+      term.setTextColor(colors.black)
+      write("Item icon")
+      paintutils.drawLine(40,5,50,5,colors.lightGray)
+      term.setCursorPos(41,7)
+      term.setTextColor(colors.gray)
+      local icon = read()
+      if not fs.exists("icon") then
+        term.setTextColor(colors.red)
+        term.setBackgroundColor(colors.white)
+        term.setCursorPos(2,18)
+        write("Icon not found!")
+        sleep(1.3)
+        break
+      end
+      f = fs.open("/JakeOS/desktop/"..item,"w")
+      f.writeLine('return {')
+      f.writeLine('  ["x"] = 2,')
+      f.writeLine('  ["y"] = 3,')
+      f.writeLine('  ["icon"] = "'..icon..'",')
+      f.writeLine('  ["program"] = "'..item..'",')
+      f.writeLine("}")
+      f.close()
+      term.setCursorPos(2,18)
+      term.setTextColor(colors.lime)
+      term.setBackgroundColor(colors.white)
+      write("Item added")
+      sleep(1)
+      break
+    end
   end
   if x >= 48 and x <= 50 and y == 5 then
     while true do
