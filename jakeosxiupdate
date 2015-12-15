@@ -1,7 +1,7 @@
 return function(version)
   local changelogs = {
     [1.1] = {
-      "* Added updater!",
+      "* Added disk compatibilty on desktop.",
     },
   }
   latest = version
