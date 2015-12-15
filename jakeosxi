@@ -352,6 +352,30 @@ function operatingSystem()
       desktop[i]["program"] = tableHandle.program
       paintutils.drawImage(paintutils.loadImage(tableHandle.icon),tableHandle.x,tableHandle.y)
     end
+    if peripheral.find("drive") then
+      if peripheral.find("drive").isDiskPresent() then
+        term.setCursorPos(2,3)
+        term.setBackgroundColor(colors.gray)
+        term.setTextColor(colors.lightGray)
+        write("|")
+        term.setTextColor(colors.black)
+        term.setBackgroundColor(colors.lightGray)
+        write("==")
+        term.setCursorPos(2,4)
+        if fs.exists("/disk/.color") then
+          f = fs.open("/disk/.color","r")
+          local diskColor = f.readAll()
+          f.close()
+          term.setBackgroundColor(colors[diskColor])
+        else
+          term.setBackgroundColor(colors.blue)
+        end
+        term.setTextColor(colors.white)
+        write("   ")
+        term.setCursorPos(2,5)
+        write("   ")
+      end
+    end
     term.current().setVisible(true)
     nTimer = os.startTimer(0.2)
     e,c,x,y = os.pullEvent()
@@ -384,6 +408,17 @@ function operatingSystem()
         end
       elseif c == 2 then
         editMode = not editMode
+      end
+      if peripheral.find("drive") then
+        if peripheral.find("drive").isDiskPresent() then
+          if x >= 2 and y >= 3 and x <= 4 and y <= 5 then
+            if c == 2 then
+              peripheral.find("drive").ejectDisk()
+            elseif c == 1 then
+              
+            end
+          end
+        end
       end
       for i=1,#dock do
         if y >= 16 and y <= 18 and x >= dock[i]["x"] and x <= (dock[i]["x"] + 2) then
