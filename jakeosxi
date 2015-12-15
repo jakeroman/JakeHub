@@ -560,7 +560,7 @@ function operatingSystem()
             if c == 2 then
               peripheral.find("drive").ejectDisk()
             elseif c == 1 then
-              
+              finder({"disk"})
             end
           end
         end
