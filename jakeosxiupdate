@@ -1,0 +1,20 @@
+return function(version)
+  local changelogs = {
+    [1.1] = {
+      "* Added updater!",
+    },
+  }
+  latest = version
+  local changed = {}
+  for i,v in pairs(changelogs) do
+    if i > latest then
+      latest = i
+    end
+  end
+  for i,v in pairs(changelogs) do
+    if i > version then
+      changed[#changed + 1] = v
+    end
+  end
+  return changed,latest
+end
