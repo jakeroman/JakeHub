@@ -559,6 +559,7 @@ function operatingSystem()
           if x >= 2 and y >= 3 and x <= 4 and y <= 5 then
             if c == 2 then
               peripheral.find("drive").ejectDisk()
+              editMode = false
             elseif c == 1 then
               finder({"disk"})
             end
