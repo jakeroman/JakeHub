@@ -1,0 +1,72 @@
+local text = " Quit "
+local function info()
+  pos = -1
+  while true do
+    local timer = os.startTimer(0)
+    if pos == 52 then
+      pos = -3
+    end
+    if true then
+      term.current().setVisible(false)
+      term.setCursorPos(1,1)
+      term.setBackgroundColor(colors.white)
+      term.setTextColor(colors.gray)
+      write(string.rep("-",51))
+      term.setCursorPos(1,1)
+      term.setTextColor(colors.blue)
+      term.setCursorPos(pos,1)
+      if pos == 51 then
+        write("=")
+      elseif pos == 50 then
+        write("==")
+      elseif pos == 49 then
+        write("===")
+      elseif pos == 48 then
+        write("====")
+      else
+        write("=====")
+      end
+      paintutils.drawFilledBox(1,2,51,19,colors.white)
+      term.setCursorPos(51 - #text,18)
+      term.setBackgroundColor(colors.lightGray)
+      term.setTextColor(colors.gray)
+      write(text)
+      term.setCursorPos(2,3)
+      term.setBackgroundColor(colors.white)
+      term.setTextColor(colors.black)
+      write("JakeOS XI (Eleven)")
+      term.setCursorPos(2,4)
+      term.setTextColor(colors.lightGray)
+      write("(c)")
+      term.setTextColor(colors.gray)
+      write(" Jake Roman [2015]")
+      term.setCursorPos(2,5)
+      write("All rights reserved.")
+      term.setCursorPos(2,18)
+      term.setTextColor(colors.lightGray)
+      write("JakeOS XI Credits")
+      term.current().setVisible(true)
+    end
+    while true do
+      e,c,x,y = os.pullEvent()
+      if e == "timer" then
+        break 
+      end
+      if e == "mouse_click" then
+        if x >= (51 - #text) and x <= 50 and y == 18 then
+          term.setCursorPos(51 - #text,18)
+          term.setBackgroundColor(colors.blue)
+          term.setTextColor(colors.white)
+          write(text)
+          sleep(0.2)
+          term.setBackgroundColor(colors.black)
+          term.clear()
+          term.setCursorPos(1,1)
+          return
+        end
+      end 
+    end
+    pos = pos + 1
+  end
+end
+info()
