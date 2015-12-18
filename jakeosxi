@@ -91,6 +91,7 @@ if setupMode then
     'fs.makeDir("/JakeOS/desktop")',
     'f = fs.open("/JakeOS/menu/Shell","w") f.writeLine("term.setBackgroundColor(colors.black)") f.writeLine("term.clear()") f.writeLine("term.setCursorPos(1,1)") f.writeLine("shell.run('.."'shell'"..')") f.close()',
     'f = fs.open("/JakeOS/menu/Settings","w") f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeos11settings").readAll()) f.close()',
+    'f = fs.open("/JakeOS/menu/Info","w") f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/jakeosinfo").readAll()) f.close()',
   }
   term.current().setVisible(false)
   term.setBackgroundColor(colors.white)
