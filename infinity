@@ -1,0 +1,75 @@
+---------------------------------------------------
+--        Copyright 2016 (c)  Jacob Roman        --
+---------------------------------------------------
+--             QuantumTech Infinity              --
+---------------------------------------------------
+
+--[[ Setup Detection ]]--
+term.setBackgroundColor(colors.black)
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(colors.white)
+setupList = {
+  'fs.makeDir("/infinity")',
+  'f = fs.open("/infinity/logo","w") f.writeLine(http.get("https://raw.github.com/jakemroman/JakeHub/master/infinity-logo").readAll()) f.close()',
+}
+if not fs.isDir("/infinity") then
+  term.setBackgroundColor(colors.white)
+  term.clear()
+  term.setCursorPos(1,1)
+  term.setTextColor(colors.black)
+  print([[
+  
+   /----\     /----\
+  /      \   /      \     QuantumTech Infinity
+ /        \ /        \ 
+ |         X         |  
+ \        / \        /   To infinity and beyond
+  \      /   \      /    
+   \----/     \----/
+   
+]])
+  for i=1,#setupList do
+    term.setCursorPos(2,18)
+    term.setBackgroundColor(colors.lightGray)
+    for x=1,49 do
+      write(" ")
+    end
+    if i == 1 then
+      sleep(1.2)
+    end
+    term.setCursorPos(2,18)
+    term.setBackgroundColor(colors.lime)
+    for x=1,math.floor((i / #setupList)*49) do
+      write(" ")
+    end
+    loadstring(setupList[i])()
+    sleep(0.8)
+  end
+  sleep(1.3)
+  os.reboot()
+end
+
+--[[ Startup ]]--
+term.setBackgroundColor(colors.black)
+term.clear()
+sleep(0.1)
+term.setBackgroundColor(colors.gray)
+term.clear()
+sleep(0.1)
+term.setBackgroundColor(colors.lightGray)
+term.clear()
+sleep(0.1)
+term.setBackgroundColor(colors.white)
+term.clear()
+paintutils.drawImage(paintutils.loadImage("/infinity/logo"),1,1)
+for i=1,18 do
+  term.setCursorPos(16+i,13)
+  term.setBackgroundColor(colors.gray)
+  write(" ")
+  term.setCursorPos(16+i,14)
+  term.setBackgroundColor(colors.lightGray)
+  write(" ")
+  sleep(0)
+end
+sleep(1.5)
