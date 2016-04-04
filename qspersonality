@@ -456,18 +456,10 @@ while true do
     end
     if msg == "power" then
       if rs.getInput("right",true) then
-        say("&7Station Power: &a&lOnline")
+        say("&7Power: &a&lOnline")
       else
-        say("&7Station Power: &4&lOffline")
+        say("&7Power: &4&lOffline")
       end
-    end
-    if msg == "power on" then
-      run("/setblock 205 171 81 0")
-      say("&7Spaceship power breaker: &a&lON")
-    end
-    if msg == "power off" then
-      run("/setblock 205 171 81 152")
-      say("&7Spaceship power breaker: &c&lOFF")
     end
     if string.sub(msg,1,8) == "what is " then
       local ask = string.gsub(string.lower(string.sub(msg,9,#msg)),"?","")
