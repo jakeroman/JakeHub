@@ -1,0 +1,103 @@
+topics = {}
+topic = ""
+helpDir = "/helpTopics/"
+topicOrder = {}
+if not fs.exists(helpDir) then
+  fs.makeDir(helpDir)
+end
+list = fs.list(helpDir)
+for i=1,#list do
+  topics[list[i]] = {}
+  f = fs.open(helpDir..list[i],"r")
+  while true do
+    curLine = f.readLine()
+    if not curLine then
+      break
+    end
+    topics[list[i]][#topics[list[i]] + 1] = curLine
+  end
+  f.close()
+end
+for i,v in pairs(topics) do
+  topicOrder[#topicOrder + 1] = i
+end
+function center(str)
+  curX,curY = term.getCursorPos()
+  maxX,maxY = term.getSize()
+  maxX = maxX / 2
+  maxX = maxX - (#str / 2)
+  term.setCursorPos(maxX,curY)
+  print(str)  
+end
+info = window.create(term.current(),11,2,51,19)
+scrollLevel = 0
+while true do
+  term.current().setVisible(false)
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  info.setBackgroundColor(colors.white)
+  info.clear()
+  paintutils.drawFilledBox(1,2,10,19,colors.lightGray)
+  term.setCursorPos(1,1)
+  term.setBackgroundColor(colors.gray)
+  term.setTextColor(colors.white)
+  term.clearLine()
+  term.setCursorPos(1,1)
+  center("Information")
+  term.setCursorPos(49,1)
+  term.setBackgroundColor(colors.red)
+  term.setTextColor(colors.white)
+  write(" X ")
+  for i=1,#topicOrder do
+    if topic == topicOrder[i] then
+      term.setBackgroundColor(colors.blue)
+      term.setTextColor(colors.white)
+    else
+      term.setBackgroundColor(colors.lightGray)
+      term.setTextColor(colors.gray)
+    end
+    paintutils.drawLine(1,i+1,10,i+1)
+    term.setCursorPos(1,i+1)
+    write(topicOrder[i])
+  end
+  if topics[topic] then
+    topicData = topics[topic]
+    for i=(scrollLevel+1),(scrollLevel+18) do
+      if not topicData[i] then
+        break
+      end
+      info.setCursorPos(1,i-scrollLevel)
+      info.setBackgroundColor(colors.white)
+      info.setTextColor(colors.black)
+      info.write(topicData[i])
+    end
+  else
+    topicData = nil
+  end
+  term.current().setVisible(true)
+  e,c,x,y = os.pullEvent()
+  if e == "mouse_scroll" and topicData then
+    if c == 1 then
+      if scrollLevel < #topicData-18 then
+        scrollLevel = scrollLevel + 1
+      end
+    elseif c == -1 then
+      if scrollLevel > 0 then
+        scrollLevel = scrollLevel - 1
+      end
+    end
+  end
+  if e == "mouse_click" and x >= 49 and x <= 51 and y == 1 then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    term.setTextColor(colors.white)
+    return
+  end
+  if e == "mouse_click" and x >= 1 and x <= 10 and y >= 2 and y <= 19 then
+    if topicOrder[y-1] then
+      scrollLevel = 0
+      topic = topicOrder[y-1]
+    end
+  end
+end
