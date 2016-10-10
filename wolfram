@@ -1,3 +1,4 @@
+local appkeys = {"GU7GAL-HLW2TGXR4J","P99XV4-6Y359T8584","5KGYY5-YE2JLLG74H"}
 function answer(_input)
   _input = textutils.urlEncode(_input)
   http.request("http://api.wolframalpha.com/v2/query?appid="..appkeys[math.random(1,#appkeys)].."&input=".._input.."&format=plaintext")
