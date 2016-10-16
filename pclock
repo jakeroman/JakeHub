@@ -1,0 +1,68 @@
+oldPull = os.pullEvent
+os.pullEvent = os.pullEventRaw
+
+local database = {
+  ["user1"] = "pass1",
+  ["user2"] = "pass2",
+}
+
+while true do
+  term.setBackgroundColor(colors.lightGray)
+  term.clear()
+  paintutils.drawFilledBox(3,3,50,18,colors.gray)
+  paintutils.drawFilledBox(2,2,49,17,colors.white)
+  paintutils.drawLine(3,3,48,3,colors.lightGray)
+  paintutils.drawLine(3,5,48,5,colors.gray)
+  term.setCursorPos(4,7)
+  term.setBackgroundColor(colors.white)
+  term.setTextColor(colors.black)
+  write("Sign into your computer to access files")
+  term.setCursorPos(4,9)
+  write("and applications.")
+  term.setCursorPos(4,16)
+  term.setTextColor(colors.gray)
+  write("QuantumTech PCLock v1")
+  term.setCursorPos(4,14)
+  term.setTextColor(colors.black)
+  write("Status: ")
+  term.setTextColor(colors.lightGray)
+  write("Typing")
+  term.setCursorPos(4,3)
+  term.setBackgroundColor(colors.lightGray)
+  term.setTextColor(colors.gray)
+  local user = read()
+  paintutils.drawLine(3,3,48,3,colors.gray)
+  term.setCursorPos(4,3)
+  term.setTextColor(colors.black)
+  write(user)
+  paintutils.drawLine(3,5,48,5,colors.lightGray)
+  term.setCursorPos(4,5)
+  term.setTextColor(colors.gray)
+  local password = read("*")
+  paintutils.drawLine(3,5,48,5,colors.gray)
+  term.setCursorPos(4,5)
+  term.setTextColor(colors.black)
+  write(string.rep("*",#password))
+  if database[user] == password then
+    term.setCursorPos(4,14)
+    term.setBackgroundColor(colors.white)
+    term.setTextColor(colors.black)
+    write("Status: ")
+    term.setTextColor(colors.lime)
+    write("Code Accepted")
+    sleep(1)
+    os.pullEvent = oldPull
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    term.setCursorPos(1,1)
+    return
+  else
+    term.setBackgroundColor(colors.white)
+    term.setCursorPos(4,14)
+    term.setTextColor(colors.black)
+    write("Status: ")
+    term.setTextColor(colors.red)
+    write("Code Denied")
+    sleep(2)
+  end
+end
