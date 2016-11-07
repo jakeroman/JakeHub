@@ -4,6 +4,8 @@ return {
   ["write"] = _G.write,
   ["os"] = {
     ["pullEvent"] = _G.os.pullEvent,
+    ["startTimer"] = _G.os.startTimer,
+    ["cancelTimer"] = _G.os.cancelTimer,
   },
   ["colors"] = colors,
   ["colours"] = colours,
