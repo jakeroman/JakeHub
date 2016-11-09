@@ -1,0 +1,144 @@
+-- Copyright Jake Roman (c) 2016
+-- Snow GUI Framework
+
+local backgroundColor = colors.black
+local objects = {}
+local safeMode = true
+
+function clear()
+  objects = {}
+end
+
+function textLabel(label,startX,startY,endX,endY,txtCol,bgCol,str)
+  objects[label] = {
+    ["startX"] = startX,
+    ["startY"] = startY,
+    ["endX"] = endX,
+    ["endY"] = endY,
+    ["txtCol"] = txtCol,
+    ["bgCol"] = bgCol,
+    ["text"] = str,
+    ["type"] = "label",
+  }
+end
+
+function textButton(label,startX,startY,endX,endY,txtCol,bgCol,str)
+  objects[label] = {
+    ["startX"] = startX,
+    ["startY"] = startY,
+    ["endX"] = endX,
+    ["endY"] = endY,
+    ["txtCol"] = txtCol,
+    ["bgCol"] = bgCol,
+    ["text"] = str,
+    ["type"] = "button"
+  }
+end
+
+function switch(label,x,y,state,offCol,onCol,bgCol)
+  if not offCol then
+    offCol = colors.red
+  end
+  if not onCol then
+    onCol = colors.lime
+  end
+  if not bgCol then
+    bgCol = colors.lightGray
+  end
+  objects[label] = {
+    ["state"] = state,
+    ["type"] = "switch",
+    ["x"] = x,
+    ["y"] = y,
+    ["offCol"] = offCol,
+    ["onCol"] = onCol,
+    ["bgCol"] = bgCol,
+  }
+end
+
+function text(label,x,y,str,txtCol)
+  objects[label] = {
+    ["x"] = x,
+    ["y"] = y,
+    ["text"] = str,
+    ["type"] = "text",
+    ["txtCol"] = txtCol,
+  }
+end
+
+function delete(label)
+  objects[label] = nil
+end
+
+function background(color)
+  backgroundColor = color
+end
+
+function draw()
+  if not safeMode then term.current().setVisible(false) end
+  term.setBackgroundColor(backgroundColor)
+  term.clear()
+  if not objects then
+    error("No objects")
+  end
+  for i,v in pairs(objects) do
+    if v.type == "label" or v.type == "button" then
+      paintutils.drawFilledBox(v.startX,v.startY,v.endX,v.endY,v.bgCol)
+      local maxX = v.endX-v.startX
+      local maxY = v.endY-v.startY
+      local text = v.text
+      if not text then
+        error("Missing text!")
+      end
+      maxX = maxX / 2
+      maxY = ( maxY / 2 )
+      maxX = maxX - ( #text/2 )
+      term.setCursorPos(maxX+v.startX,maxY+v.startY)
+      term.setTextColor(v.txtCol)
+      write(v.text)
+    end
+    if v.type == "text" then
+      term.setCursorPos(v.x,v.y)
+      term.setBackgroundColor(backgroundColor)
+      term.setTextColor(v.txtCol)
+      write(v.text)
+    end
+    if v.type == "switch" then
+      term.setCursorPos(v.x,v.y)
+      if v.state then  
+        term.setBackgroundColor(v.bgCol)
+        write(" ")
+        term.setBackgroundColor(v.onCol)
+        write("  ")
+      else
+        term.setBackgroundColor(v.offCol)
+        write("  ")
+        term.setBackgroundColor(v.bgCol)
+        write(" ")
+      end
+    end
+  end
+  term.current().setVisible(true)
+end
+
+function start()
+  while true do
+    local e,c,x,y = os.pullEvent("mouse_click")
+    for i,v in pairs(objects) do
+      if v.type == "button" then
+        if x >= v.startX and x <= v.endX and y >= v.startY and y <= v.endY then
+          return i
+        end
+      end
+      if v.type == "switch" then
+        if x >= v.x and x <= (v.x+2) and y == v.y then
+          return i
+        end
+      end
+    end
+  end
+end
+
+function getObjects()
+  return objects
+end
