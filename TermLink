@@ -515,7 +515,7 @@ function kernelRoutine()
     setCursor(false)
     clearScreen()
     slowWrite("Boot Menu",2,2)
-    prompt = scrollMenu(4,{"Resume Boot","Run Shell","Reinstall OS","Wipe Computer"})
+    prompt = scrollMenu(4,{"Resume Boot","Run Shell","Reinstall OS","Update OS"})
     if prompt == 1 then
       --just do nothing
     elseif prompt == 2 then
@@ -535,20 +535,21 @@ function kernelRoutine()
       end
     elseif prompt == 4 then
       clearScreen()
-      slowWrite("WARNING! You are about to erase all data!",2,2)
-      slowWrite("This will delete the OS and all files!",2,3)
-      slowWrite("Are you sure you want to continue?",2,5)
-      if scrollMenu(7,{"No","Yes"}) == 2 then
-        slowWrite("Erase beginning in 10s ",2,18)
-        count = 10
-        for i=1,10 do
-          sleep(1)
-          count = count - 1
-          writeText("Erase beginning in "..tostring(count).."s ",2,18)
-        end
-        slowWrite("Erase function is not enabled!",2,18)
-        sleep(1)
-        os.shutdown()
+      slowWrite("Would you like to update your OS?",2,2)
+      slowWrite("(It is recommended that you reinstall)",2,3)
+      prompt = scrollMenu(5,{"Cancel","Update","Update + Reinstall"})
+      if prompt == 3 then
+        fs.delete("/os")
+      end
+      if prompt == 2 or prompt == 3 then
+        f = fs.open("/startup","w")
+        h = http.get("https://raw.github.com/jakemroman/JakeHub/master/TermLink")
+        f.writeLine(h.readAll())
+        h.close()
+        f.close()
+        slowWrite("Update in progress!",2,18)
+        sleep(3)
+        os.reboot()
       end
     end
   end
