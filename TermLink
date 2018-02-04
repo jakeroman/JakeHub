@@ -426,14 +426,23 @@ function mainRoutine()
       group = options[prompt]
     elseif func == nil then
       group = false
-    else
+    elseif type(func) == "function" then
       writeText(string.rep(" ",48),3,18)
       msg = func()
-      cursorTrail = true
-      slowWrite(msg,4,18)
-      cursorTrail = false
-      clearScreen()
-    end
+      if type(msg) == "string" then
+        cursorTrail = true
+        slowWrite(msg,4,18)
+        cursorTrail = false
+      elseif type(msg) == "table" then
+        clearScreen()
+        writeText(string.upper(setting.name),2,2)
+        writeText(motd,2,3)
+        for i=1,#msg do
+          slowWrite(msg[i],2,4+i)
+        end
+        os.pullEvent("key")
+        clearScreen()
+      end
   end
 end
 
