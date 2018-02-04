@@ -443,6 +443,7 @@ function mainRoutine()
         os.pullEvent("key")
         clearScreen()
       end
+    end
   end
 end
 
