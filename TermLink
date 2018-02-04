@@ -258,7 +258,7 @@ function mainRoutine()
     slowWrite("Set a master password",2,3)
     slowWrite("A master password allows you to",2,5)
     slowWrite("unlock the terminal and open BIOS",2,6)
-    slowWrite("(Type nothing if you don't want a password)")
+    slowWrite("(Type nothing if you don't want a password)",2,8)
     repeat
       --slowWrite("Password: ",2,17)
       writeText("Password:                                       ",2,17)
