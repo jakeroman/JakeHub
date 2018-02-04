@@ -437,12 +437,14 @@ function mainRoutine()
         cursorTrail = false
       elseif type(msg) == "table" then
         clearScreen()
+        writeText(">",2,18)
         writeText(string.upper(setting.name),2,2)
         writeText(motd,2,3)
         for i=1,#msg do
           slowWrite(msg[i],2,4+i)
         end
         os.pullEvent("key")
+        msg = ""
         clearScreen()
       end
     end
