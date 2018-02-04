@@ -315,6 +315,7 @@ function mainRoutine()
     symbListB[i] = symbGen(10)
   end
   msgHistory = {}
+  if not password then unlocked = true end
   repeat
     clearScreen()
     writeText(string.upper(setting.name),2,2)
