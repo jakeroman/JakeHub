@@ -3,7 +3,6 @@
 -- A recreation of the terminals found
 -- throughout the world of fallout.
 
-sleep(1)
 os.pullEvent = os.pullEventRaw
 bootOptions = true
 forceWhite = false
@@ -46,10 +45,7 @@ function drawRoutine()
         blinkTimer = 8
         cursorBlink = not cursorBlink
       end
-      term.current().setVisible(false)
       shaded = shaded + 1
-      term.setBackgroundColor(colors.black)
-      term.clear()
       pixCol = colors.white
       for x=1,#frame do
         for y=1,#frame[x] do
@@ -85,7 +81,6 @@ function drawRoutine()
           end
         end
       end
-      term.current().setVisible(true)
       if shaded > 52 then
         shaded = -5
       end
@@ -263,6 +258,7 @@ function mainRoutine()
     slowWrite("Set a master password",2,3)
     slowWrite("A master password allows you to",2,5)
     slowWrite("unlock the terminal and open BIOS",2,6)
+    slowWrite("(Type nothing if you don't want a password)")
     repeat
       --slowWrite("Password: ",2,17)
       writeText("Password:                                       ",2,17)
@@ -271,6 +267,11 @@ function mainRoutine()
       writeText(" Confirm:                                       ",2,18)
       confirmPass = sha256.sha256(readInput(12,18,"*"))
     until masterPass == confirmPass
+    if masterPass == sha256.sha256("") then
+      noPass = true
+    else
+      noPass = false
+    end
     f = fs.open("/os/.masterpass","w")
     f.write(masterPass)
     f.close()
@@ -285,6 +286,7 @@ function mainRoutine()
     os.setComputerLabel(compName)
     f.writeLine(textutils.serialise({
       ["name"] = compName,
+      ["noPass"] = noPass,
       ["motd"] = {"Whether you think you can or cant, your right",
                   "With great power comes great responsibility",
                  },
@@ -456,6 +458,9 @@ else
   password = f.readLine()
   f.close()
 end
+if setting.noPass then
+  password = false
+end
 function kernelRoutine()
   cursorTrail = true
   slowWrite("Initializing Kernel",2,2)
@@ -562,6 +567,5 @@ function kernelRoutine()
   os.reboot()
 end
 parallel.waitForAny(drawRoutine,kernelRoutine)
-term.current().setVisible(true)
 term.clear()
 term.setCursorPos(1,1)
