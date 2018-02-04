@@ -449,6 +449,8 @@ if not firstRun then
   f = fs.open("/os/settings","r")
   setting = textutils.unserialise(f.readAll())
   f.close()
+else
+  setting = {}
 end
 password = false
 if firstRun then
