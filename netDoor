@@ -1,0 +1,130 @@
+-- Door Control Node
+
+local port = 2048
+local door = "bottom"
+local modem = peripheral.find("modem")
+
+-- Code
+
+sleep(0.1)
+
+local monitors = {}
+local native = term.native()
+for i,v in pairs(peripheral.getNames()) do
+    if peripheral.getType(v) == "monitor" then
+        monitors[#monitors+1] = peripheral.wrap(v)
+        --print(v)
+    end
+end
+
+-- Networking
+
+modem.open(port)
+function receive(waitTime)
+    if waitTime then
+        local tmr = os.startTimer(waitTime)
+    else
+        local tmr = false
+    end
+    while true do
+        local evt = {os.pullEvent()}
+        if evt[1] == "timer" and evt[2] == tmr then
+            return false
+        elseif evt[1] == "modem_message" and evt[3] == port then
+            if type(evt[5]) == "table" then
+                if evt[5].toID == os.getComputerID() then
+                    return evt[4],evt[5].msg
+                end
+            end 
+        end
+    end
+end
+function send(nId,str)
+    modem.transmit(port,os.getComputerID(),{
+        toID = nId,
+        msg = str,
+    })
+end
+
+-- Interface
+
+local state = false
+local name = "Syncing"
+local function redraw()
+    for _,v in pairs(monitors) do
+        v.setTextScale(0.5)
+        local w,h = v.getSize()
+        v.setBackgroundColor(colors.black)
+        v.clear()
+        v.setCursorPos((w/2)-(#name/2)+1,2)
+        v.setTextColor(colors.white)
+        v.write(name)
+        if not state then
+            v.setBackgroundColor(colors.lightGray)
+            stateMsg = "Disconnected"
+        elseif state == "open" then
+            v.setBackgroundColor(colors.lime)
+            stateMsg = "Open"
+        elseif state == "closed" then
+            v.setBackgroundColor(colors.yellow)
+            stateMsg = "Closed"
+        elseif state == "locked" then
+            v.setBackgroundColor(colors.red)
+            stateMsg = "Locked"
+        end
+        for y=4,h-2 do
+            v.setCursorPos(1,y)
+            v.write(string.rep(" ",w))
+        end
+        v.setTextColor(colors.black)
+        v.setCursorPos(w/2-#stateMsg/2+1,h/2+1)
+        v.write(stateMsg)
+    end
+end
+
+-- Routines
+
+parallel.waitForAll(
+function() -- Networking Routine
+    redraw()
+    send(port,"init")
+    while true do
+        local id,cmd = receive()
+        if id == port then
+            name = cmd
+            break
+        end
+    end
+    while true do
+        local id,cmd = receive()
+        if id == port then
+            state = cmd
+            if state == "open" then
+                rs.setOutput(door,true)
+            elseif state == "closed" then
+                rs.setOutput(door,false)
+            elseif state == "locked" then
+                -- Do not change state
+            elseif state == "update" then
+                name = "Updating"
+                redraw()
+                h = http.get("https://raw.github.com/jakemroman/JakeHub/master/netDoor")
+                if h then
+                    f = fs.open(shell.getRunningProgram(),"w")
+                    f.writeLine(h.readAll())
+                    f.close()
+                    h.close()
+                end
+                sleep(3)
+                os.reboot()
+            end
+        end
+        redraw()
+    end
+end,
+function() -- Interface Routine
+    while true do
+        os.pullEvent("monitor_touch")
+        send(port,"toggle")
+    end
+end)
