@@ -1,4 +1,4 @@
-virusKeys = {
+return {
   ["Test Virus"] = {
     "lolwutm8",
     "ur pc got rekt",
