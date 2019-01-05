@@ -415,6 +415,7 @@ function mainRoutine()
     end
     prompt = scrollMenu(5,options)
     msg = ""
+    setCursorPos(2,18)
     writeText("> "..msg,2,18)
     local tempOpt = {}
     for i,v in pairs(options) do
