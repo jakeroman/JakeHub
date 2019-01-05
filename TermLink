@@ -414,6 +414,7 @@ function mainRoutine()
       options[#options+1] = "No option available"
     end
     prompt = scrollMenu(5,options)
+    writeText("> "..msg,2,18)
     local tempOpt = {}
     for i,v in pairs(options) do
       tempOpt[i] = string.sub(v,3,#v-2)
