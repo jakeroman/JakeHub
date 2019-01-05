@@ -479,14 +479,14 @@ if setting.noPass then
 end
 function kernelRoutine()
   cursorTrail = true
-  slowWrite("Initializing Kernel",2,2)
+  slowWrite("INITIALIZING KERNEL",2,2)
   if term.isColor() then
-    slowWrite("Monitor: Color",2,3)
+    slowWrite("MONITOR: COLOR",2,3)
   else
-    slowWrite("Monitor: Monochrome",2,3)
+    slowWrite("MONITOR: MONOCHROME",2,3)
   end
-  slowWrite("Size: "..tostring(width).."x"..tostring(height),2,4)
-  slowWrite("ALT for boot options",2,5)
+  slowWrite("SIZE: "..tostring(width).."X"..tostring(height),2,4)
+  slowWrite("ALT FOR BOOT OPTIONS",2,5)
   tmr = os.startTimer(3)  
   options = false
   while true do
@@ -500,14 +500,14 @@ function kernelRoutine()
   if options then
     if not bootOptions then
       clearScreen()
-      slowWrite("Boot options are disabled.",2,2)
-      slowWrite("Contact an administrator.",2,3)
+      slowWrite("BOOT OPTIONS ARE DISABLED",2,2)
+      slowWrite("CONTACT AN ADMINISTRATOR.",2,3)
       while true do sleep(10) end
     end
     clearScreen()
     if password then
-      slowWrite("Boot options locked!",2,2)
-      slowWrite("Enter master pass:",2,3)
+      slowWrite("BOOT OPTIONS LOCKED!",2,2)
+      slowWrite("ENTER MASTER PASS:",2,3)
       repeat
         writeText(">                           ",2,4)
         input = sha256.sha256(readInput(4,4,"*"))
