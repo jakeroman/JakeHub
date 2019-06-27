@@ -40,16 +40,16 @@ while true do
   for i=1,#list do
     if selection == list[i] then
       if fs.isDir(dirCurrent()..list[i]) then
-        term.setTextColor(colors.gray)
+        term.setTextColor(colors.white)
       else
-        term.setTextColor(colors.lightGray)
+        term.setTextColor(colors.white)
       end
       print(list[i])
     else
       if fs.isDir(dirCurrent()..list[i]) then
-        term.setTextColor(colors.lightGray)
+        term.setTextColor(colors.gray)
       else
-        term.setTextColor(colors.white)
+        term.setTextColor(colors.lightGray)
       end
       print(list[i])
     end
@@ -140,3 +140,4 @@ while true do
 end
 -- End File Browser Code
 end
+finder({"/"})
