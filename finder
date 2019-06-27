@@ -1,4 +1,15 @@
 function finder(directorySel)
+term.setBackgroundColor(colors.black)
+term.clear()
+local w,h = term.getSize()
+if w ~= 51 or h ~= 19 then
+  term.setCursorPos(2,2)
+  print("This screen is incompatible with")
+  term.setCursorPos(2,3)
+  print("file explorer, sorry!")
+  sleep(3)
+  return
+end
 -- File Browser Code
 directory = {}
 if directorySel then
@@ -29,8 +40,8 @@ while true do
   term.setCursorPos(2,1)
   term.setTextColor(colors.black)
   write("File Finder")
-  term.setCursorPos(41,1)
-  term.setBackgroundColor(colors.white)
+  term.setCursorPos(40,1)
+  term.setBackgroundColor(colors.lightGray)
   term.setTextColor(colors.black)
   write("X")
   term.setCursorPos(1,2)
