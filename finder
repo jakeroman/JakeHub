@@ -1,0 +1,142 @@
+function finder(directorySel)
+-- File Browser Code
+directory = {}
+if directorySel then
+  directory = directorySel
+end
+function dirCurrent()
+  if directory == {} then
+    return "/"
+  else
+    current = "/"
+    for x=1,#directory do
+      if directory[x] ~= nil then
+        current = current..directory[x].."/"
+      end
+    end
+    return current
+  end
+end
+selection = false
+while true do
+  click = {}
+  term.current().setVisible(false)
+  term.setBackgroundColor(colors.black)
+  term.clear()
+  paintutils.drawFilledBox(42,1,51,19,colors.gray)
+  term.setCursorPos(1,1)
+  paintutils.drawLine(1,1,41,1,colors.lightGray)
+  term.setCursorPos(2,1)
+  term.setTextColor(colors.black)
+  write("File Finder")
+  term.setCursorPos(41,1)
+  term.setBackgroundColor(colors.white)
+  term.setTextColor(colors.black)
+  write("X")
+  term.setCursorPos(1,2)
+  term.setBackgroundColor(colors.black)
+  term.setTextColor(colors.gray)
+  list = fs.list(dirCurrent())
+  for i=1,#list do
+    if selection == list[i] then
+      if fs.isDir(dirCurrent()..list[i]) then
+        term.setTextColor(colors.gray)
+      else
+        term.setTextColor(colors.lightGray)
+      end
+      print(list[i])
+    else
+      if fs.isDir(dirCurrent()..list[i]) then
+        term.setTextColor(colors.lightGray)
+      else
+        term.setTextColor(colors.white)
+      end
+      print(list[i])
+    end
+    click[i + 1] = {}
+    click[i + 1].len = #list[i]
+    click[i + 1].file = list[i]
+  end  
+  term.setCursorPos(1,19)
+  term.setTextColor(colors.black)
+  write("[..]")
+  if selection then
+    if fs.exists(dirCurrent()..selection) then
+      term.setCursorPos(42,1)
+      term.setBackgroundColor(colors.gray)
+      if fs.isReadOnly(dirCurrent()..selection) then
+        term.setTextColor(colors.black)
+      else
+        term.setTextColor(colors.white)
+      end
+      write("Delete")
+      term.setCursorPos(42,2)
+      if fs.isDir(dirCurrent()..selection) then
+        term.setTextColor(colors.black)
+      else
+        term.setTextColor(colors.white)
+      end
+      write("Edit")
+      term.setCursorPos(42,3)
+      if fs.isDir(dirCurrent()..selection) then
+        term.setTextColor(colors.black)
+      else
+        term.setTextColor(colors.white)
+      end
+      write("Paint")
+      term.setCursorPos(42,4)
+      term.setTextColor(colors.white)
+      write("Open")
+    end
+  end
+  term.current().setVisible(true)
+  e,c,x,y = os.pullEvent("mouse_click")
+  if click[y] then
+    if x >= 1 and x <= click[y].len then
+      if selection == click[y].file then
+        if fs.isDir(dirCurrent()..selection) then
+          directory[#directory + 1] = selection
+        else
+          shell.run(dirCurrent()..selection)
+        end
+      else
+        selection = click[y].file
+      end
+    end
+  end
+  if x == 41 and y == 1 then
+    term.setBackgroundColor(colors.black)
+    term.clear()
+    return
+  end
+  if x >= 42 and x <= 51 then
+    if y == 1 then
+      if not fs.isReadOnly(dirCurrent()..selection) then
+        fs.delete(dirCurrent()..selection)
+      end
+    end
+    if y == 2 then
+      if not fs.isDir(dirCurrent()..selection) then
+        shell.run("edit "..dirCurrent()..selection)
+      end
+    end
+    if y == 3 then
+      if not fs.isDir(dirCurrent()..selection) then
+        shell.run("paint "..dirCurrent()..selection)
+      end
+    end
+    if y == 4 then
+      if fs.isDir(dirCurrent()..selection) then
+        directory[#directory + 1] = selection
+        selection = false
+      else
+        shell.run(dirCurrent()..selection)
+      end
+    end
+  end
+  if x >= 1 and x <= 4 and y == 19 then
+    directory[#directory] = nil
+  end
+end
+-- End File Browser Code
+end
