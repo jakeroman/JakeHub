@@ -34,58 +34,38 @@ for x=1,width do
     }
   end
 end
-function drawRoutine()
-  shaded = -5
-  cursorBlink = true
-  blinkTimer = 8
-  while true do
-    if rendering then
-      blinkTimer = blinkTimer - 1
-      if blinkTimer <= 0 then
-        blinkTimer = 8
-        cursorBlink = not cursorBlink
-      end
-      shaded = shaded + 1
-      pixCol = colors.white
-      for x=1,#frame do
-        for y=1,#frame[x] do
-          if y >= shaded and y <= shaded+3 then
-            if term.isColor() then
-              pixCol = colors.green
+function redraw()
+  term.setCursorBlink(false)
+  if rendering then
+    pixCol = colors.white
+    for x=1,width do
+      for y=1,height do
+        if term.isColor() then
+          pixCol = colors.lime
+        else
+          pixCol = colors.white
+        end
+        if frame[x] then
+          if frame[x][y] then
+            term.setCursorPos(x,y)
+            if frame[x][y]["fill"] then
+              term.setBackgroundColor(pixCol)
+              term.setTextColor(colors.black)
             else
-              pixCol = colors.lightGray
+              term.setBackgroundColor(colors.black)
+              term.setTextColor(pixCol)
             end
-          else
-            if term.isColor() then
-              pixCol = colors.lime
-            else
-              pixCol = colors.white
-            end
-          end
-          term.setCursorPos(x,y)
-          if frame[x][y]["fill"] then
-            term.setBackgroundColor(pixCol)
-            term.setTextColor(colors.black)
-          else
-            term.setBackgroundColor(colors.black)
-            term.setTextColor(pixCol)
-          end
-          write(frame[x][y]["char"])
-          term.setCursorPos(x,y)
-          if x == cursorX and y == cursorY then
-            if cursorBlink then
-              write("_")
-            else
-              write(" ")
-            end
+            write(frame[x][y]["char"])
           end
         end
       end
-      if shaded > 52 then
-        shaded = -5
-      end
     end
-    sleep(0.05)
+  end
+  if cursorX ~= 0 and cursorY ~= 0 and cursorX and cursorY then
+    term.setCursorPos(cursorX,cursorY)
+    term.setCursorBlink(true)
+  else
+    term.setCursorBlink(false)
   end
 end
 function writeText(str,xPos,yPos,fill)
@@ -101,6 +81,7 @@ function writeText(str,xPos,yPos,fill)
     end
     xPos = xPos + 1
   end
+  redraw()
 end
 function slowWrite(str,xPos,yPos,fill)
   if not fill then
@@ -118,6 +99,7 @@ function slowWrite(str,xPos,yPos,fill)
       cursorX = xPos
       cursorY = yPos
     end
+    redraw()
     sleep(0) 
   end
 end
@@ -128,6 +110,7 @@ function fillLine(yPos)
       char = " ",
     }
   end
+  redraw()
 end
 function clearScreen()
   for xPos=1,width do
@@ -138,6 +121,7 @@ function clearScreen()
       }
     end
   end
+  redraw()
 end
 function setCursor(xPos,yPos)
   if cursorX == false then
@@ -147,6 +131,7 @@ function setCursor(xPos,yPos)
     cursorX = xPos
     cursorY = yPos
   end
+  redraw()
 end
 function readInput(xPos,yPos,char)
   inputStr = ""
@@ -158,6 +143,7 @@ function readInput(xPos,yPos,char)
     end
     cursorX = xPos+#inputStr
     cursorY = yPos
+    redraw()
     evt,key = os.pullEvent()
     if evt == "char" then
       inputStr = inputStr..key
@@ -196,6 +182,7 @@ function scrollMenu(yPos,entries)
       end
       writeText(" "..v.." ",2,yPos+i,fill)
     end
+    redraw()
     evt,key = os.pullEvent("key")
     if key == keys.up and select > 1 then
       select = select - 1
@@ -586,6 +573,6 @@ function kernelRoutine()
   sleep(1)
   os.reboot()
 end
-parallel.waitForAny(drawRoutine,kernelRoutine)
+kernelRoutine()
 term.clear()
 term.setCursorPos(1,1)
