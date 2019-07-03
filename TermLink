@@ -470,14 +470,8 @@ end
 function kernelRoutine()
   cursorTrail = true
   slowWrite("INITIALIZING KERNEL",2,2)
-  if term.isColor() then
-    slowWrite("MONITOR: COLOR",2,3)
-  else
-    slowWrite("MONITOR: MONOCHROME",2,3)
-  end
-  slowWrite("SIZE: "..tostring(width).."X"..tostring(height),2,4)
-  slowWrite("ALT FOR BOOT OPTIONS",2,5)
-  tmr = os.startTimer(3)  
+  slowWrite("ALT FOR BOOT OPTIONS",2,3)
+  tmr = os.startTimer(1.5)  
   options = false
   while true do
     e,k = os.pullEvent()
