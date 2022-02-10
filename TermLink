@@ -475,7 +475,7 @@ function kernelRoutine()
   options = false
   while true do
     e,k = os.pullEvent()
-    if e == "key" and k == 56 then
+    if e == "key" and k == keys.leftAlt then
       options = true
     elseif e == "timer" and k == tmr then
       break
